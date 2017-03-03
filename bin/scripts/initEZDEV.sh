@@ -34,5 +34,8 @@ rm $EZDEV_META/*.txt
 ## initialize the configuration variables
 . initVARS.sh
 
+## initialize ezdev controls
+. initEZDEV_controls.sh
+
 ## pause before terminating
 read -p "Press enter to continue"

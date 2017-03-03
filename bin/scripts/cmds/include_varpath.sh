@@ -27,18 +27,6 @@ fi
 ## check if the vars file for the environment variable exist, if so try to check existence of the paths in the file
 envvarfile=$EZDEV_HOME/bin/vars/$envvar.vars
 if [[ -f $envvarfile ]]; then
-	
-	##while read path           
-	##do           
-    ##	alert.sh $path
-	##	if [[ -d $path ]]; then
-	##		alert.sh $envvar=$path
-	##		. setvar.sh $envvar $path 
-	##		cd $home
-	##		return
-	##	fi     
-	##done <$envvarfile
-	
 	old_IFS=$IFS      # save the field separator           
 	IFS=$'\n'     # new field separator, the end of line   
 	paths=$(cat $envvarfile)       
@@ -50,19 +38,7 @@ if [[ -f $envvarfile ]]; then
 			return
 		fi       
 	done          
-   	
-	##done          
 	IFS=$old_IFS     # restore default field separator 
-	
-	## for path in $lines ; do
-    	## alert.sh $path
-		## if [[ -d $path ]]; then
-			## alert.sh $envvar=$path
-			## . setvar.sh $envvar $path 
-			## cd $home
-			## return
-		## fi
-	## done
 fi
 
 ## open file chooser and select a path

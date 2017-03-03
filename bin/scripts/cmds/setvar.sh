@@ -1,6 +1,7 @@
 ##--------------------------------------------------------------------------
 ## name: setvar.sh
 ## desc: sets a configuration variable for the EZDEV java application
+## usage . setvar <name> <value>
 ##--------------------------------------------------------------------------
 
 ## get the name/value pairs from the args

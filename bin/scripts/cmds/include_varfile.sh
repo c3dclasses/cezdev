@@ -1,5 +1,5 @@
 ##---------------------------------------------------------------------------------------------
-## name: include_varpath
+## name: include_varfilelu
 ## desc: includes a variable path by prompting user for location
 ## usage: include_varfile <ENVVARNAME> <PROMPT_MSG>
 ## (ex.): include_varfile NODE_EXE "Set NODE_EXE - Please locate where node executable file 

@@ -12,5 +12,6 @@ if [[ -d $JAVA_HOME ]]; then
 	. setvar.sh JAVA_BIN_PATH $JAVA_HOME/bin
 	. setvar.sh JAVA_JRE_PATH $JAVA_HOME/jre
 else
-	alert.sh "ERROR at initBIN.sh reason: JAVA_HOME variable is not properly set!!! Please set the path correctly!"
+	alert.sh "ERROR in initBIN.sh reason: JAVA_HOME variable is not properly set!!! Please set the path correctly!"
+	exit
 fi

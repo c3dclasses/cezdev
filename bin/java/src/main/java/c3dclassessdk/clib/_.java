@@ -115,7 +115,7 @@ public class _ {
 	// path
 	
 	// returns the home path of EZDEV
-	public static String getHomePath(){ 
+	public static String getHomePath() { 
 		try{
 			String str=new File(".").getCanonicalPath(); 
 			return str; 
@@ -203,8 +203,7 @@ public class _ {
 		return strings;	
 	} // end split()
 	
-	
-		// helper methods
+	// helper methods
 	public static ArrayList<String> getLinesFromFile(String strfilename) {
 		if(strfilename == null || strfilename == "")
 			return null;
@@ -295,38 +294,12 @@ public class _ {
 		} // end catch()
 	} // end runCommand()
 	
-	/*
-	// returns the home path of EZDEV
-	public static String getHomePath() { 
-		try{
-			String str=new java.io.File("..").getCanonicalPath(); 
-			return str; 
-		} // end try
-		catch(IOException ex) { 
-			//System.out.println("ERROR: _.getHomePath(): couldn't get the home path");
-			return ""; 
-		} // end catch()
-	} // end getHomePath()
-	*/
-	// alert command
 	public static void alert(String strmessage, String strtitle) {
 		strmessage = (strmessage == "" || strmessage == null) ? "  " : strmessage;
 		strtitle = (strtitle == "" || strtitle == null) ? "  " : strtitle;
 		JOptionPane.showMessageDialog(null, strmessage, strtitle, JOptionPane.INFORMATION_MESSAGE);
 	} // end alert
 	
-	/*
-	// checks if a directory exist
-	public static String getPath(String strfilename) {
-		try {
-		 	File f = new File(strfilename);
-         	return f.getParentFile().getCanonicalPath();
-        } // end try
-		catch(Exception ex) {
-			return "";
-		} // end catch()
-	} // end getPath()
-	*/	
 	public static boolean isDirectory(String strpathname) {
 		try{ File f = new File(strpathname); return (f.exists() && f.isDirectory());}
 		catch(Exception ex) { return false; }
@@ -347,11 +320,7 @@ public class _ {
     	} // end if
     	return null;
 	} // end promptForFile()
-	
-	//public static String toJSONString(Object value) {
-		//return json_encode($value);
-	//} // end toJSONString()
-	
+
 	public static CJSONObject toJSONObject(String value, boolean bassoc) {
 		CJSONObject cjsonobject = new CJSONObject();
 		return (cjsonobject == null || cjsonobject.create(value) == false) ? null : cjsonobject;
