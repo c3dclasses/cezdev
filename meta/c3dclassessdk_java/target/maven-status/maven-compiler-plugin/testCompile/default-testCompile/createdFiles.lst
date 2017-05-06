@@ -1,5 +1,0 @@
-cglobal\CCompilerUnitTest.class
-cglobal\CTokenTypeUnitTest.class
-cglobal\CTokenizerUnitTest.class
-cglobal\CTokenUnitTest.class
-cglobal\CUnitTest.class

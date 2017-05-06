@@ -37,6 +37,10 @@ public class _ {
 	public static void println(Object object) {
 		_._print(object.toString() + "\n"); 
 	} // end println()
+
+	public static void echo(Object object) {
+		_.print(object);
+	} // end echo()
 	
 	public static void println(){
 		_.println(""); 

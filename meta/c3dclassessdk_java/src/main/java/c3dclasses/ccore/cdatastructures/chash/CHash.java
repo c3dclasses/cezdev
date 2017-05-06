@@ -25,6 +25,10 @@ public class CHash{
 	public CArray values() { return new CArray(this.m_hash.values().toArray()); }
 	public HashMap valueOf() { return this.m_hash; }
 	public HashMap _() { return this.m_hash; }
+	public Object _(Object key) { return this.get(key); }
+	public void _(Object key, Object value) { this.set(key, value); }
+	
+	
 	/*
 	visit : function(fnvisit) { if(typeof(fnvisit) != "function") return; for(key in this.m_hash) fnvisit(key, this.m_hash[key]); },
 	toStringVisit : function(fnvisit, cdata) {if(typeof(fnvisit) != "function") return; str=""; for(key in this.m_hash) str += fnvisit(key, this.m_hash[key]); return str; },
