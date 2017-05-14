@@ -16,6 +16,7 @@ import java.applet.*;
 import javax.swing.*;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
+import c3dclasses.ccore.*;
 
 //-----------------------------------------------
 // class: _
@@ -30,7 +31,7 @@ public class _ {
 	public static void printbr(String str) { 
 		_._print(str + "<br />"); 
 	} // end printbr()
-	public static void printbr(){
+	public static void printbr() {
 		_.printbr("");
 	} // end printbr()
 	
@@ -100,6 +101,11 @@ public class _ {
 		_.print(str);
 		return ""; 
 	} // end print_r()
+
+	public static String print_r(Object object) {
+		return _.print_r(object,false);
+	} // end _print_r()
+	
 	
 	//-------------------------------------------------------------------
 	// name: getTimeInMilliseconds() / getTimeInMicroseconds()
@@ -332,4 +338,7 @@ public class _ {
 		CJSONObject cjsonobject = new CJSONObject();
 		return (cjsonobject == null || cjsonobject.createFromFile(strfilename) == false) ? null : cjsonobject;
 	} // end toJSONObject()
+	
+	public static CHash chash(CPair... cpairs) { return new CHash(cpairs); }
+	public static CPair cpair(Object first, Object second) { return new CPair(first, second); }
 } // end _

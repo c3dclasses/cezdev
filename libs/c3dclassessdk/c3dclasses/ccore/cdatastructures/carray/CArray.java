@@ -11,7 +11,7 @@ import cglobal.*;
 // desc: creates a array object
 //-------------------------------------------
 public class CArray {
-	protected ArrayList m_array = null;
+	protected ArrayList m_array = new ArrayList();;
 	public CArray() { this.clear(); }
 	public CArray(Object [] elements) { for (Object element : elements) this.push(element); }
 	public CArray(ArrayList array) { for (Object element : array) this.push(element); }
@@ -20,9 +20,12 @@ public class CArray {
     public int indexOf(Object element) { return this.m_array.indexOf(element); }
 	public int lastIndexOf(Object element) {  return this.m_array.lastIndexOf(element); }
 	public void clear() { this.m_array = new ArrayList(); }
-	public Object get(int iindex) { return this.m_array.get(iindex); }
+	public Object get(int iindex) { return (this.m_array != null && iindex >= 0 && iindex < this.length()) ? this.m_array.get(iindex) : null; }
+	public Object first() { return this.get(0); }
+	public Object last() { return this.get(this.length()-1); }
+	public Object top() { return this.last(); }
 	public Object set(int iindex, Object object) { return this.m_array.set(iindex, object); }
-	public Object pop() { return this.m_array.remove(this.length() - 1); }
+	public Object pop() { return (this.length() > 0) ? this.m_array.remove(this.length() - 1) : null; }
 	public int push(Object element) { this.m_array.add(element); return this.length(); } 
 	public CArray concat(Object [] elements) { return new CArray(elements); }
     public CArray concat(CArray carray) { return new CArray(carray.m_array); }

@@ -23,65 +23,201 @@ import c3dclasses.ccore.*;
 // desc: implements functions used by CForm / CControls / COptions
 //-----------------------------------------------------------------
 public class CFormDriver {	
-	public static String processParams(CHash params, CForm cform) {
-		if(params == null)
-			return "";
+	static CFormDriverMapper m_mapper = new CFormDriverMapper();	// maps interface code to java swing code
+	public static CHash call(CHash ccontrol) {
+		if(ccontrol == null)
+			return null;
+		String strtype = (String) ccontrol._("m_strtype");
+		String strdefaulttype = (String) ccontrol._("m_strdefaulttype");
+		String straction = (String) ccontrol._("m_straction");
+		String strpropname = (String) ccontrol._("m_strpropname");
+		//String strpropvalue = (String) ccontrol._("m_strpropvalue");
+		String strfuncid = "";
+		if(strdefaulttype != null)	// control
+			strfuncid += strdefaulttype;	
+		else if(strtype != null)
+			strfuncid += strtype;
+		if(straction != null)
+			strfuncid += "->" + straction;
+		if(strpropname != null)
+			strfuncid += "->" + strpropname;	
+		//_.alert(strfuncid);	
+		CFunction cfunction = (CFunction) CFormDriver.m_mapper._(strfuncid.toLowerCase());
+		return (cfunction == null) ? null : (CHash) cfunction._(ccontrol);		
+	} // call()
+} // end CFormDriver
 
-		String strtype = (String) params._("ccontrol-type");
-		String strname = (String) params._("ccontrol-name");
-		String value = (String) params._("ccontrol-value");
-		CHash attributes = (CHash) params._("ccontrol-attributes");
-		String strmemid = (String) params._("cmemory-id");
-		String strformid = (String) params._("cform-id");
-		//CHash _params = (CHash) params._("ccontrol-params");
-		String strcontrol = "";
-	
-		if(strmemid != null) {
-			if(strformid != "" || strformid != null)
-				strname = strformid + "_" + strname;	
-		} // end if
+//-----------------------------------------------------------------
+// name: CFormDriverMapper
+// desc:
+//-----------------------------------------------------------------
+class CFormDriverMapper extends CHash {	
+	public CFormDriverMapper() {
+		final CFormDriverMapper _this = this; 
 		
-		if(strtype.equals("section")) {
-			strcontrol = "";
-		} // end if
-		else if(strtype.equals("form")) {
-			//CHash hash = new CHash();
-			//attributes._("id", strname);
-			//attributes._("name", strname);
-			//attributes._("value", value);
-			CFormDriver.buildCFormFromJFrame(cform);
-			//strcontrol = buildHTMLOpenTag("form", attributes);
-				
-			
-		} // end elseif
-		else if(strtype == "endform") { 
-			strcontrol = "</form>";//buildHTMLTag("/form");
-		}  // end elseif
-	
-		return " ";
-	} // end processParams
-	
-	
-	public static boolean buildCFormFromJFrame(CForm cform) {
-		String strlookfeel = "";//(String)cform.getParams("ezdev.lookandfeel");
-		int width = 400; //Integer.parseInt((String)cform.getParams("ezdev.width"));
-		int height = 500; //Integer.parseInt((String)cform.getParams("ezdev.height");
-		String pid = ""; //(String)cform.getParams("ezdev.pid");
-		String title = "Form Title"; //(String)cform.getParams("ezdev.pid");
+		/////////////////////////
+		// create functions
+		/////////////////////////
+		CFunction fnCreateJFrame = new CFunction() { public Object _(Object obj) {
+			CControl control = (CControl) obj; 
+			return _this.createJControl(control, new JFrame((String)control._("m_value")));
+		}}; // end fnCreateJFrame
 		
-		JFrame jframe = new JFrame();
-		try{ UIManager.setLookAndFeel(strlookfeel); }
-		catch(Exception ex){}
-		Container cp = jframe.getContentPane();
-		cp.setLayout(new GridLayout(0, 1));	// try to manipulate this via flex like properties
-		jframe.setTitle(title);  	
-		jframe.getContentPane().setPreferredSize(new Dimension(width,height));
-	  	jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-  		jframe.pack();
-		jframe.setVisible(true);
+		CFunction fnCreateJButton = new CFunction() { public Object _(Object obj) { 
+			CControl control = (CControl) obj; 
+			return _this.createJControl(control, new JButton((String)control._("m_value")));
+		}}; // end fnCreateJButton
+
+		CFunction fnCreateJComboBox = new CFunction() { public Object _(Object obj) { 
+			CControl control = (CControl) obj; 
+			JComboBoxOption [] jcomboboxoption = _this.getJComboBoxOptions(control);
+			return _this.createJControl(control, new JComboBox());
+		}}; // end fnCreateJComboBox
+	 
+		/////////////////////////
+		// set/get functions
+		/////////////////////////
+		CFunction fnSetVisible = new CFunction() { public Object _(Object obj) { 
+			CControl ccontrol = (CControl) obj;
+			String value = (String) ccontrol._("m_strpropvalue");
+			Component jcontrol = (Component) ccontrol._("m_jcontrol");
+			jcontrol.setVisible(Boolean.parseBoolean(value));
+			return ccontrol;	
+		}}; // end fnSetVisible
+	
+		CFunction fnGetVisible = new CFunction() { public Object _(Object obj) { 
+			CControl ccontrol = (CControl) obj;
+			Component jcontrol = (Component) ccontrol._("m_jcontrol");
+			String value = Boolean.toString(jcontrol.isVisible());
+			ccontrol._("m_strpropvalue", value);
+			return ccontrol;	
+		}}; // end fnGetVisible
 		
-		// set this as a property 
-		cform.setParam("jframe",jframe); 
-		return true;
-	} // end buildCFormFromJFrame()
-} // end class CFormDriver
+		CFunction fnSetFramePacking = new CFunction() { public Object _(Object obj) { 
+			CControl ccontrol = (CControl) obj;
+			String value = (String) ccontrol._("m_strpropvalue");
+			JFrame jcontrol = (JFrame) ccontrol._("m_jcontrol");
+			jcontrol.pack();
+			return ccontrol;	
+		}}; // end 
+		
+		CFunction fnSetLookAndFeel = new CFunction() { public Object _(Object obj) { 
+			//CControl ccontrol = (CControl) obj;
+			//String value = (String) ccontrol._("m_strpropvalue");
+			try{ UIManager.setLookAndFeel(""); }
+			catch( Exception ex ){}
+			return null;	
+		}}; // end fnSetLayout
+		
+		CFunction fnSetLayout = new CFunction() { public Object _(Object obj) { 
+			CControl ccontrol = (CControl) obj;
+			String value = (String) ccontrol._("m_strpropvalue");
+			JFrame jcontrol = (JFrame) ccontrol._("m_jcontrol");
+			Container cp = jcontrol.getContentPane();
+			cp.setLayout(new GridLayout(0, 1));
+			return ccontrol;
+		}}; // end fnSetGridLyout
+
+		CFunction fnSetFrameClosing = new CFunction() { public Object _(Object obj) { 
+			CControl ccontrol = (CControl) obj;
+			String value = (String) ccontrol._("m_strpropvalue");
+			JFrame jcontrol = (JFrame) ccontrol._("m_jcontrol");
+			jcontrol.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			return ccontrol;	
+		}}; // end fnSetFrameClosing
+
+		CFunction fnSetTitle = new CFunction() { public Object _(Object obj) { 
+			CControl ccontrol = (CControl) obj;
+			String value = (String) ccontrol._("m_strpropvalue");
+			JFrame jcontrol = (JFrame) ccontrol._("m_jcontrol");
+			jcontrol.setTitle(value);
+			return ccontrol;	
+		}}; // end fnSetTitle
+
+		CFunction fnGetTitle = new CFunction() { public Object _(Object obj) { 
+			CControl ccontrol = (CControl) obj;
+			JFrame jcontrol = (JFrame) ccontrol._("m_jcontrol");
+			String value = jcontrol.getTitle();
+			ccontrol._("m_strpropvalue", value);
+			return ccontrol;	
+		}}; // end fnGetTitle
+		
+		CFunction fnSetText = new CFunction() { public Object _(Object obj) { 
+			CControl ccontrol = (CControl) obj;
+			String value = (String) ccontrol._("m_strpropvalue");
+			JButton jcontrol = (JButton) ccontrol._("m_jcontrol");
+			jcontrol.setText(value);
+			return ccontrol;	
+		}}; // end fnSetText
+
+		CFunction fnGetText = new CFunction() { public Object _(Object obj) { 
+			CControl ccontrol = (CControl) obj;
+			JButton jcontrol = (JButton) ccontrol._("m_jcontrol");
+			String value = jcontrol.getText();
+			ccontrol._("m_strpropvalue", value);
+			return ccontrol;	
+		}}; // end fnGetText
+		
+		///////////////////////////////
+		// id <==> function mapping
+		///////////////////////////////
+		this._("form->create", fnCreateJFrame);
+		this._("form->set->grid", fnSetLayout);
+		this._("form->set->pack", fnSetFramePacking);
+		this._("form->set->close", fnSetFrameClosing);
+		this._("form->set->visible", fnSetVisible);
+		this._("form->get->visible", fnSetVisible);		
+		this._("form->set->title", fnSetTitle);		
+		this._("form->get->title", fnGetTitle);		
+
+		this._("button->create", fnCreateJButton);
+		this._("button->set->visible", fnSetVisible);
+		this._("button->get->visible", fnGetVisible);	
+		this._("button->set->title", fnSetText);		
+		this._("button->get->title", fnGetText);		
+		this._("button->set->text", fnSetText);		
+		this._("button->get->text", fnGetText);		
+
+		this._("select->create", fnCreateJComboBox);
+		this._("select->set->visible", fnSetVisible);
+		this._("select->get->visible", fnGetVisible);	
+	} // end CFormDriverMapper()
+
+	///////////////////////
+	// helper methods
+	///////////////////////
+	Object createJControl(CControl ccontrol, Component jcontrol) {
+		if(jcontrol == null)
+			return false;
+		ccontrol._("m_jcontrol", jcontrol);	
+		Container parent = this.getParentContainer(ccontrol);
+		if(parent != null)
+			parent.add(jcontrol);
+		return ccontrol;
+	} // end createJControl()
+	
+	Container getParentContainer(CControl ccontrol) {
+		if(ccontrol == null)
+			return null;
+		CControl container = (CControl) ccontrol._("m_container");
+		if(container == null)
+			return null;
+		return (Container) container._("m_jcontrol");	
+	} // end addControlToContainer()
+	
+	JComboBoxOption [] getJComboBoxOptions(CControl ccontrol) {
+		return null;
+	} // end getJComboBoxOptions()
+} // end CFormDriverMapper
+
+//---------------------------------------------------------
+// name: JComboBoxOption
+// desc: defines the combobox option
+//---------------------------------------------------------
+class JComboBoxOption {
+	public String m_strname = "";
+	public Object m_value = null;
+	public String getName() { return this.m_strname; }
+	public Object getValue() { return this.m_value; }
+	public String toString() { return m_strname; }
+} // end CComboBoxOption

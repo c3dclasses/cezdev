@@ -11,7 +11,7 @@ import c3dclasses.ccore.*;
 // desc: defines the options object of the form
 //-----------------------------------------------------------------
 public class COptions {	
-	public CForm m_cform;
+/*	public CForm m_cform;
 	public COptions(){ this.m_cform = null; }	
 	public boolean create(CForm cform){ this.m_cform=cform; return true;}
 	public boolean optionExists(String strname){ return (this.processOption("get",strname, null, null) != null); } 
@@ -28,8 +28,9 @@ public class COptions {
 		_params.set("coption-params",params);
 		_params.set("cform-id",this.m_cform.getID());
 		_params.set("cmemory-id",this.m_cform.getCMemoryID());
-		return this.processParams(_params, null);
+		return " "; //this.processParams(_params, null);
 	} // end processOption()
 	// override this behavior to process the option
-	public String processParams(CHash params, String strname){ return " "; } //return COptions_processParams(params); } 
+	//public String processParams(CHash params, String strname){ return " "; } //return COptions_processParams(params); } 
+	*/
 } // end class COptions
