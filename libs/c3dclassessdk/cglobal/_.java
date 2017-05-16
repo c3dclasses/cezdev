@@ -269,6 +269,37 @@ public class _ {
 		return true;
 	} // end setFileContents()
 	
+	/*
+	public static boolean setFilePlaceHolderContents(String strinfilename, String stroutfile 
+													 String stropentoken, String strclosetoken,
+													 CMemory cmemory) {
+		if(stropentoken == null || stropentoken == "" || 
+			strclosetoken == null || strclosetoken == "")
+			return false;
+		String strcontents = "";	
+		try {
+			Reader in = new BufferedReader(new FileReader(strinfilename));
+			FileWriter out = new FileWriter(stroutfilename);	
+			int r;
+			while ((r = in.read()) != -1) {
+				char ch = (char) r;
+				if(ch == stropentoken.charAt(0)) { // found the start of opening token
+					int len = stropentoken.length();
+					for(int i=1; i<len && stropentoken.charAt(i) == ch; i++) {
+						
+					} // end for
+			} // end while 
+			in.close();
+			outclose();
+		} // end try
+		catch(Exception ex) {
+			//System.out.println("ERROR: _.getFileContents(): Couldn't read from: " + strfilename);
+			return false;
+		} // end catch()
+		return true;
+	} // end setFilePlaceHolderContents
+	*/
+	
 	// returns the pid of this application
 	public static long getPID() {
 		String jvmName = ManagementFactory.getRuntimeMXBean().getName();
@@ -312,7 +343,6 @@ public class _ {
 		try{ File f = new File(strpathname); return (f.exists() && f.isDirectory());}
 		catch(Exception ex) { return false; }
 	} // end isDirectory()
-
 	
 	public static boolean isFile(String strpathname) {
 		try{ File f = new File(strpathname); return (f.exists());}
@@ -341,4 +371,5 @@ public class _ {
 	
 	public static CHash chash(CPair... cpairs) { return new CHash(cpairs); }
 	public static CPair cpair(Object first, Object second) { return new CPair(first, second); }
+	public static CPair nv(Object first, Object second) { return new CPair(first, second); }	
 } // end _

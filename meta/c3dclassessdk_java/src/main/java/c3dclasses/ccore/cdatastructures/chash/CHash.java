@@ -29,6 +29,7 @@ public class CHash{
 	public Object _(Object key) { return this.get(key); }
 	public void _(Object key, Object value) { this.set(key, value); }
 	public void append(CHash chash) { if(chash==null) return; for(Object key : chash.keys().valueOf()) { this.set(key, chash.get(key)); } }
+	//public String toString() { return this.m_hash.toString(); }
 	/*
 	visit : function(fnvisit) { if(typeof(fnvisit) != "function") return; for(key in this.m_hash) fnvisit(key, this.m_hash[key]); },
 	toStringVisit : function(fnvisit, cdata) {if(typeof(fnvisit) != "function") return; str=""; for(key in this.m_hash) str += fnvisit(key, this.m_hash[key]); return str; },

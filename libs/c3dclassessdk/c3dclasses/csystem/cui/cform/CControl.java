@@ -15,18 +15,18 @@ public class CControl extends CHash {
 	///////////////////
 	// get/set prop
 	///////////////////
-	public CControl setProp(String strprop, String value) {	
+	public CControl setProp(String strprop, Object value) {	
 		this._("m_straction", "set");
 		this._("m_strpropname", strprop);
-		this._("m_strpropvalue", value);
+		this._("m_propvalue", value);
 		CFormDriver.call(this);
 		return this;
 	} // end setProp()
 	
-	public String getProp(String strprop) {	
+	public Object getProp(String strprop) {	
 		this._("m_straction", "get");
 		this._("m_strpropname", strprop);
 		CFormDriver.call(this);
-		return (String)this._("m_strpropvalue");
+		return this._("m_propvalue");
 	} // end getProp()
 } // end class CControl

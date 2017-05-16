@@ -33,6 +33,11 @@ public class CForm2 extends CHash {
 	////////////////
 	// controls
 	////////////////
+	public boolean menubar(String strid, String value, CHash params) { return this.beginContainer("menubar", strid, value, params); }
+	public boolean endmenubar() { return this.endContainer("endmenubar", null, null, null); }
+	public boolean menu(String strid, String value, CHash params) { return this.beginContainer("menu", strid, value, params); }
+	public boolean endmenu() { return this.endContainer("endmenu", null, null, null); }
+	public boolean menuitem(String strid, String value, CHash params) { return this.control("menuitem", strid, value, params); }
 	
 	// creating
 	public boolean form(String strid, String value, CHash params) { return this.beginContainer("form", strid, value, params); }
@@ -70,7 +75,7 @@ public class CForm2 extends CHash {
 	public boolean choices(String strtype, String strid, String value, CHash options, CHash params) {
 		if(params == null)
 			params = new CHash();
-		params.append(options); 
+		params.set("m_options", options); 
 		return this.control(strtype, strid, value, params);
 	} // end control_choices()
 	public boolean beginContainer(String strtype, String strid, String value, CHash params) {
@@ -112,6 +117,8 @@ public class CForm2 extends CHash {
 		return this.toStringContents((CHash) this.m_ccontrols._(strpathid));
 	} // end toStringContents()
 	public String toStringContents(CHash ccontrol) {
+		
+		
 		if(ccontrol == null)
 			return "";
 		CArray keys = ccontrol.keys();
@@ -124,11 +131,13 @@ public class CForm2 extends CHash {
 			str += strpathid + ": " + ccontrol._(strpathid) + "\n";
 		} // end for
 		return str;
+
+		//return ccontrol.toString();
 	} // end toStringContents()
 		
-	//////////////////
+	//////////////
 	// CRUD
-	//////////////////	
+	//////////////	
 	public CHash create(String strid, String value, CHash params) {
 		CHash container = (CHash) this.getContainers().top();
 		String strpathid = (container != null) ? (((String)container._("m_strpathid")) + " " + strid) : strid;	

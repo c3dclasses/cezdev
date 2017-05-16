@@ -14,13 +14,30 @@ public class CFormProgram2 {
 			return;
 		//CControls ccontrols = cform.getCControls();	
 		cform.form("myform", "This is the form title", null);	
+			cform.menubar("menubar", "This is my menubar", null);
+				cform.menu("menu1", "Menu1", null);
+					cform.menuitem("item1", "item1", null);
+					cform.menuitem("item2", "item2", null);
+					cform.menu("menu2", "Menu1", null);
+						cform.menuitem("item1", "item1", null);
+						cform.menuitem("item2", "item2", null);
+						cform.menuitem("item3", "item3", null);
+					cform.endmenu();
+					cform.menuitem("item3", "item3", null);
+				cform.endmenu();
+				cform.menu("menu3", "Menu1", null);
+					cform.menuitem("item1", "item1", null);
+					cform.menuitem("item2", "item2", null);
+					cform.menuitem("item3", "item3", null);
+				cform.endmenu();
+			cform.endmenubar();
 			cform.button("control5", "Control5", null);
 			cform.select("control4", "HELLO3", 
 				_.chash(
-					_.cpair("HELLO5","WORLD5"), 
-					_.cpair("HELLO1","WORLD1"),
-					_.cpair("HELLO2","WORLD2"),
-					_.cpair("HELLO3","WORLD3")
+					_.nv("HELLO5","WORLD5"), 
+					_.nv("HELLO1","WORLD1"),
+					_.nv("HELLO2","WORLD2"),
+					_.nv("HELLO3","WORLD3")
 				), 
 			null);
 			//{"HELLO5":"WORLD5", "HELLO1":"WORLD1","HELLO2":"WORLD2","HELLO3":"WORLD3"}, null);
@@ -33,6 +50,17 @@ public class CFormProgram2 {
 		cform.retrieve("myform").setProp("pack","true");
 		cform.retrieve("myform").setProp("close","true");
 		cform.retrieve("myform control5").setProp("visible","true");
+		cform.retrieve("myform control5").setProp("action", new CFunction() { public Object _(Object obj) {
+			_.alert("in the first action listener");
+			return null;
+		}}); // end action
+		
+		cform.retrieve("myform control5").setProp("action", new CFunction() { public Object _(Object obj) {
+			_.alert("in the second action listener");
+			return null;
+		}}); // end action
+		
+		
 		
 		cform.retrieve("myform").setProp("title","FRAME");
 		cform.retrieve("myform control5").setProp("title","BUTTON");
