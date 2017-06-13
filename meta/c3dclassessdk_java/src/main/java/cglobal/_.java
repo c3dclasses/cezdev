@@ -314,7 +314,7 @@ public class _ {
 			return true; 
 		} // end try
 		catch(Exception ex) { 
-			System.out.println("ERROR: _.execCommand(): couldn't execute command: " + strcommand);
+			System.out.println("ERROR: _.execCommand(): couldn't execute command: " + strcommand + " reason: " + ex.getMessage());
 			return false; 
 		} // end catch()
 	} // end runCommand()

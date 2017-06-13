@@ -6,7 +6,7 @@
 
 ## check the arguments
 if [[ $# -lt 3 ]]; then
-	echo "ERROR: usage - $ . movefiles.sh ext srcdir dstdir"
+	echo "ERROR: usage - $ . cpfiles.sh format srcdir dstdir"
 	exit 1
 fi 
 

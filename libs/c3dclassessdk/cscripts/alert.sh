@@ -4,4 +4,4 @@
 ## usage: alert.sh <msg> <title> <warn>
 ##------------------------------------------------------------------------------------------
 
-c3dclassessdk_java.sh CMessageBox "$@"
+c3dclassessdk_java.sh CMessageBox "%*"

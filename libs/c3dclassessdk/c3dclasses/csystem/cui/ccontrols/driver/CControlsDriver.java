@@ -1,7 +1,7 @@
-//----------------------------------------------------------------------------
-// file: CFormDriver
-// desc: implements functions used by CForm / CControls / COptions
-//----------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
+// name: CControlsDriver
+// desc: defines the driver interface and implementor to do crud operation on control objects
+//------------------------------------------------------------------------------------------------
 package c3dclasses.csystem.cui;
 import java.io.*;
 import java.util.*;
@@ -19,20 +19,19 @@ import javax.swing.plaf.metal.*;
 import cglobal.*; 
 import c3dclasses.ccore.*;
 
-//-----------------------------------------------------------------
-// name: CFormDriver
-// desc: implements functions used by CForm / CControls / COptions
-//-----------------------------------------------------------------
-public class CFormDriver {	
-	static CFormDriverMapper m_mapper = new CFormDriverMapper();	// maps interface code to java swing code
-	public static CHash call(CHash ccontrol) {
+//-----------------------------------------------------------------------------
+// name: CControlsDriver
+// desc: defines the interface object to do crud operation on control objects
+//-----------------------------------------------------------------------------
+public class CControlsDriver {	
+	static CControlsDriverImplementor m_implementor = new CControlsDriverImplementor();
+	public static CControl call(CControl ccontrol) {
 		if(ccontrol == null)
 			return null;
 		String strtype = (String) ccontrol._("m_strtype");
 		String strdefaulttype = (String) ccontrol._("m_strdefaulttype");
 		String straction = (String) ccontrol._("m_straction");
 		String strpropname = (String) ccontrol._("m_strpropname");
-		//String strpropvalue = (String) ccontrol._("m_propvalue");
 		String strfuncid = "";
 		if(strdefaulttype != null)	// control
 			strfuncid += strdefaulttype;	
@@ -42,19 +41,18 @@ public class CFormDriver {
 			strfuncid += "->" + straction;
 		if(strpropname != null)
 			strfuncid += "->" + strpropname;	
-		//_.alert(strfuncid);	
-		CFunction cfunction = (CFunction) CFormDriver.m_mapper._(strfuncid.toLowerCase());
-		return (cfunction == null) ? null : (CHash) cfunction._(ccontrol);		
+		CFunction cfunction = (CFunction) CControlsDriver.m_implementor._(strfuncid.toLowerCase());
+		return (cfunction == null) ? null : (CControl) cfunction._((CHash)ccontrol);		
 	} // call()
-} // end CFormDriver
+} // end CControlsDriver
 
-//-----------------------------------------------------------------
-// name: CFormDriverMapper
-// desc:
-//-----------------------------------------------------------------
-class CFormDriverMapper extends CHash {	
-	public CFormDriverMapper() {
-		final CFormDriverMapper _this = this; 
+//--------------------------------------------------------------------------------
+// name: CControlsDriverImplementor
+// desc: defines the implementor object to do crud operation on control objects
+//--------------------------------------------------------------------------------
+class CControlsDriverImplementor extends CHash {	
+	public CControlsDriverImplementor() {
+		final CControlsDriverImplementor _this = this; 
 		
 		/////////////////////////
 		// create functions
@@ -74,21 +72,55 @@ class CFormDriverMapper extends CHash {
 			return _this.createJControl(control, new_JComboBox(control));
 		}}; // end fnCreateJComboBox
 	
-	 	CFunction fnCreateMenuBar = new CFunction() { public Object _(Object obj) { 
+		CFunction fnCreateJTextField = new CFunction() { public Object _(Object obj) { 
+			CControl control = (CControl) obj; 
+			return _this.createJControl(control, new JTextField((String)control._("m_value")));
+		}}; // end fnCreateJTextField
+		
+		CFunction fnCreateJLabel = new CFunction() { public Object _(Object obj) { 
+			CControl control = (CControl) obj; 
+			return _this.createJControl(control, new JLabel((String)control._("m_value")));
+		}}; // end fnCreateJLabel
+		
+	 	CFunction fnCreateJMenuBar = new CFunction() { public Object _(Object obj) { 
 			CControl control = (CControl) obj; 
 			return _this.createJMenuBar(control, new JMenuBar());
-		}}; // end fnCreateMenuBar
+		}}; // end fnCreateJMenuBar
+	
+	 	CFunction fnCreateJMenu = new CFunction() { public Object _(Object obj) { 
+			CControl control = (CControl) obj; 
+			return _this.createJMenu(control, new JMenu((String)control._("m_value")));
+		}}; // end fnCreateJMenu
+	 
+	 	CFunction fnCreateJMenuItem = new CFunction() { public Object _(Object obj) { 
+			CControl control = (CControl) obj; 
+			return _this.createJMenuItem(control, new JMenuItem((String)control._("m_value")));
+		}}; // end fnCreateJMenu
+	
+		CFunction fnCreateSystemTrayIconPopupMenu = new CFunction() { public Object _(Object obj) { 
+			CControl control = (CControl) obj; 
+			return _this.createSystemTrayIconPopupMenu(control, new_SystemTrayIconPopupMenu(control));
+		}}; // end fnCreateSystemTrayIcon
 	
 	 	CFunction fnCreateMenu = new CFunction() { public Object _(Object obj) { 
 			CControl control = (CControl) obj; 
-			return _this.createJMenu(control, new JMenu((String)control._("m_value")));
-		}}; // end fnCreateMenu
+			return _this.createMenu(control, new Menu((String)control._("m_value")));
+		}}; // end fnCreateJMenu
 	 
 	 	CFunction fnCreateMenuItem = new CFunction() { public Object _(Object obj) { 
 			CControl control = (CControl) obj; 
-			return _this.createJMenuItem(control, new JMenuItem((String)control._("m_value")));
-		}}; // end fnCreateMenu
-	 
+			return _this.createMenuItem(control, new MenuItem((String)control._("m_value")));
+		}}; // end fnCreateJMenu
+	
+	 	CFunction fnCreateCheckboxMenuItem = new CFunction() { public Object _(Object obj) { 
+			CControl control = (CControl) obj; 
+			return _this.createCheckboxMenuItem(control, new CheckboxMenuItem((String)control._("m_value")));
+		}}; // end fnCreateJMenu
+		
+		CFunction fnAddSeperator = new CFunction() { public Object _(Object obj) { 
+			return (Object) _this.addSeperator((CControl)obj);
+		}}; // end fnAddSeperator
+	
 		/////////////////////////
 		// set/get functions
 		/////////////////////////
@@ -179,6 +211,8 @@ class CFormDriverMapper extends CHash {
 			//if(cfunction == null)
 			//	return null;
 			AbstractButton jcontrol = (AbstractButton) ccontrol._("m_jcontrol");
+			if(jcontrol == null)
+				return null;
 			jcontrol.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					cfunction._(e);
@@ -210,7 +244,6 @@ class CFormDriverMapper extends CHash {
 			return ccontrol;	
 		}}; // end fnGetSelectedItem
 		
-		
 		///////////////////////////////
 		// id <==> function mapping
 		///////////////////////////////
@@ -236,7 +269,9 @@ class CFormDriverMapper extends CHash {
 		this._("select->set->visible", fnSetVisible);
 		this._("select->get->visible", fnGetVisible);	
 		
-		
+		this._("text->create", fnCreateJTextField);
+		this._("label->create", fnCreateJLabel);
+				
 		
 		// items
 		//this._("select->set->item-add", fnGetVisible);	
@@ -256,13 +291,19 @@ class CFormDriverMapper extends CHash {
 		//this._("select->set->remove", fnRemoveAll);	
 		
 		// menubar
-		this._("menubar->create", fnCreateMenuBar);	
-		this._("menu->create", fnCreateMenu);
-		this._("menuitem->create", fnCreateMenuItem);
-			
+		this._("menubar->create", fnCreateJMenuBar);	
+		this._("menu->create", fnCreateJMenu);
+		this._("menuitem->create", fnCreateJMenuItem);
+		this._("menuitem->set->action", fnSetButtonAction);				
 		
+		this._("systray-menubar->create", fnCreateSystemTrayIconPopupMenu);	
+		this._("systray-menu->create", fnCreateMenu);
+		this._("systray-menuitem->create", fnCreateMenuItem);
+		this._("systray-checkboxmenuitem->create", fnCreateCheckboxMenuItem);
+		this._("systray-menuitem->set->action", fnSetButtonAction);						
+		this._("systray-menuseperator->create", fnAddSeperator);
 		
-	} // end CFormDriverMapper()
+	} // end CControlsDriverImplementor()
 
 	///////////////////////
 	// helper methods
@@ -271,7 +312,7 @@ class CFormDriverMapper extends CHash {
 		if(jcontrol == null)
 			return null;
 		ccontrol._("m_jcontrol", jcontrol);	
-		Container parent = this.getParentContainer(ccontrol);
+		Container parent = (Container) this.getParentContainer(ccontrol);
 		if(parent != null)
 			parent.add(jcontrol);
 		return ccontrol;
@@ -294,7 +335,7 @@ class CFormDriverMapper extends CHash {
 		if(jcontrol == null)
 			return null;
 		ccontrol._("m_jcontrol", jcontrol);	
-		Container parent = this.getParentContainer(ccontrol);
+		Container parent = (Container) this.getParentContainer(ccontrol);
 		if(parent != null)
 			parent.add(jcontrol);
 		return ccontrol;
@@ -309,14 +350,73 @@ class CFormDriverMapper extends CHash {
 			parent.add(jcontrol);
 		return ccontrol;
 	} // end createJMenu()
+
+	///////////////////////////
+	// SystemTray menu
+	///////////////////////////
+	CControl createSystemTrayIconPopupMenu(CControl ccontrol, PopupMenu jcontrol){
+		if(jcontrol == null)
+			return null;
+		ccontrol._("m_jcontrol", jcontrol);	
+		return ccontrol;
+	} // end createSystemTrayIcon()
 	
-	Container getParentContainer(CControl ccontrol) {
+	CControl addSeperator(CControl ccontrol){
+		if(ccontrol == null)
+			return null;
+		Menu menu = (Menu) ccontrol._("m_jcontrol");	
+		if(menu != null)
+			menu.addSeparator();
+		return ccontrol;
+	} // end addMenuItemSeperator()
+		
+	CControl createPopupMenu(CControl ccontrol, PopupMenu jcontrol){
+		if(jcontrol == null)
+			return null;
+		ccontrol._("m_jcontrol", jcontrol);	
+		TrayIcon parent = (TrayIcon) this.getParentContainer(ccontrol);
+		if(parent != null)
+			parent.setPopupMenu(jcontrol);
+		return ccontrol;
+	} // end createPopupMenu()
+
+	Object createMenu(CControl ccontrol, Menu jcontrol) {
+		if(jcontrol == null)
+			return null;
+		ccontrol._("m_jcontrol", jcontrol);	
+		Menu parent = (Menu) this.getParentContainer(ccontrol);
+		if(parent != null)
+			parent.add(jcontrol);
+		return ccontrol;
+	} // end createMenu()
+	
+	Object createMenuItem(CControl ccontrol, MenuItem jcontrol) {
+		if(jcontrol == null)
+			return null;
+		ccontrol._("m_jcontrol", jcontrol);	
+		Menu parent = (Menu) this.getParentContainer(ccontrol);
+		if(parent != null)
+			parent.add(jcontrol);
+		return ccontrol;
+	} // end createMenuItem()
+
+	Object createCheckboxMenuItem(CControl ccontrol, CheckboxMenuItem jcontrol) {
+		if(jcontrol == null)
+			return null;
+		ccontrol._("m_jcontrol", jcontrol);	
+		Menu parent = (Menu) this.getParentContainer(ccontrol);
+		if(parent != null)
+			parent.add(jcontrol);
+		return ccontrol;
+	} // end createMenuItem()	
+	
+	Object getParentContainer(CControl ccontrol) {
 		if(ccontrol == null)
 			return null;
 		CControl container = (CControl) ccontrol._("m_container");
 		if(container == null)
 			return null;
-		return (Container) container._("m_jcontrol");	
+		return (Object) container._("m_jcontrol");	
 	} // end addControlToContainer()
 	
 	JComboBox new_JComboBox(CControl ccontrol) {
@@ -336,7 +436,30 @@ class CFormDriverMapper extends CHash {
 		} // end for
 		return jcontrol;
 	} // end new_JComboBox()
-} // end CFormDriverMapper
+	
+	PopupMenu new_SystemTrayIconPopupMenu(CControl ccontrol) {
+		if(!SystemTray.isSupported())
+			return null;
+		String striconpath = (String)ccontrol._("m_value");
+		try {
+		SystemTray tray = SystemTray.getSystemTray();
+		ImageIcon imageicon = new ImageIcon(striconpath);
+		TrayIcon trayIcon = new TrayIcon(imageicon.getImage());
+		if(trayIcon == null)
+			return null;
+		tray.add(trayIcon);
+		PopupMenu popupmenu = new PopupMenu();
+		if(popupmenu == null)
+			return null;
+		trayIcon.setPopupMenu(popupmenu);
+		return popupmenu;
+		//return trayIcon; // this will contain the menu
+		}
+		catch(Exception e) {	
+		}
+		return null;
+	} // end new_SystemTray()
+} // end CControlsDriverImplementor
 
 //---------------------------------------------------------
 // name: JComboBoxOption
@@ -349,4 +472,4 @@ class JComboBoxOption {
 	public String toString() { return m_strname; }
 	public String m_strname = "";
 	public Object m_value = null;
-} // end CComboBoxOption
+} // end JComboBoxOption
