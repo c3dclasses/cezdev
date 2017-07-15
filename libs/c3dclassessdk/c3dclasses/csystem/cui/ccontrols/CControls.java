@@ -18,32 +18,41 @@ public class CControls extends CHash {
 	public CHash getCControls(){ return this.m_ccontrols; }
 	public CArray getContainers(){ return this.m_containers; }
 	
+	public boolean form(String strid, String value, CHash params) { return this.beginContainer("form", strid, value, params); }
+	public boolean endform() { return this.endContainer("endform", null, null, null); }
+	public boolean panel(String strid, String strlabel, CHash params) { return this.beginContainer("panel", strid, strlabel, params);}
+	public boolean endpanel() { return this.endContainer("endpanel", null, null, null);}
+	public boolean section(String strid, String strlabel, CHash params) { return this.panel(strid, strlabel, params);}
+	public boolean endsection() { return this.endpanel(); }
+	
 	public boolean menubar(String strid, String value, CHash params) { return this.beginContainer("menubar", strid, value, params); }
 	public boolean endmenubar() { return this.endContainer("endmenubar", null, null, null); }
 	public boolean menu(String strid, String value, CHash params) { return this.beginContainer("menu", strid, value, params); }
 	public boolean endmenu() { return this.endContainer("endmenu", null, null, null); }
 	public boolean menuitem(String strid, String value, CHash params) { return this.control("menuitem", strid, value, params); }
+	public boolean menuitem_seperator() { return this.control("menuitem-seperator", null, null, null); }
 	
 	public boolean sysmenubar(String strid, String stricon, CHash params) { return this.beginContainer("systray-menubar", strid, stricon, params); }
 	public boolean endsysmenubar() { return this.endContainer("systray-endmenubar", null, null, null); }
 	public boolean sysmenu(String strid, String value, CHash params) { return this.beginContainer("systray-menu", strid, value, params); }
 	public boolean endsysmenu() { return this.endContainer("systray-endmenu", null, null, null); }
 	public boolean sysmenuitem(String strid, String value, CHash params) { return this.control("systray-menuitem", strid, value, params); }
-	public boolean syscheckboxmenuitem(String strid, String value, CHash params) { return this.control("systray-checkboxmenuitem", strid, value, params); }
-	public boolean sysmenuseperator() { return this.control("systray-menuitem", null, null, null); }
-	
-	public boolean form(String strid, String value, CHash params) { return this.beginContainer("form", strid, value, params); }
-	public boolean endform() { return this.endContainer("endform", null, null, null); }
-	public boolean section(String strid, String strlabel, CHash params) { return this.panel(strid, strlabel, params);}
-	public boolean panel(String strid, String strlabel, CHash params) { return this.control("section", strid, strlabel, params);}
+	public boolean sysmenuitem_checkbox(String strid, String value, CHash params) { return this.control("systray-menuitem-checkbox", strid, value, params); }
+	public boolean sysmenuitem_seperator() { return this.control("systray-menuitem-seperator", null, null, null); }
 	
 	public boolean label(String strid, String value, CHash params) { return this.control("label", strid, value, params);}
 	public boolean hidden(String strid, String value, CHash params) { return this.control("hidden", strid, value, params);}
 	public boolean text(String strid, String value, CHash params) { return this.control("text", strid, value, params);}
 	public boolean textarea(String strid, String value, CHash params) { return this.control("textarea", strid, value, params);}
-	public boolean select(String strid, String value, CHash options, CHash params) { return this.choices("select", strid, value, options, params);}
 	public boolean checkbox(String strid, String value, CHash params) { return this.control("checkbox", strid, value, params);}
-	public boolean radio(String strid, String value, CHash params) {return this.control("radio", strid, value, params);}
+	public boolean select(String strid, String value, CHash options, CHash params) { return this.choices("select", strid, value, options, params); }
+	public boolean radio(String strgroupid, String strid, String value, CHash params) { 
+		if(params == null)
+			params = new CHash();
+		params.set("m_strgroupid", strgroupid); 	
+		return this.control("radio", strid, value, params);
+	} // end radio()
+	
 	public boolean button(String strid, String value, CHash params) { return this.control("button", strid, value, params);} 
 	public boolean submit(String strid, String value, CHash params) { return this.button(strid, value, params);} 
 	public boolean dropDownPages(String strid, String value, CHash params) { return this.control("dropdown-pages", strid, value, params); }
@@ -85,7 +94,39 @@ public class CControls extends CHash {
 	public boolean control(String strtype, String strid, String value, CHash params) {
 		return this.create(strtype, strid, value, params) != null;
 	} // end control()
-
+		
+	public boolean controlsFromJSONFile(String strjsonfile) {
+		CJSONArray cjsonarray = _.toJSONArrayFromFile(strjsonfile, false);
+		if(cjsonarray == null)
+			return false;	
+		for(int i=0; i<cjsonarray.length(); i++) {
+			this.controlFromJSONObject((CJSONObject)cjsonarray.get(i));
+		} // end for	
+		return true;
+	} // end controlsFromJSONFile()
+	
+	public boolean controlFromJSONFile(String strjsonfile) {
+		return this.controlFromJSONObject(_.toJSONObjectFromFile(strjsonfile, false));
+	} // end controlFromJSONFile()
+	
+	public boolean controlFromJSONObject(CJSONObject cjsonobject) {
+		if(cjsonobject == null)
+			return false;	
+		String strtype = cjsonobject._str("type");
+		String strid = cjsonobject._str("id");
+		String value = cjsonobject._str("value");
+		Object [] choices = (Object []) cjsonobject._arr("choices");
+		CHash options = null;
+		if(choices != null) {
+			options = new CHash();
+			for(Object choice : choices) { 
+				CJSONObject jsonobject = (CJSONObject) choice;
+				options.set(jsonobject.get("name"), jsonobject.get("value"));
+			} // end for
+		} // end if
+		return this.choices(strtype, strid, value, options, null);		
+	} // end controlsFromJSONObject()
+	
 	////////////////////////
 	// helper functions
 	////////////////////////

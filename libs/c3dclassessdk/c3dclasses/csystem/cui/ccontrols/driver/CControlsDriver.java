@@ -1,4 +1,4 @@
-//------------------------------------------------------------------------------------------------
+ //------------------------------------------------------------------------------------------------
 // name: CControlsDriver
 // desc: defines the driver interface and implementor to do crud operation on control objects
 //------------------------------------------------------------------------------------------------
@@ -12,10 +12,14 @@ import java.awt.event.*;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener; 
 import java.applet.*;
 import javax.swing.*;
 import javax.swing.plaf.metal.*;
+import javax.swing.border.*;
 import cglobal.*; 
 import c3dclasses.ccore.*;
 
@@ -62,6 +66,13 @@ class CControlsDriverImplementor extends CHash {
 			return _this.createJControl(control, new JFrame((String)control._("m_value")));
 		}}; // end fnCreateJFrame
 		
+		CFunction fnCreateJPanel = new CFunction() { public Object _(Object obj) { 
+			CControl control = (CControl) obj; 
+			JPanel jpanel = new JPanel();
+			jpanel.setBorder(new TitledBorder((String)control._("m_value")));
+			return _this.createJControl(control, jpanel);
+		}}; // end fnCreateJButton
+		
 		CFunction fnCreateJButton = new CFunction() { public Object _(Object obj) { 
 			CControl control = (CControl) obj; 
 			return _this.createJControl(control, new JButton((String)control._("m_value")));
@@ -76,6 +87,21 @@ class CControlsDriverImplementor extends CHash {
 			CControl control = (CControl) obj; 
 			return _this.createJControl(control, new JTextField((String)control._("m_value")));
 		}}; // end fnCreateJTextField
+		
+		CFunction fnCreateJTextArea = new CFunction() { public Object _(Object obj) { 
+			CControl control = (CControl) obj; 
+			return _this.createJControl(control, new JTextArea((String)control._("m_value")));
+		}}; // end fnCreateJTextArea
+		
+		CFunction fnCreateJCheckbox = new CFunction() { public Object _(Object obj) { 
+			CControl control = (CControl) obj; 
+			return _this.createJControl(control, new JCheckBox((String)control._("m_value")));
+		}}; // end fnCreateJCheckbox
+		
+		CFunction fnCreateJRadioButton = new CFunction() { public Object _(Object obj) { 
+			CControl control = (CControl) obj; 
+			return _this.createJRadioButton(control, new JRadioButton((String)control._("m_value")));
+		}}; // end fnCreateJRadioButton
 		
 		CFunction fnCreateJLabel = new CFunction() { public Object _(Object obj) { 
 			CControl control = (CControl) obj; 
@@ -117,9 +143,14 @@ class CControlsDriverImplementor extends CHash {
 			return _this.createCheckboxMenuItem(control, new CheckboxMenuItem((String)control._("m_value")));
 		}}; // end fnCreateJMenu
 		
-		CFunction fnAddSeperator = new CFunction() { public Object _(Object obj) { 
-			return (Object) _this.addSeperator((CControl)obj);
-		}}; // end fnAddSeperator
+		CFunction fnAddMenuSeperator = new CFunction() { public Object _(Object obj) { 
+			return (Object) _this.addMenuSeperator((CControl)obj);
+		}}; // end fnAddMenuSeperator
+		
+		CFunction fnAddJMenuSeperator = new CFunction() { public Object _(Object obj) { 
+			return (Object) _this.addJMenuSeperator((CControl)obj);
+		}}; // end fnAddMenuSeperator
+		
 	
 		/////////////////////////
 		// set/get functions
@@ -204,22 +235,6 @@ class CControlsDriverImplementor extends CHash {
 			ccontrol._("m_propvalue", value);
 			return ccontrol;	
 		}}; // end fnGetText
-		
-		CFunction fnSetButtonAction = new CFunction() { public Object _(Object obj) {
-			CControl ccontrol = (CControl) obj;
-			final CFunction cfunction = (CFunction) ccontrol._("m_propvalue");
-			//if(cfunction == null)
-			//	return null;
-			AbstractButton jcontrol = (AbstractButton) ccontrol._("m_jcontrol");
-			if(jcontrol == null)
-				return null;
-			jcontrol.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					cfunction._(e);
-				} // end actionPerformed()
-			}); // end addActionListener
-			return ccontrol;
-		}}; // end fnSetButtonAction
 	
 		CFunction fnGetSelectedItem = new CFunction() { public Object _(Object obj) { 
 			CControl ccontrol = (CControl) obj;
@@ -244,10 +259,67 @@ class CControlsDriverImplementor extends CHash {
 			return ccontrol;	
 		}}; // end fnGetSelectedItem
 		
+		
+		
+		/////////////
+		// events
+		/////////////
+		CFunction fnSetActionListener = new CFunction() { public Object _(Object obj) {
+			CEvent cevent = new CEventActionListener((CControl) obj);
+			return obj;
+		}}; // end fnSetActionListener()
+		/*
+		CFunction fnSetOnClick_ComboBox = new CFunction() { public Object _(Object obj) {
+			CEvent cevent = new CEventOnClick_ComboBox((CControl) obj);
+			return obj;
+		}}; // end fnSetOnClick_ComboBox()
+		
+		CFunction fnSetOnClick_TextBox = new CFunction() { public Object _(Object obj) {
+			CEvent cevent = new CEventOnClick_TextBox((CControl) obj);
+			return obj;
+		}}; // end fnSetOnClick_TextBox()
+	/*
+		CFunction fnSetOnClick_TextArea = new CFunction() { public Object _(Object obj) {
+			CEvent cevent = new CEventOnClick_TextArea((CControl) obj);
+			return obj;
+		}}; // end fnSetOnClick_TextBox()
+		*/
+		
+		/*
+		CFunction fnSetOnClick = new CFunction() { public Object _(Object obj) {
+			CControl ccontrol = (CControl) obj;
+			final CFunction cfunction = (CFunction) ccontrol._("m_propvalue");
+			if(cfunction == null)
+				return null;
+			AbstractButton jcontrol = (AbstractButton) ccontrol._("m_jcontrol");
+			if(jcontrol == null)
+				return null;
+			jcontrol.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					cfunction._(e);
+				} // end actionPerformed()
+			}); // end addActionListener
+			return ccontrol;
+		}}; // end fnSetOnClick()
+		*/
+		
+		
 		///////////////////////////////
-		// id <==> function mapping
+		// id <==> function mappings
 		///////////////////////////////
+		
+		// creation
 		this._("form->create", fnCreateJFrame);
+		this._("panel->create", fnCreateJPanel);
+		this._("text->create", fnCreateJTextField);
+		this._("textarea->create", fnCreateJTextArea);
+		this._("radio->create", fnCreateJRadioButton);
+		this._("checkbox->create", fnCreateJCheckbox);
+		this._("label->create", fnCreateJLabel);
+		this._("select->create", fnCreateJComboBox);
+		this._("button->create", fnCreateJButton);
+		
+		// retrieve / update
 		this._("form->set->grid", fnSetLayout);
 		this._("form->set->pack", fnSetFramePacking);
 		this._("form->set->close", fnSetFrameClosing);
@@ -256,21 +328,31 @@ class CControlsDriverImplementor extends CHash {
 		this._("form->set->title", fnSetTitle);		
 		this._("form->get->title", fnGetTitle);	
 
-		this._("button->create", fnCreateJButton);
 		this._("button->set->visible", fnSetVisible);
 		this._("button->get->visible", fnGetVisible);	
 		this._("button->set->title", fnSetText);		
 		this._("button->get->title", fnGetText);		
 		this._("button->set->text", fnSetText);		
 		this._("button->get->text", fnGetText);		
-		this._("button->set->action", fnSetButtonAction);				
+		
+		
+		
+		this._("text->set->onclick", fnSetActionListener);
+		this._("textarea->set->onclick", fnSetActionListener);				
+		this._("select->set->onclick", fnSetActionListener);
+						
+		this._("radio->set->onclick", fnSetActionListener);				
+		this._("button->set->onclick", fnSetActionListener);				
+		this._("checkbox->set->onclick", fnSetActionListener);				
+		this._("menuitem->set->onclick", fnSetActionListener);				
+		this._("systray-menuitem->set->onclick", fnSetActionListener);	
+							
+		
 
-		this._("select->create", fnCreateJComboBox);
 		this._("select->set->visible", fnSetVisible);
 		this._("select->get->visible", fnGetVisible);	
 		
-		this._("text->create", fnCreateJTextField);
-		this._("label->create", fnCreateJLabel);
+		
 				
 		
 		// items
@@ -294,14 +376,13 @@ class CControlsDriverImplementor extends CHash {
 		this._("menubar->create", fnCreateJMenuBar);	
 		this._("menu->create", fnCreateJMenu);
 		this._("menuitem->create", fnCreateJMenuItem);
-		this._("menuitem->set->action", fnSetButtonAction);				
+		this._("menuitem-seperator->create", fnAddJMenuSeperator);
 		
 		this._("systray-menubar->create", fnCreateSystemTrayIconPopupMenu);	
 		this._("systray-menu->create", fnCreateMenu);
 		this._("systray-menuitem->create", fnCreateMenuItem);
 		this._("systray-checkboxmenuitem->create", fnCreateCheckboxMenuItem);
-		this._("systray-menuitem->set->action", fnSetButtonAction);						
-		this._("systray-menuseperator->create", fnAddSeperator);
+		this._("systray-menuitem-seperator->create", fnAddMenuSeperator);
 		
 	} // end CControlsDriverImplementor()
 
@@ -315,6 +396,33 @@ class CControlsDriverImplementor extends CHash {
 		Container parent = (Container) this.getParentContainer(ccontrol);
 		if(parent != null)
 			parent.add(jcontrol);
+		return ccontrol;
+	} // end createJControl()
+
+	Object createJRadioButton(CControl ccontrol, Component jcontrol) {
+		ccontrol = (CControl) this.createJControl(ccontrol, jcontrol); 
+		if(ccontrol == null)
+			return null;
+		CHash params = (CHash) ccontrol._("m_params");
+		if(params == null)
+			return null;
+		
+		// add the radio button to the button group
+		String strgroupid = (String) params._("m_strgroupid");
+		if(strgroupid == null)
+			return ccontrol;
+		//CControls ccontrols = (CControls) ccontrol._("m_ccontrols");
+		CControl container = (CControl) ccontrol._("m_container");
+		if(container == null)
+			return null;
+		ButtonGroup buttongroup = (ButtonGroup) container._("m_btngroup-" + strgroupid);
+		if(buttongroup == null) {
+			buttongroup = new ButtonGroup();
+			_.alert("creating ButtonGroup: " + strgroupid);
+			container._("m_btngroup-" + strgroupid, buttongroup);
+		} // end if
+		_.alert("added the button group");
+		buttongroup.add((JRadioButton)jcontrol);
 		return ccontrol;
 	} // end createJControl()
 	
@@ -350,6 +458,8 @@ class CControlsDriverImplementor extends CHash {
 			parent.add(jcontrol);
 		return ccontrol;
 	} // end createJMenu()
+	
+	
 
 	///////////////////////////
 	// SystemTray menu
@@ -361,14 +471,25 @@ class CControlsDriverImplementor extends CHash {
 		return ccontrol;
 	} // end createSystemTrayIcon()
 	
-	CControl addSeperator(CControl ccontrol){
+	CControl addMenuSeperator(CControl ccontrol){
 		if(ccontrol == null)
 			return null;
-		Menu menu = (Menu) ccontrol._("m_jcontrol");	
-		if(menu != null)
-			menu.addSeparator();
+		ccontrol._("m_jcontrol",null);
+		Menu parent = (Menu) this.getParentContainer(ccontrol);
+		if(parent != null)
+			parent.addSeparator();
 		return ccontrol;
 	} // end addMenuItemSeperator()
+	
+	CControl addJMenuSeperator(CControl ccontrol){
+		if(ccontrol == null)
+			return null;
+		ccontrol._("m_jcontrol",null);
+		JMenu parent = (JMenu) this.getParentContainer(ccontrol);
+		if(parent != null)
+			parent.addSeparator();
+		return ccontrol;
+	} // end addJMenuItemSeperator()
 		
 	CControl createPopupMenu(CControl ccontrol, PopupMenu jcontrol){
 		if(jcontrol == null)
@@ -473,3 +594,45 @@ class JComboBoxOption {
 	public String m_strname = "";
 	public Object m_value = null;
 } // end JComboBoxOption
+
+
+//--------------------------------------------------------
+// name: CEventListener
+// desc: defines the event class
+//--------------------------------------------------------
+class CEventListener {
+	protected CControl m_ccontrol;
+	protected CFunction m_cfunction;
+	public CEvent(CControl ccontrol) {
+		this.m_ccontrol = ccontrol;
+		this.m_cfunction = (CFunction) ccontrol._("m_propvalue");			
+	} // end CEvent()
+} // end CEvent
+
+//--------------------------------------------------------
+// name: CEventActionListener
+// desc: defines the onclick event object
+//--------------------------------------------------------
+class CEventActionListener extends CEventListener implements ActionListener {
+	public CEventActionListener(CControl ccontrol) {
+		super(ccontrol);
+		Object object = ccontrol._("m_jcontrol");
+		if(object instanceof AbstractButton) {
+			AbstractButton jcontrol = (AbstractButton) object;
+			jcontrol.addActionListener(this);
+		} // end if	
+		else if(object instanceof JTextField) {
+			JTextField jcontrol = (JTextField) object;
+			jcontrol.addActionListener(this);
+		} // end if	
+		/*
+		else if(object instanceof JTextArea) {
+			JTextArea jcontrol = (JTextArea) object;
+			jcontrol.addActionListener(this);
+		} // end if
+		*/	
+	} // end COnClickEvent()
+	public void actionPerformed(ActionEvent e) {
+			this.m_cfunction._(e);
+	} // end actionPerformed()
+} // end CEventActionListener

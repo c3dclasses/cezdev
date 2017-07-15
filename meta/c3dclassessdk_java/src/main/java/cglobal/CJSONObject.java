@@ -69,7 +69,17 @@ public class CJSONObject {
 	public int _i(String strpathname) { return Integer.parseInt((String)this._str(strpathname)); } 
 	public String _str(String strpathname) { Object obj = this.getFromPath(strpathname);  return (obj == null) ? "" : (String)obj; } 
 	//public Object _(String strpathname) { this.getFromPath(strpathname); } 
-	public Object [] _arr(String strpathname) { return (Object []) this.getFromPath(strpathname); } 
+	public Object [] _arr(String strpathname) { 
+		Object [] objects = (Object []) this.getFromPath(strpathname);
+		if(objects == null)
+			return null;
+		for(int i=0; i<objects.length; i++) {
+			if(objects[i] instanceof JSONObject) {
+				objects[i] = new CJSONObject((JSONObject)objects[i]);
+			} // end if 
+		} // end for
+		return objects;
+	} // end _arr()
 		
 	// returns the object for a given name in a path
 	public Object getFromPath(String strpathname) { 

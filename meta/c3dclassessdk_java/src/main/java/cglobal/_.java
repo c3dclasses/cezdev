@@ -369,6 +369,16 @@ public class _ {
 		return (cjsonobject == null || cjsonobject.createFromFile(strfilename) == false) ? null : cjsonobject;
 	} // end toJSONObject()
 	
+	public static CJSONArray toJSONArray(String value, boolean bassoc) {
+		CJSONArray cjsonarray = new CJSONArray();
+		return (cjsonarray == null || cjsonarray.create(value) == false) ? null : cjsonarray;
+	} // end toJSONArray()
+	
+	public static CJSONArray toJSONArrayFromFile(String strfilename, boolean bassoc) {
+		CJSONArray cjsonarray = new CJSONArray();
+		return (cjsonarray == null || cjsonarray.createFromFile(strfilename) == false) ? null : cjsonarray;
+	} // end toJSONArray()
+	
 	public static CHash chash(CPair... cpairs) { return new CHash(cpairs); }
 	public static CPair cpair(Object first, Object second) { return new CPair(first, second); }
 	public static CPair nv(Object first, Object second) { return new CPair(first, second); }	

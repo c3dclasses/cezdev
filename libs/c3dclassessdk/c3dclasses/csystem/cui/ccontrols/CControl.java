@@ -42,6 +42,7 @@ public class CControl extends CHash {
 		this._("m_value", value);
 		this._("m_params", params);
 		this._("m_attributes", ccontrols);
+		this._("m_ccontrols", ccontrols); 
 		this._("m_container", ccontrols.getContainers().top());
 		this._("m_address", this);
 		return (CControlsDriver.call(this) != null);
