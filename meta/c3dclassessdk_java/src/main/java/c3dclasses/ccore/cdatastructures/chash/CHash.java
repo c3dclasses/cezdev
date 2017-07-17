@@ -30,7 +30,18 @@ public class CHash{
 	public Object _(Object key) { return this.get(key); }
 	public void _(Object key, Object value) { this.set(key, value); }
 	public void append(CHash chash) { if(chash==null) return; for(Object key : chash.keys().valueOf()) { this.set(key, chash.get(key)); } }
-	//public String toString() { return "the hash value"; }
+	public String toString() { 
+		CArray keys = this.keys();
+		int len = keys.length();
+		String str = "";
+		for(int i=0; i<len; i++) {
+			Object key = keys._(i);
+			if(this == this._(key))
+				str += System.identityHashCode(this);
+			else str += key + "=" + this._(key) + ",";		
+		} // end for
+		return str; 
+	} // end toString()
 	/*
 	visit : function(fnvisit) { if(typeof(fnvisit) != "function") return; for(key in this.m_hash) fnvisit(key, this.m_hash[key]); },
 	toStringVisit : function(fnvisit, cdata) {if(typeof(fnvisit) != "function") return; str=""; for(key in this.m_hash) str += fnvisit(key, this.m_hash[key]); return str; },

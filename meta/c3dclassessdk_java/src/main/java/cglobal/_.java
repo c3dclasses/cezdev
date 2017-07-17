@@ -379,7 +379,17 @@ public class _ {
 		return (cjsonarray == null || cjsonarray.createFromFile(strfilename) == false) ? null : cjsonarray;
 	} // end toJSONArray()
 	
+	public static CHash chash(CHash chash) { return (chash == null) ? new CHash() : chash; }
 	public static CHash chash(CPair... cpairs) { return new CHash(cpairs); }
 	public static CPair cpair(Object first, Object second) { return new CPair(first, second); }
 	public static CPair nv(Object first, Object second) { return new CPair(first, second); }	
+	
+	public static Object _new(String strclassname) { 
+		try { 
+			return Class.forName(strclassname).newInstance(); 
+		} // end try
+		catch(Exception ex) { 
+			return null; 
+		} // end catch()
+	} // end _new() 
 } // end _

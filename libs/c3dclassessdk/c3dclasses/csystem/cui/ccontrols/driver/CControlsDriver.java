@@ -1,4 +1,4 @@
- //------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
 // name: CControlsDriver
 // desc: defines the driver interface and implementor to do crud operation on control objects
 //------------------------------------------------------------------------------------------------
@@ -265,22 +265,22 @@ class CControlsDriverImplementor extends CHash {
 		// events
 		/////////////
 		CFunction fnSetActionListener = new CFunction() { public Object _(Object obj) {
-			CEvent cevent = new CEventActionListener((CControl) obj);
+			CEventListener cevent = new CEventActionListener((CControl) obj);
 			return obj;
 		}}; // end fnSetActionListener()
 		/*
 		CFunction fnSetOnClick_ComboBox = new CFunction() { public Object _(Object obj) {
-			CEvent cevent = new CEventOnClick_ComboBox((CControl) obj);
+			CEventListener cevent = new CEventOnClick_ComboBox((CControl) obj);
 			return obj;
 		}}; // end fnSetOnClick_ComboBox()
 		
 		CFunction fnSetOnClick_TextBox = new CFunction() { public Object _(Object obj) {
-			CEvent cevent = new CEventOnClick_TextBox((CControl) obj);
+			CEventListener cevent = new CEventOnClick_TextBox((CControl) obj);
 			return obj;
 		}}; // end fnSetOnClick_TextBox()
 	/*
 		CFunction fnSetOnClick_TextArea = new CFunction() { public Object _(Object obj) {
-			CEvent cevent = new CEventOnClick_TextArea((CControl) obj);
+			CEventListener cevent = new CEventOnClick_TextArea((CControl) obj);
 			return obj;
 		}}; // end fnSetOnClick_TextBox()
 		*/
@@ -603,11 +603,11 @@ class JComboBoxOption {
 class CEventListener {
 	protected CControl m_ccontrol;
 	protected CFunction m_cfunction;
-	public CEvent(CControl ccontrol) {
+	public CEventListener(CControl ccontrol) {
 		this.m_ccontrol = ccontrol;
 		this.m_cfunction = (CFunction) ccontrol._("m_propvalue");			
-	} // end CEvent()
-} // end CEvent
+	} // end CEventListener()
+} // end CEventListener
 
 //--------------------------------------------------------
 // name: CEventActionListener
