@@ -10,6 +10,7 @@ import java.text.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import c3dclasses.ccore.*;
 
 //------------------------------------------------------
 // name: CJSONObject
@@ -80,6 +81,35 @@ public class CJSONObject {
 		} // end for
 		return objects;
 	} // end _arr()
+	
+	public Object toCHash() {
+		CHash chash = _.chash2(null);
+		Object [] keys = this.getPropertyNames();
+		for(int i=0; i<keys.length; i++) {
+			String key = (String)keys[i];
+			Object value = this.get((String)keys[i]);	
+			if(value instanceof CJSONObject) {
+				CJSONObject cjsonobject = (CJSONObject) value;
+				chash._((String)keys[i], cjsonobject.toCHash());
+			} // end if
+			else if(value instanceof Object []) {
+				Object [] objects = (Object []) value;
+				CArray carray = new CArray();
+				for(int j=0; j<objects.length; j++) {
+					CJSONObject cjsonobject = null;
+					if(objects[j] instanceof JSONObject) {
+						_.alert("a json object");
+						cjsonobject = new CJSONObject((JSONObject)objects[j]);
+						carray.push(cjsonobject.toCHash());	
+					} // end if 
+					else carray.push(objects[i]);
+				} // end for
+				chash._((String)keys[i], carray);
+			} // end if
+			else chash._((String)keys[i], value);	
+		} // end for
+		return chash;
+	} // end toCHash()	
 		
 	// returns the object for a given name in a path
 	public Object getFromPath(String strpathname) { 
@@ -117,6 +147,7 @@ public class CJSONObject {
 		} // end for		
 		return objects;		
 	} // end toArrayList()
+	
 	
 	/*
 	// return an array of objects 

@@ -359,7 +359,8 @@ public class _ {
     	return null;
 	} // end promptForFile()
 
-	public static CJSONObject toJSONObject(String value, boolean bassoc) {
+	
+	public static CJSONObject toJSONObject(String value) {
 		CJSONObject cjsonobject = new CJSONObject();
 		return (cjsonobject == null || cjsonobject.create(value) == false) ? null : cjsonobject;
 	} // end toJSONObject()
@@ -379,11 +380,13 @@ public class _ {
 		return (cjsonarray == null || cjsonarray.createFromFile(strfilename) == false) ? null : cjsonarray;
 	} // end toJSONArray()
 	
+	public static CHash chash2(CHash chash) { return (chash == null) ? new CHash() : chash; }
 	public static CHash chash(CHash chash) { return (chash == null) ? new CHash() : chash; }
 	public static CHash chash(CPair... cpairs) { return new CHash(cpairs); }
 	public static CPair cpair(Object first, Object second) { return new CPair(first, second); }
 	public static CPair nv(Object first, Object second) { return new CPair(first, second); }	
 	
+	// allocation
 	public static Object _new(String strclassname) { 
 		try { 
 			return Class.forName(strclassname).newInstance(); 
@@ -392,4 +395,16 @@ public class _ {
 			return null; 
 		} // end catch()
 	} // end _new() 
+	
+	public static Object json_decode(String strcontents, boolean bchash) {
+		CJSONObject cjsonobject = _.toJSONObject(strcontents);	
+		return (bchash == false) ? cjsonobject : cjsonobject.toCHash();
+	} // end json_decode()
+	/*
+	public static Object json_encode(CHash chash) {
+		CJSONObject cjsonobject = _.toJSONObject(strcontents);	
+		return (bchash == false) ? cjsonobject : cjsonobject.toCHash();
+	} // end json_decode()
+	*/
+	
 } // end _

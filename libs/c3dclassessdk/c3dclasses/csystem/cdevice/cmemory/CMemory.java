@@ -14,8 +14,8 @@ class CMemory extends CResource {
 	protected CHash m_cache = null;
 	public CMemory(){ super(); this.close(); }	
 	// open / close
-	public boolean open(String strpath, CHash params) {
-		if(!super.open(strpath, "CMemory", params) || CMemoryDriver._open(this) == null)
+	public boolean open(String strpath, String strtype, CHash params) {
+		if(!super.open(strpath, strtype, params) || CMemoryDriver._open(this) == null)
 			return false;
 		if(params != null && params.containsKey("cmemory_cache"))
 			this.m_cache.append((CHash)params._("cmemory_cache"));		

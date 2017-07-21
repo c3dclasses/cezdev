@@ -1,3 +1,4 @@
+
 //---------------------------------------------------------------------------------
 // file: CHash
 // desc: defines a hash object
@@ -30,18 +31,53 @@ public class CHash{
 	public Object _(Object key) { return this.get(key); }
 	public void _(Object key, Object value) { this.set(key, value); }
 	public void append(CHash chash) { if(chash==null) return; for(Object key : chash.keys().valueOf()) { this.set(key, chash.get(key)); } }
-	public String toString() { 
+	public String toString() { return this.toString(""); } 
+	public String toString(String tabs) { 
 		CArray keys = this.keys();
 		int len = keys.length();
-		String str = "";
+		String str = "{\n";
 		for(int i=0; i<len; i++) {
 			Object key = keys._(i);
-			if(this == this._(key))
-				str += System.identityHashCode(this);
-			else str += key + "=" + this._(key) + ",";		
+			Object value = this._(key);
+			String comma_nl = ",\n";
+			if(this == value) 
+				str += tabs + "\t'" + key + "':" + System.identityHashCode(this);
+			else if(value instanceof CArray) {
+				CArray carray = (CArray) value;
+				str += tabs + "\t'" + key + "':[\n";
+				for(int j=0; j<carray.length(); j++) {
+					if(carray._(j) instanceof CHash) {
+						CHash chash = (CHash) carray._(j);
+						str += tabs + "\t\t" + chash.toString(tabs + "\t\t");
+					} // end if
+					else str += tabs + "\t\t" + carray._(j);		
+					
+					if(j+1 != carray.length())
+						str += comma_nl;
+					else str += "\n";
+				} // end for
+				str += tabs + "\t]\n";
+			} // end else if
+			else if(value instanceof CHash) {
+				CHash chash = (CHash) this._(key);
+				str += tabs + "\t'" + key + "':" + chash.toString(tabs + "\t");		
+			} // end else if
+			else if(value instanceof String) {
+			 	str += tabs + "\t'" + key + "':'" + this._(key) + "'";
+			} // end else if
+			else {
+			 	str += tabs + "\t'" + key + "':" + this._(key);
+			} // end else if
+			
+			if(i+1 != len)
+				str += comma_nl;
+			else str += "\n";
+			
 		} // end for
+		str += tabs + "}";
 		return str; 
 	} // end toString()
+	
 	/*
 	visit : function(fnvisit) { if(typeof(fnvisit) != "function") return; for(key in this.m_hash) fnvisit(key, this.m_hash[key]); },
 	toStringVisit : function(fnvisit, cdata) {if(typeof(fnvisit) != "function") return; str=""; for(key in this.m_hash) str += fnvisit(key, this.m_hash[key]); return str; },
