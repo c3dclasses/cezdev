@@ -10,91 +10,88 @@ import c3dclasses.ccore.*;
 // file: CJSONMemoryDriver
 // desc: defines a json memory object 
 //----------------------------------------------------------------
-class CJSONMemoryDriver extends CMemoryDriver {
-	// members
+public class CJSONMemoryDriver extends CMemoryDriver {
 	protected CHash m_json;
 	public CJSONMemoryDriver() { super(); this.m_json = null; }
-	
+	// open / close / save
 	public boolean open(String strpath, String strtype, CHash params) {
-		/*CHash json = null;
+		CHash json = null;
 		String strcontents = "";
 		if(_.file_exists(strpath) == false ||
 			(strcontents = _.file_get_contents(strpath)) == "" ||
-			(json = _.json_decode(strcontents, true)) == null)
-			json = null;
+			(json = (CHash)_.json_decode(strcontents, true)) == null)
+			json = new CHash();
 		if(super.open(strpath, strtype, params) == false)
-			return false;	
+			return false;
 		this.m_json = json;
-		*/
 		return true;	
 	} // end open()
-	
-	
-	/*
-	public function close(){ 
-		$this->save(); 
-	} // end close()
-	
-	public function create($cvar) { 
-		if(!$cvar) // no var
-			return _return_done(NULL);
-		$strname = $cvar['m_strname'];
-		$value = $cvar['m_value'];	
-		if(isset($this->m_json[$strname])) // already created no need to create
-		 	return _return_done($this->m_json[$strname]);
-		$this->m_json[$strname]['m_strname'] = $strname;
-		$this->m_json[$strname]['m_value'] = (gettype($value) == "object") ? serialize($value) : $value;
-		$this->m_json[$strname]['m_icreated'] = time(); // set the timestamp
-		$this->m_json[$strname]['m_iupdated'] = "";
-		$this->m_json[$strname]['m_iretrieved'] = "";
-		return $this->save() ? _return_done($this->m_json[$strname]) : NULL;
+	public boolean close() { return this.save(); }
+	public boolean save() { return _.file_set_contents(this.path(), _.json_encode(this.m_json)); }
+	// CRUD - create / retrieve / update / delete	
+	public CReturn create(CHash cvar) { 
+		if(cvar == null) { // no var
+			return CReturn._done(null);
+		}
+		String strname = (String) cvar._("m_strname");
+		if(this.m_json._(strname) != null) { // already created no need to create
+		 	return CReturn._done(null);	
+		}
+		Object value = cvar._("m_value");		
+		CHash chash = _.chash();
+		chash._("m_strname", strname);
+		chash._("m_value", value);
+		chash._("m_icreated", _.time()); // set the timestamp
+		chash._("m_iupdated", -1);
+		chash._("m_iretrieved", -1);
+		this.m_json._(strname, chash); 
+		return this.save() ? CReturn._done(this.m_json._(strname)) : null;
 	} // end create()
-	
-	public function retrieve($strname){ 
-		return ($this->restore() == FALSE || $this->m_json == NULL || 
-			isset($this->m_json[$strname]) == FALSE || ($cvar = $this->m_json[$strname]) == NULL || !($cvar["m_iretrieved"]=time())) 
-			? _return_done(NULL) : _return_done($cvar); 
+	public CReturn retrieve(String strname) { 
+		CHash cvar = null;
+		if(this.restore() == false || this.m_json == null || this.m_json._(strname) == null || 
+				(cvar = (CHash)this.m_json._(strname)) == null) 
+				return CReturn._done(null);
+		cvar._("m_iretrieved", _.time());
+		return CReturn._done(cvar); 
 	} // end retrieve()
-	
-	public function update($cvar){ 
-		if(!$cvar)
-			return _return_done(NULL);
-		$strname = $cvar['m_strname'];
-		$value = $cvar['m_value'];	
-		if($this->m_json == NULL || isset($this->m_json[$strname]) == FALSE) // was not created
-			return _return_done(NULL);
-		$this->m_json[$strname]['m_value'] = (gettype($value) == "object") ? serialize($value) : $value;
-		$this->m_json[$strname]['m_iupdated'] = time();	// set the timestamp
-		return $this->save() ? _return_done($this->m_json[$strname]) : NULL;
+	public CReturn update(CHash cvar) { 
+		if(cvar == null)
+			return CReturn._done(null);
+		String strname = (String) cvar._("m_strname");
+		if(this.m_json == null || this.m_json._(strname) == null) // was not created
+			return CReturn._done(null);
+		Object value = (Object) cvar._("m_value");	
+		CHash chash = _.chash();
+		chash._("m_strname", strname);
+		chash._("m_value", value);
+		chash._("m_icreated", this.m_json._("m_icreated")); // set the timestamp
+		chash._("m_iupdated", _.time());
+		chash._("m_iretrieved", -1);
+		this.m_json._(strname, chash);
+		return this.save() ? CReturn._done(this.m_json._(strname)) : null;
 	} // end update()
 	
-	public function delete($strname){ 
-		if($this->m_json == NULL || isset($this->m_json[$strname]) == FALSE)
-			return _return_done(NULL);
-		$this->m_json[$strname] = NULL;
-		unset($this->m_json[$strname]);
-		$this->save(); // update the file
-		return _return_done(NULL);
+	public CReturn delete(String strname) { 
+		if(this.m_json == null || this.m_json._(strname) == null)
+			return CReturn._done(null);
+		this.m_json.remove(strname);
+		this.save(); // update the file
+		return CReturn._done(null);
 	} // end delete()
 	
-	public function sync($cache) {
+	public CReturn sync(CHash cache) {
 		// update the main cache	
-		if($cache) {
-			foreach($cache as $strname => $value) {
-				if($this->m_json[$strname])
-					$this->m_json[$strname] = $value;
+		if(cache != null) {
+			CArray keys = cache.keys();
+			int len = keys.length();
+			for(int i=0; i<len; i++) {
+				String strname = (String) keys._(i);
+				if(this.m_json._(strname) != null)
+					this.m_json._(strname, cache._(strname));
 			} // end foreach
-			$this->save();
+			this.save();
 		} // end if				
-		return _return_done($this->m_json);
+		return CReturn._done(this.m_json);
 	} // end sync()
-	
-	public function save(){
-		if(($infile = fopen($this->path(), "w")) == NULL)
-			return false;
-		if(fwrite($infile, ($this->m_json) ? json_encode($this->m_json) : "") == FALSE){} 
-		fclose($infile);
-		return true;		
-	} // end save()
-	*/
 } // end CJSONMemoryDriver

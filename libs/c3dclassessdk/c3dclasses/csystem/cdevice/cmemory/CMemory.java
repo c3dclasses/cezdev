@@ -10,18 +10,19 @@ import c3dclasses.ccore.*;
 // class: CMemory
 // desc: defines the memory object
 //----------------------------------------------------------------
-class CMemory extends CResource { 
+public class CMemory extends CResource { 
 	protected CHash m_cache = null;
-	public CMemory(){ super(); this.close(); }	
+	public CMemory() { super(); this.close(); }	
 	// open / close
 	public boolean open(String strpath, String strtype, CHash params) {
 		if(!super.open(strpath, strtype, params) || CMemoryDriver._open(this) == null)
 			return false;
 		if(params != null && params.containsKey("cmemory_cache"))
 			this.m_cache.append((CHash)params._("cmemory_cache"));		
+		else this.sync();
 		return true;	
 	} // end open()
-	public boolean close(){
+	public boolean close() {
 		this.m_cache = new CHash();
 		return CMemoryDriver._close(this);
 	} // end close()	
@@ -52,16 +53,17 @@ class CMemory extends CResource {
 	// other
 	public CHash cache() { return this.m_cache; }
 	public CHash cache(CHash cache) { return this.m_cache = cache; }
-	public String toString() { return this.m_cache.toString(); }	
+	public String toString() { return super.toString() + "\n" + this.m_cache.toString(); }
+	
 	// include / use 
 	static public CResource include(String strid, String strdriverpath, String strdrivertype, CHash params) {
 		params = _.chash(params);
 		params._("cmemorydriver_type", strdrivertype);
 		params._("cmemorydriver_path", strdriverpath);
 		strdriverpath = "CMemory_" + strdrivertype + "_" + strdriverpath;
-		return CResource.include(strid, strdriverpath, "CMemory", params);
+		return CResource.include(strid, strdriverpath, "c3dclasses.csystem.cdevice.CMemory", params);
 	} // end include()
-	static public CResource include_remote(String strid, String strremotedriverpath, String strremotedrivertype, String struri, CHash params){
+	static public CResource include_remote(String strid, String strremotedriverpath, String strremotedrivertype, String struri, CHash params) {
 		params = _.chash(params);
 		params._("cremotememorydriver_path", strremotedriverpath); // unique path on the machine 
 		params._("cremotememorydriver_type", strremotedrivertype); // the type of memory
@@ -69,5 +71,5 @@ class CMemory extends CResource {
 		params._("cremotememorydriver_id", struri + "||" + strremotedrivertype + "||" + strremotedriverpath); // the identifier
 		return CMemory.include(strid, strremotedriverpath, "CRemoteMemoryDriver", params);
 	} // end include_remote()
-	static public CResource use(String strid) { return CResource.use(strid); }
+	static public CMemory use(String strid) { return (CMemory) CResource.use(strid); }
 } // end CMemory()

@@ -54,7 +54,7 @@ public class CControlsProgram {
 			ccontrols.label("label-control", "This is my Label", null);			
 			ccontrols.controlFromJSONFile("C://Users//developer//Desktop//button.json");
 			ccontrols.controlFromJSONFile("C://Users//developer//Desktop//select.json");
-		
+			
 		ccontrols.endform();
 		
 		ccontrols.sysmenubar("menubar", "C://Users//developer//Desktop//icon.png", null);
@@ -73,13 +73,16 @@ public class CControlsProgram {
 		ccontrols.retrieve("myform").setProp("close","true");
 		ccontrols.retrieve("myform control5").setProp("visible","true");
 		ccontrols.retrieve("myform control5").setProp("onclick", new CFunction() { public Object _(Object obj) {
+			_.println("myform control5");
 			return null;
 		}}); // end onclick
-		
+		/*
 		ccontrols.retrieve("myform control5").setProp("onclick", new CFunction() { public Object _(Object obj) {
 			_.execCommand("C:/Users/developer/Desktop/test.bat");
 			return null;
 		}}); // end onclick
+		*/
+		ccontrols.retrieve("myform control5").setProp("onclick", "C:/Users/developer/Desktop/test.bat");
 		
 		ccontrols.retrieve("myform menubar menu1 menu2 item1").setProp("onclick", new CFunction() { public Object _(Object obj) {
 			_.execCommand("alert mannnnnnnnnnnnnnnnnnn");

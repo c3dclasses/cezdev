@@ -10,7 +10,7 @@ import c3dclasses.ccore.*;
 // class: CMemoryDriver
 // desc: defines the memory driver object
 //----------------------------------------------------------------
-class CMemoryDriver extends CResource {
+public class CMemoryDriver extends CResource {
 	public CMemoryDriver() { super(); } 
 	// open / close
 	public boolean open(String strpath, String strtype, CHash params) { return super.open(strpath, strtype, params); }
@@ -49,19 +49,23 @@ class CMemoryDriver extends CResource {
 		cvar._("m_strtype", strtype);	
 		cvar._("m_params", params);	
 		CMemoryDriver cmemorydriver = CMemoryDriver._open(cmemory);
-		if(cmemorydriver == null)
+		if(cmemorydriver == null) {
 			return CReturn._done(false);
+		}
 		CReturn _driver_return = cmemorydriver.create(cvar);
-		if(_driver_return == null)			
-			return CReturn._done(false);				
-		CReturn _return = CReturn._busy();
-		if(_return == null)
+		if(_driver_return == null) {			
 			return CReturn._done(false);
+		}
+		CReturn _return = CReturn._busy();
+		if(_return == null) {
+			return CReturn._done(false);
+		}
 		cmemory.cache()._(strname, cvar);
 		if(_driver_return.isdone()) {
 			Object results = (Object)_driver_return.results();
-			if(results == null)
+			if(results == null) {
 				_return.done(false);
+			}
 			else {
 				cmemory.cache()._(strname, results);	
 				_return.done(true);

@@ -23,6 +23,7 @@ import c3dclasses.ccore.*;
 // desc: global methods used throughout the SDK
 //-----------------------------------------------
 public class _ {
+	static Scanner m_scanner = new Scanner (System.in);
 	
 	//------------------------------------------------------------------------------
 	// name: print*() / alert() / confirm() / console()
@@ -68,7 +69,7 @@ public class _ {
 	} // end console()
 	
 	public static void alert(Object strmessage, boolean bscript) { 
-		JOptionPane.showMessageDialog(null, strmessage.toString(), "Alert", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, (strmessage != null) ? strmessage.toString() : "", "Alert", JOptionPane.INFORMATION_MESSAGE);
 	} // end alert()
 	
 	public static void alert(Object strmessage) {
@@ -105,7 +106,8 @@ public class _ {
 	public static String print_r(Object object) {
 		return _.print_r(object,false);
 	} // end _print_r()
-	
+
+	public static String readln() { return (String) m_scanner.nextLine(); }
 	
 	//-------------------------------------------------------------------
 	// name: getTimeInMilliseconds() / getTimeInMicroseconds()
@@ -118,6 +120,10 @@ public class _ {
 	public static long getTimeInMilliseconds(){ 
 		return System.currentTimeMillis() % 1000;
 	} // end getTimeInMilliseconds()
+	
+	public static long time() {
+		return _.getTimeInMilliseconds();
+	} // end time()
 	
 	////////////////////////////////
 	// path
@@ -211,12 +217,10 @@ public class _ {
 		return strings;	
 	} // end split()
 */	
-	// helper methods
 	public static ArrayList<String> getLinesFromFile(String strfilename) {
 		if(strfilename == null || strfilename == "")
 			return null;
 		try{
-			//Vector v = new Vector();
 			ArrayList<String> lines = new ArrayList<String>();
 			String strline = "";
 			LineNumberReader in = new LineNumberReader(new FileReader(strfilename));
@@ -232,7 +236,6 @@ public class _ {
 		} // end catch() 
 	} // end getLinesFromFile()	
 	
-	// returns the contents of a file
 	public static String getFileContents(String strfilename) {
 		String strcontents = "";
 		try {
@@ -253,7 +256,6 @@ public class _ {
 		return strcontents;
 	} // end getFileContents()
 	
-	// sets the contents of a file
 	public static boolean setFileContents(String strfilename, String strcontents) {
 		if(strcontents == null || strcontents == "")
 			return false;
@@ -268,6 +270,19 @@ public class _ {
 		} // end catch() 	
 		return true;
 	} // end setFileContents()
+	
+	public static String file_get_contents(String strfilename) {
+		return _.getFileContents(strfilename);
+	} // end file_get_contents()
+	
+	public static boolean file_set_contents(String strfilename, String strcontents) {
+		return _.setFileContents(strfilename, strcontents);
+	} // end file_get_contents()
+	
+	public static boolean file_exists(String strfilename) {
+		File f = new File(strfilename);
+		return f.exists();
+	} // end file_exist()
 	
 	/*
 	public static boolean setFilePlaceHolderContents(String strinfilename, String stroutfile 
@@ -380,6 +395,7 @@ public class _ {
 		return (cjsonarray == null || cjsonarray.createFromFile(strfilename) == false) ? null : cjsonarray;
 	} // end toJSONArray()
 	
+	public static CHash chash() { return new CHash(); }
 	public static CHash chash2(CHash chash) { return (chash == null) ? new CHash() : chash; }
 	public static CHash chash(CHash chash) { return (chash == null) ? new CHash() : chash; }
 	public static CHash chash(CPair... cpairs) { return new CHash(cpairs); }
@@ -392,9 +408,16 @@ public class _ {
 			return Class.forName(strclassname).newInstance(); 
 		} // end try
 		catch(Exception ex) { 
-			return null; 
+			_.println("ERROR: could not construct a new instance of: " + strclassname);		
+			_.println(ex.getMessage());
 		} // end catch()
+		return null;
 	} // end _new() 
+	
+	public static Object json_decode_from_file(String strfilename, boolean bchash) {
+		CJSONObject cjsonobject = _.toJSONObjectFromFile(strfilename, false);	
+		return (bchash == false) ? cjsonobject : cjsonobject.toCHash();
+	} // end json_decode()
 	
 	public static Object json_decode(String strcontents, boolean bchash) {
 		CJSONObject cjsonobject = _.toJSONObject(strcontents);	
@@ -402,7 +425,6 @@ public class _ {
 	} // end json_decode()
 	
 	public static String json_encode(CHash chash) {
-		return (chash != null) chash.toString() : "";
+		return (chash != null) ? chash.toString() : "";
 	} // end json_encode()
-	
 } // end _

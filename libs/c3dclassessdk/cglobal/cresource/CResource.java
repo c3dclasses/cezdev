@@ -12,15 +12,16 @@ import c3dclasses.ccore.*;
 public class CResource extends CHash {
 	public CResource() {} 
 	public boolean open(String strpath, String strtype, CHash params) {
+		this.append(params);
 		this.set("cresource_path", strpath);
 		this.set("cresource_type", strtype);
-		this.append(params);
 		return true;
 	} // end open()
 	public boolean close() { this.clear(); return true; } 
 	public boolean restore() { return true; }
 	public String path() { return (String) this.get("cresource_path"); }
 	public String type(){ return (String) this.get("cresource_type"); }
+	public String toString(){ return super.toString(); }
 	// ClassMethods
 	// include / use
 	public static CResource include(String strid, String strpath, String strtype, CHash params) { return CResource._register(strid, strpath, strtype, params); }
@@ -55,9 +56,10 @@ public class CResource extends CHash {
 			cresource.append(params);
 			return cresource;
 		} // end if
-		if(strtype == "" || (cresource = (CResource)_._new(strtype)) == null || 
-			cresource.open(strpath, strtype, params) == false)
+		if(strtype == "" || (cresource = (CResource) _._new(strtype)) == null || 
+			cresource.open(strpath, strtype, params) == false) {	
 			return null; 	
+		}
 		CResource._addByID(strid, cresource);
 		CResource._addByPath(strpath, cresource);		
 		return cresource;

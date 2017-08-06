@@ -46,10 +46,23 @@ public class CReturn {
 			this.m_data = data;	
 		return (this.m_fnformat != null) ? this.m_fnformat._(this.m_data) : this.m_data; 
 	} // end data()
-
+	public boolean _boolean() { return Boolean.valueOf(this.data(null).toString()); }
+	public int _int() { return Integer.valueOf(this.data(null).toString()); }
+	public float _float() { return Float.valueOf(this.data(null).toString()); }
+	public String _string() { return (String)this.data(null); }
+	
 	public Object results() {
 		return this.data(null);
 	} // end results
+	
+	public String toString() {
+		String str = "m_fnformat: " + this.m_fnformat + "\n";
+		str += "m_strerror: " + this.m_strerror + "\n";
+		str += "m_icode: " + this.m_icode + "\n";
+		str += "m_strstatus: " + this.m_strstatus + "\n";
+		str += "m_data: " + this.m_data + "\n";
+		return str;
+	} // end toString()
 	
 	public CFunction formatefn(CFunction fn) {
 		if(fn != null)

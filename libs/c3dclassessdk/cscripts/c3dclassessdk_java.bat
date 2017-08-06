@@ -18,9 +18,8 @@ set home=%CD%
 cd /d %EZDEV_HOME%/meta/c3dclassessdk_java/target
 
 :: run the class in the jar file - pass all args to the java program
-java -cp %C3DCLASSESSDK_NAME%-%C3DCLASSESSDK_VERSION%-jar-with-dependencies.jar %1 %*
+call java -cp %C3DCLASSESSDK_NAME%-%C3DCLASSESSDK_VERSION%-jar-with-dependencies.jar %1 %*
 :: echo %C3DCLASSESSDK_NAME%-%C3DCLASSESSDK_VERSION%-jar-with-dependencies.jar %1 "%*"
-
 
 :: go back to home dir
 cd /d %home%

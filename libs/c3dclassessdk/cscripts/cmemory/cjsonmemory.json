@@ -1,0 +1,26 @@
+{
+	"mystuff":{
+		"m_strname":"mystuff",
+		"m_iretrieved":-1,
+		"m_icreated":null,
+		"m_iupdated":148,
+		"m_value":"initBIN.sh             'initEZDEV - Copy.sh'  initEZDEV_controls.sh
+initC3DCLASSESSDK.bat  initEZDEV.bat          initVARS.sh
+initC3DCLASSESSDK.sh   initEZDEV.sh           scripts"
+	},
+	"kevin2":{
+		"m_strname":"kevin2",
+		"m_iretrieved":-1,
+		"m_icreated":null,
+		"m_iupdated":203,
+		"m_value":"initBIN.sh
+initC3DCLASSESSDK.bat
+initC3DCLASSESSDK.sh
+initEZDEV - Copy.sh
+initEZDEV.bat
+initEZDEV.sh
+initEZDEV_controls.sh
+initVARS.sh
+scripts"
+	}
+}

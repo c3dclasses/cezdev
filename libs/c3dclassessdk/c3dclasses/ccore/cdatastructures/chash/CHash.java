@@ -13,7 +13,6 @@ import cglobal.*;
 //-------------------------------------------
 public class CHash{
 	public CHash() {} 
-	//public CHash(Object [] objects, CFunction cfunction) { for(Object object: objects){ this.set(cpair.m_first, cpair.m_second); }
 	public CHash(CPair [] cpairs) { for(CPair cpair: cpairs) this.set(cpair.m_first, cpair.m_second); }
 	public void create(HashMap hash) { this.m_hash = hash; }
 	public void clear() { this.m_hash.clear();  }
@@ -29,6 +28,10 @@ public class CHash{
 	public HashMap valueOf() { return this.m_hash; }
 	public HashMap _() { return this.m_hash; }
 	public Object _(Object key) { return this.get(key); }
+	public int _int(Object key) { return Integer.valueOf(this.get(key).toString()); }
+	public float _float(Object key) { return Float.valueOf(this.get(key).toString()); }
+	public String _string(Object key) { return (String) this.get(key); }
+	public boolean _boolean(Object key) { return Boolean.valueOf(this.get(key).toString()); }
 	public void _(Object key, Object value) { this.set(key, value); }
 	public void append(CHash chash) { if(chash==null) return; for(Object key : chash.keys().valueOf()) { this.set(key, chash.get(key)); } }
 	public String toString() { return this.toString(""); } 
@@ -42,10 +45,10 @@ public class CHash{
 			Object value = this._(key);
 			String comma_nl = ",\n";
 			if(this == value) 
-				str += tabs + "\t'" + key + "':" + System.identityHashCode(this);
+				str += tabs + "\t\"" + key + "\":" + System.identityHashCode(this);
 			else if(value instanceof CArray) {
 				CArray carray = (CArray) value;
-				str += tabs + "\t'" + key + "':[\n";
+				str += tabs + "\t\"" + key + "\":[\n";
 				for(int j=0; j<carray.length(); j++) {
 					if(carray._(j) instanceof CHash) {
 						CHash chash = (CHash) carray._(j);
@@ -60,13 +63,13 @@ public class CHash{
 			} // end else if
 			else if(value instanceof CHash) {
 				CHash chash = (CHash) this._(key);
-				str += tabs + "\t'" + key + "':" + chash.toString(tabs + "\t");		
+				str += tabs + "\t\"" + key + "\":" + chash.toString(tabs + "\t");		
 			} // end else if
 			else if(value instanceof String) {
-			 	str += tabs + "\t'" + key + "':'" + this._(key) + "'";
+			 	str += tabs + "\t\"" + key + "\":\"" + this._(key) + "\"";
 			} // end else if
 			else {
-			 	str += tabs + "\t'" + key + "':" + this._(key);
+			 	str += tabs + "\t\"" + key + "\":" + this._(key);
 			} // end else if
 			if(i+1 != len)
 				str += comma_nl;

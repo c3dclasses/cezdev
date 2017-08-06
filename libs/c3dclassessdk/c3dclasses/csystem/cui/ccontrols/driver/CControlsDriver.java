@@ -605,7 +605,17 @@ class CEventListener {
 	protected CFunction m_cfunction;
 	public CEventListener(CControl ccontrol) {
 		this.m_ccontrol = ccontrol;
-		this.m_cfunction = (CFunction) ccontrol._("m_propvalue");			
+		final Object value = ccontrol._("m_propvalue");
+		if(value instanceof CFunction)
+			this.m_cfunction = (CFunction) value;	
+		else {
+			this.m_cfunction = new CFunction() { 
+				public Object _(Object obj) {
+					_.execCommand((String) value);
+					return null;
+				} // end _
+			}; // end new CFunction()
+		} // end else
 	} // end CEventListener()
 } // end CEventListener
 
@@ -633,6 +643,8 @@ class CEventActionListener extends CEventListener implements ActionListener {
 		*/	
 	} // end COnClickEvent()
 	public void actionPerformed(ActionEvent e) {
+			
+		
 			this.m_cfunction._(e);
 	} // end actionPerformed()
 } // end CEventActionListener
