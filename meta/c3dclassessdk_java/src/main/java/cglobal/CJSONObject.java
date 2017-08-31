@@ -36,7 +36,7 @@ public class CJSONObject {
 			jsonobject = (JSONObject)parser.parse(strjsoncontents);
 		} // end try
 		catch(Exception ex) {
-			System.out.println("Reason: " + ex.getMessage());
+			CLog.error(ex.toString());
 			return false;
 		} // end catch()
 		m_jsonobject = jsonobject;
@@ -62,7 +62,7 @@ public class CJSONObject {
 			return object;
 		} // end try
 		catch(Exception ex)  {
-			//System.out.println("ERROR: CJSONObject.get(): Couldn't get value for: " + strname);
+			CLog.error(ex.toString());
 			return null;
 		} // end catch()
 	} // end get()

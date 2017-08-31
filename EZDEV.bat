@@ -13,14 +13,15 @@ set EZDEV_NAME=EZDEV
 set EZDEV_DEBUG=true
 set EZDEV_HOME=%CD%
 set EZDEV_META=%EZDEV_HOME%/meta
-set C3DCLASSESSDK_VERSION=1.0
-set C3DCLASSESSDK_NAME=EZDEV
-set C3DCLASSESSDK_PATH=%EZDEV_HOME%/libs/c3dclassessdk
 
+:: create the meta directory if it doesn't exist
+IF NOT EXIST %EZDEV_META% ( 
+	mkdir %EZDEV_META% 
+)
 
 :: initialize EZDEV
-cd /d %C3DCLASSESSDK_PATH%/cscripts
-call initc3dclassessdk
+cd /d %EZDEV_HOME%/libs/c3dclassessdk/ccommands
+call c3dclassessdk
 
 :: pause before terminating
 pause

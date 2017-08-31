@@ -33,7 +33,7 @@ public class CJSONArray {
 			jsonarray = (JSONArray)parser.parse(strjsoncontents);
 		} // end try
 		catch(Exception ex) {
-			System.out.println("Reason: " + ex.getMessage());
+			CLog.error(ex.toString());
 			return false;
 		} // end catch()
 		m_jsonarray = jsonarray;
@@ -57,7 +57,7 @@ public class CJSONArray {
 			return object;
 		} // end try
 		catch(Exception ex)  {
-			//System.out.println("ERROR: CJSONArray.get(): Couldn't get value for: " + strname);
+			CLog.error(ex.toString());	
 			return null;
 		} // end catch()
 	} // end get()

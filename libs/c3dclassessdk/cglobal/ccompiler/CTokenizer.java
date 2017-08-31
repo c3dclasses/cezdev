@@ -89,6 +89,7 @@ public class CTokenizer {
 					} // end if	
 			} // end try
 			catch(Exception ex) {
+				CLog.error(ex.toString());
 				continue;
 			}
 		} // end foreach()		

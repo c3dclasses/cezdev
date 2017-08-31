@@ -12,13 +12,15 @@ export EZDEV_NAME=EZDEV
 export EZDEV_DEBUG=true
 export EZDEV_HOME=$(pwd)
 export EZDEV_META=$EZDEV_HOME/meta
-export C3DCLASSESSDK_VERSION=1.0
-export C3DCLASSESSDK_NAME=EZDEV
-export C3DCLASSESSDK_PATH=$EZDEV_HOME/libs/c3dclassessdk
 
-## initialize EZDEV
-cd $C3DCLASSESSDK_PATH/cscripts
-. ./initc3dclassessdk.sh
+## create the meta directory if it doesn't exist
+if [[ ! -d $EZDEV_META ]]; then 
+	mkdir $EZDEV_META
+fi
+
+## initialize c3dclassessdk
+cd $EZDEV_HOME/libs/c3dclassessdk/ccommands
+. ./c3dclassessdk.sh
 
 ## pause before terminating
 read -p "Press enter to continue"

@@ -56,11 +56,13 @@ public class CReturn {
 	} // end results
 	
 	public String toString() {
-		String str = "m_fnformat: " + this.m_fnformat + "\n";
-		str += "m_strerror: " + this.m_strerror + "\n";
-		str += "m_icode: " + this.m_icode + "\n";
-		str += "m_strstatus: " + this.m_strstatus + "\n";
-		str += "m_data: " + this.m_data + "\n";
+		String str = "CReturn: [";
+		str += "m_fnformat:" + this.m_fnformat + ",";
+		str += "m_strerror:" + this.m_strerror + ",";
+		str += "m_icode:" + this.m_icode + ",";
+		str += "m_strstatus:" + this.m_strstatus + ",";
+		str += "m_data:" + this.m_data;
+		str += "]";
 		return str;
 	} // end toString()
 	
@@ -105,8 +107,7 @@ public class CReturn {
 	public static int BUSY = 1;		// the function/method has been called and it's busy
 	public static int DONE = 2;		// the function/method has been called and it's done	
 	public static int ERROR = 3;	// the function/method has been called and it has an error
-
-	static public CReturn _return(int code, Object data) {
+	public static CReturn _return(int code, Object data) {
 		CReturn _return = new CReturn();
 		if(_return == null)
 			return null;
@@ -115,11 +116,11 @@ public class CReturn {
 		return _return;
 	} // end _return()
 
-	static public CReturn _done(Object data) {
+	public static CReturn _done(Object data) {
 		return CReturn._return(CReturn.DONE, data);
 	} // end _done()
 
-	static public CReturn _busy() {
+	public static CReturn _busy() {
 		return CReturn._return(CReturn.BUSY, null);
 	} // end _busy()
  	// end ClassMethods
