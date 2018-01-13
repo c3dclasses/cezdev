@@ -2,10 +2,7 @@
 // file: CControl
 // desc: defines a control object
 //---------------------------------------------------------
-package c3dclasses.csystem.cui;
-import cglobal.*; 
-import c3dclasses.ccore.*;
-import c3dclasses.csystem.cui.*;
+package c3dclasses;
 
 //-----------------------------------------------------------------
 // name: CControl
@@ -59,9 +56,7 @@ public class CControl extends CHash {
 		return true;		
 	} // end delete()
 	
-	//////////////////////
-	// toString
-	//////////////////////
+	// other
 	public String toStringContents() {		
 		CArray keys = this.keys();
 		if(keys == null)

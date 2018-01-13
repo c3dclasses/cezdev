@@ -2,7 +2,7 @@
 // file: CTokenUnitTest
 // desc: test the ctoken object 
 //---------------------------------------------------------------------------
-package cglobal;
+package c3dclasses;
 import org.junit.Test;
 
 //--------------------------------------------------------

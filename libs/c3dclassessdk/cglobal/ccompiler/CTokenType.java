@@ -2,7 +2,7 @@
 // file: CTokenType
 // desc: defines the type of tokens to find 
 //---------------------------------------------------------------------------
-package cglobal;
+package c3dclasses;
 
 //--------------------------------------------------------
 // name: CTokenType

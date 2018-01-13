@@ -2,8 +2,7 @@
 // file: CTokenTypeUnitTest
 // desc: defines the type of tokens to find 
 //---------------------------------------------------------------------------
-package cglobal;
-import c3dclasses.ccore.*;
+package c3dclasses;
 import org.junit.Test;
 
 //--------------------------------------------------------

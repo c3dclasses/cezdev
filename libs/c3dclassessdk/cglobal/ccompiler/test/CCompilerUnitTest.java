@@ -2,8 +2,7 @@
 // name: ccompiler.php
 // desc: defines a compiler object
 //---------------------------------------------------------------------------
-package cglobal;
-import c3dclasses.ccore.*;
+package c3dclasses;
 import org.junit.Test;
 
 // includes

@@ -1,15 +1,12 @@
 //---------------------------------------------------------------------------------
-// file: CFunction
-// desc: defines a generic class to simulate functions ptr or anonymous functions
+// file: CObject
+// desc: defines a object primitive which mimics Javascript Object
 //---------------------------------------------------------------------------------
-package cglobal;
+package c3dclasses;
 
 //---------------------------------------------------------------------------------
-// name: CFunction
-// desc: defines a generic class to simulate functions ptr or anonymous functions
+// name: CObject
+// desc: defines a object primitive which mimics Javascript Object
 //---------------------------------------------------------------------------------
-public class CFunction {
-	public Object _(Object obj) {
-		return null;
-	} // end _()
-} // end CFunction
+public class CObject extends CHash {
+} // end CObject

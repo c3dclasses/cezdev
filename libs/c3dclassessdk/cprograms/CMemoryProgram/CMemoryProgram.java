@@ -3,9 +3,8 @@
 // desc: defines the a program that uses CMemory object
 //-------------------------------------------------------
 import javax.swing.JOptionPane;
-import cglobal.*;
-import c3dclasses.ccore.*;
-import c3dclasses.csystem.cdevice.*;
+import c3dclasses.*;
+
 public class CMemoryProgram {				
 	public static void main(String[] args) {
 		CMemory.include(

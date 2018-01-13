@@ -2,7 +2,7 @@
 // file: CLog
 // desc: defines a object to log information, warnings and errors
 //---------------------------------------------------------------------------------
-package cglobal;
+package c3dclasses;
 
 //---------------------------------------------------------------------------------
 // name: CLog

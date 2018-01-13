@@ -2,8 +2,7 @@
 // file: CResource
 // desc: an object treated as a resource or (singleton) to be used throughout the SDK  
 //---------------------------------------------------------------------------------------
-package cglobal;
-import c3dclasses.ccore.*;
+package c3dclasses;
 
 //---------------------------------------------------------------------------------------
 // name: CResource

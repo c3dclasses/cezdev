@@ -3,16 +3,17 @@
 // desc: 
 //-------------------------------------------------------
 import javax.swing.JOptionPane;
-import cglobal.*;
-import c3dclasses.csystem.cui.*;
-import c3dclasses.ccore.*;
+import c3dclasses.*;
 
 public class CControlsProgram {				
 	public static void main(String[] args) {
 		CControls ccontrols = new CControls();
-		ccontrols.form("myform", "This is the form title", null);	
-		
-		/*
+		if(!ccontrols.form("myform", "This is the form title", null)) {
+			_.alert("form not created");
+			return;
+		}
+			
+			/*
 			ccontrols.menubar("menubar", "This is my menubar", null);
 				ccontrols.menu("menu1", "Menu1", null);
 					ccontrols.menuitem("item1", "item1", null);
@@ -43,22 +44,32 @@ public class CControlsProgram {
 				), 
 			null);
 			
+			// section
 			ccontrols.section("section-control", "section-control", null);
 				ccontrols.radio("radio-control", "radio-control1", "Numbers", null);
 				ccontrols.radio("radio-control", "radio-control2", "Alphabet", null);
 				ccontrols.radio("radio-control", "radio-control3", "Symbols", null);
 			ccontrols.endsection();	
 			
+			
 			ccontrols.submit("submit", "SUBMIT", null);			
+			
 			ccontrols.text("text-control", "This is my Text Control", null);	
+			
 			ccontrols.textarea("textarea-control", "This is my TextArea Control", null);	
+			
 			ccontrols.checkbox("checkbox-control", "This is my Checkbox Control", null);				
+			
 			ccontrols.label("label-control", "This is my Label", null);			
+			
 			ccontrols.controlFromJSONFile("C://Users//developer//Desktop//button.json");
+			
 			ccontrols.controlFromJSONFile("C://Users//developer//Desktop//select.json");
-		*/
+			*/
+			
 		ccontrols.endform();
 		
+		// system menu	
 		/*
 		ccontrols.sysmenubar("menubar", "C://Users//developer//Desktop//icon.png", null);
 			ccontrols.sysmenu("menu1", "Menu1", null);
@@ -68,12 +79,17 @@ public class CControlsProgram {
 				ccontrols.sysmenuitem("item2", "item2", null);
 			ccontrols.endmenu();
 		ccontrols.endsysmenubar();
-		*/	
-	
+		*/
+		
+		
 		ccontrols.retrieve("myform").setProp("grid","true");
 		ccontrols.retrieve("myform").setProp("visible","true");
 		ccontrols.retrieve("myform").setProp("pack","true");
 		ccontrols.retrieve("myform").setProp("close","true");
+		
+		_.print(ccontrols.toStringContents());
+		
+		
 		
 		/*
 		ccontrols.retrieve("myform control5").setProp("visible","true");
@@ -113,12 +129,12 @@ public class CControlsProgram {
 			_.execCommand("C:/Users/developer/Desktop/test.bat");
 			return null;
 		}}); // end onclick	
-			
-		ccontrols.retrieve("myform text-control").setProp("onclick",  new CFunction() { public Object _(Object obj) {
-			_.execCommand("C:/Users/developer/Desktop/test.bat");
-			return null;
-		}}); // end onclick
-		
+			*/
+		//ccontrols.retrieve("myform text-control").setProp("onclick",  new CFunction() { public Object _(Object obj) {
+		//	_.exec_command("C:/Users/developer/Desktop/test.bat");
+		//	return null;
+		//}}); // end onclick
+		/*
 		ccontrols.retrieve("myform textarea-control").setProp("onclick",  new CFunction() { public Object _(Object obj) {
 			_.execCommand("C:/Users/developer/Desktop/test.bat");
 			return null;

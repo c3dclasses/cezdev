@@ -2,7 +2,7 @@
 // file: CTokenizerUnitTest
 // desc: test the ctokenizer object 
 //---------------------------------------------------------------------------
-package cglobal;
+package c3dclasses;
 import org.junit.Test;
 
 //--------------------------------------------------------

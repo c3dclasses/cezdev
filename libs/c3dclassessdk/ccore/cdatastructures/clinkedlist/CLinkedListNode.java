@@ -2,9 +2,8 @@
 // file: CLinkedListNode
 // desc: defines a linked list node object 
 //-----------------------------------------------------------------------------------------
-package c3dclasses.ccore;
+package c3dclasses;
 import java.util.*;
-import cglobal.*;
 
 //----------------------------------------------
 // name: CLinkedListNode

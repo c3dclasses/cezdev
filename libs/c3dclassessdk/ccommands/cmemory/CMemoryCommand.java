@@ -3,9 +3,7 @@
 // desc: defines the a command that uses CMemory object
 //-------------------------------------------------------
 import javax.swing.JOptionPane;
-import cglobal.*;
-import c3dclasses.ccore.*;
-import c3dclasses.csystem.cdevice.*;
+import c3dclasses.*;
 
 //-------------------------------------------------
 // name: CMemoryCommand
@@ -99,7 +97,7 @@ public class CMemoryCommand {
 			return false;
 		return CMemoryCommand.includeCMemoryDriver(strid, strpath, strtype);
 	} // end prompt_includeCMemoryDriver()
-	
+
 	//-------------------------------------------------------------------
 	// name: includeCMemoryDriver()
 	// desc: includes the cmemorydriver to be used later
@@ -155,12 +153,12 @@ public class CMemoryCommand {
 		String strvalue="";
 		// set the value from a file
 		if(strcommand.equals("-fcreate") == true || strcommand.equals("-fupdate") == true) {
-			strvalue = _.getFileContents(strtitle);
+			strvalue = _.get_file_contents(strtitle);
 			bSetValue = true;
 		} // end if
 		// set the value from a prompt dialog
 		else if(strcommand.equals("-prompt") == true) {
-			strvalue = (String) _.prompt(strtitle, strmessage, null);
+			strvalue = (String) _.prompt("Please Enter a value", strmessage, null);
 			bSetValue = true;
 		} // end else if
 		// set the value from a file dialog

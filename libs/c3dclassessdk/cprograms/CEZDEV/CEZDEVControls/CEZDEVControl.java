@@ -2,8 +2,7 @@
 // name: CEZDEVControl
 // desc: defines a generic control object used by EZDEV
 //---------------------------------------------------------------------------------------------
-package cezdev;
-import cglobal.*;
+import c3dclasses.*;
 
 //----------------------------------------------------------------------------------
 // name: CEZDEVControlProperties

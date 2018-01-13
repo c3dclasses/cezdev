@@ -2,9 +2,7 @@
 // file: CMemoryDriver
 // desc: defines the memory driver object
 //----------------------------------------------------------------
-package c3dclasses.csystem.cdevice;
-import cglobal.*; 
-import c3dclasses.ccore.*;
+package c3dclasses;
 
 //----------------------------------------------------------------
 // class: CMemoryDriver

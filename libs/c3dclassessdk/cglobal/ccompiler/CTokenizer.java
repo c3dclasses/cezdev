@@ -2,8 +2,7 @@
 // file: CTokenizer
 // desc: responsible converting the file into tokens 
 //---------------------------------------------------------------------------
-package cglobal;
-import c3dclasses.ccore.*;
+package c3dclasses;
 
 //--------------------------------------------------------
 // name: CTokenizer

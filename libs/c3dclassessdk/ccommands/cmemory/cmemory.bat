@@ -33,11 +33,19 @@
 
 :: set the default memory driver
 set CMEMORY_DEFAULT_DRIVER_PATH=%C3DCLASSESSDK_COMMANDS%/cmemory/cjsonmemory.json
-set CMEMORY_DEFAULT_DRIVER_TYPE=c3dclasses.csystem.cdevice.CJSONMemoryDriver
+set CMEMORY_DEFAULT_DRIVER_TYPE=c3dclasses.CJSONMemoryDriver
 set CMEMORY_FILE=%EZDEV_HOME%/meta/cmemory.tmp
- -k`
+set CMEMORY_USAGE_FILE=%C3DCLASSESSDK_COMMANDS%/cmemory/cmemory.usage.txt
+
+
 if "%1" == "-assign" ( 
 	_ %~3 "cmemory -get %2"
+	goto done
+) 
+
+if "%1" == "-usage" ( 
+	alert -file "%CMEMORY_USAGE_FILE%" "CMemory Usage"
+	echo "%CMEMORY_USAGE_FILE%"
 	goto done
 ) 
 

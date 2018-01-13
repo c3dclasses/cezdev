@@ -2,17 +2,13 @@
 // file: cconstants.php
 // desc: defines useful constants used through C3DClassesSDK.web 
 //-----------------------------------------------------------------
-package c3dclasses.ccore;
-
-// includes
-// include_js(relname(__FILE__) . '/cconstants.js'); 
+package c3dclasses;
 
 //----------------------------------------------------------------
 // name: CConstants
 // desc: defines bit constants 
 //----------------------------------------------------------------
 class CConstants {		
-/*		
 	//---------------------------------------------------
 	// name: init()
 	// desc: initializes the constantes
@@ -78,6 +74,23 @@ class CConstants {
 		CConstants.HEIGHTWIDTH = (CConstants.HEIGHT | CConstants.WIDTH);
 		CConstants.WIDTHHEIGHT = CConstants.HEIGHTWIDTH;
 		CConstants.WIDTHHEIGHTLENGTH = (CConstants.HEIGHTWIDTH | CConstants.LENGTH);
+		
+		// logical 
+		CConstants.G = CConstants.GREATER = CBit.BIT[14];
+		CConstants.L = CConstants.LESS = CBit.BIT[15];
+		CConstants.E = CConstants.EQUAL = CBit.BIT[16];
+		CConstants.GE = CConstants.GREATEREQUAL = (CConstants.GREATER|CConstants.EQUAL);
+		CConstants.LE = CConstants.LESSEQUAL = (CConstants.LESS|CConstants.EQUAL);
+		CConstants.addConstant("GREATER", CConstants.GREATER); 
+		CConstants.addConstant("LESS", CConstants.LESS); 
+		CConstants.addConstant("EQUAL", CConstants.EQUAL); 
+		CConstants.addConstant("GREATEREQUAL", CConstants.LESSEQUAL);
+		CConstants.addConstant("LESSEQUAL", CConstants.GREATEREQUAL); 
+		CConstants.addConstant("G", CConstants.G); 
+		CConstants.addConstant("L", CConstants.L); 
+		CConstants.addConstant("E", CConstants.E); 
+		CConstants.addConstant("GE", CConstants.GE);
+		CConstants.addConstant("LE", CConstants.LE);
 	} // end init()		
 	
 	//----------------------------------------
@@ -86,16 +99,16 @@ class CConstants {
 	//----------------------------------------
 	static public boolean addConstant(String strname, int ibit) {
 		// check incoming data
-		if(!strname || strname == "" || ibit < 0) {
+		if(strname == null || strname == "" || ibit < 0) {
 			return false;
 		} // end if
 			
 		// check the string constant array 
 		if(CConstants.m_strconstants == null) {
-			CConstants.m_strconstants = new CArray();
+			CConstants.m_strconstants = _.carray();
 		} // end if
-			
-		CConstants.m_strconstants[] = strname;
+		
+		CConstants.m_strconstants.push(strname);
 		return true;
 	} // end addConstant()
 	
@@ -106,13 +119,13 @@ class CConstants {
 	static public String toString(int iconstants) {
 		// check the constants array
 		if(iconstants <= 0) {
-			return CConstants.m_strconstants[0];
+			return CConstants.m_strconstants._string(0);
 		} // end if
 			
-		Sting str = ""; 
+		String str = ""; 
 		for(int ibit=31; ibit>-1; ibit--) {
 			if((iconstants&(1<<ibit))>0)
-				str += "" + CConstants.m_strconstants[ibit+1] + " "; 
+				str += "" + CConstants.m_strconstants._string(ibit+1) + " "; 
 		} // end for
 
 		// return the string
@@ -120,69 +133,80 @@ class CConstants {
 	} // end toString()
 		
 	// members
-	static public m_strconstants = null;
+	static public CArray m_strconstants = null;
 	
 	// alignment within or inside a region
-	static public final int NONE;		
-	static public final int TOP;
-	static public final int BOTTOM; 
-	static public final int RIGHT;
-	static public final int LEFT; 
-	static public final int VCENTER;
-	static public final int HCENTER;
-	static public final int VMIDDLE;
-	static public final int HMIDDLE;
-	static public final int TOPLEFT;
-	static public final int TOPRIGHT;
-	static public final int LEFTTOP;
-	static public final int RIGHTTOP;
-	static public final int BOTTOMLEFT;
-	static public final int BOTTOMRIGHT;
-	static public final int LEFTBOTTOM;
-	static public final int RIGHTBOTTOM;
-	static public final int CENTER;
-	static public final int MIDDLE;
+	static public int NONE;		
+	static public int TOP;
+	static public int BOTTOM; 
+	static public int RIGHT;
+	static public int LEFT; 
+	static public int VCENTER;
+	static public int HCENTER;
+	static public int VMIDDLE;
+	static public int HMIDDLE;
+	static public int TOPLEFT;
+	static public int TOPRIGHT;
+	static public int LEFTTOP;
+	static public int RIGHTTOP;
+	static public int BOTTOMLEFT;
+	static public int BOTTOMRIGHT;
+	static public int LEFTBOTTOM;
+	static public int RIGHTBOTTOM;
+	static public int CENTER;
+	static public int MIDDLE;
 		
 	// alignment outside a region
-	static public final int ABOVE;	
-	static public final int BELOW;   
-	static public final int RSIDE;  
-	static public final int LSIDE;
+	static public int ABOVE;	
+	static public int BELOW;   
+	static public int RSIDE;  
+	static public int LSIDE;
 	
 	// alignment within a linear region
-	static public final int FIRST;	
-	static public final int LAST;	
-	static public final int FIRSTLAST;
-	static public final int INTERIOR;
+	static public int FIRST;	
+	static public int LAST;	
+	static public int FIRSTLAST;
+	static public int INTERIOR;
 	
 	// direction 
-	static public final int UP; 
-	static public final int DOWN;
-	static public final int BACKWARD;
-	static public final int FORWARD;
-	static public final int NORTH;
-	static public final int SOUTH;
-	static public final int EAST;
-	static public final int WEST;
-	static public final int NORTHEAST;
-	static public final int SOUTHEAST;
-	static public final int NORTHWEST;
-	static public final int SOUTHWEST;
+	static public int UP; 
+	static public int DOWN;
+	static public int BACKWARD;
+	static public int FORWARD;
+	static public int NORTH;
+	static public int SOUTH;
+	static public int EAST;
+	static public int WEST;
+	static public int NORTHEAST;
+	static public int SOUTHEAST;
+	static public int NORTHWEST;
+	static public int SOUTHWEST;
 		
 	// defines three possible location of a poinr
-	static public final int FRONT;
-	static public final int BACK;
-	static public final int COPLANER;
-	static public final int SPLIT;
+	static public int FRONT;
+	static public int BACK;
+	static public int COPLANER;
+	static public int SPLIT;
 		
 	// dimensions
-	static public final int WIDTH;
-	static public final int HEIGHT;
-	static public final int LENGTH;
-	static public final int HEIGHTWIDTH;
-	static public final int WIDTHHEIGHT;
-	static public final int WIDTHHEIGHTLENGTH;
-	*/
+	static public int WIDTH;
+	static public int HEIGHT;
+	static public int LENGTH;
+	static public int HEIGHTWIDTH;
+	static public int WIDTHHEIGHT;
+	static public int WIDTHHEIGHTLENGTH;
+	
+	// logical
+	static public int GREATER;
+	static public int LESS;
+	static public int EQUAL;
+	static public int GREATEREQUAL;
+	static public int LESSEQUAL;
+	static public int G;
+	static public int L;
+	static public int E;
+	static public int GE;
+	static public int LE;
 } // end CConstants
 
 // initialize these constants 

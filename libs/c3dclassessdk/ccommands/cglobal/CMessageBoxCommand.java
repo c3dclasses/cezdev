@@ -5,7 +5,7 @@
 
 // includes
 import javax.swing.JOptionPane;
-import cglobal.*;
+import c3dclasses.*;
 
 //------------------------------------------------------------------------
 // name: CMessageBox
@@ -20,8 +20,10 @@ public class CMessageBoxCommand {
 		String strmsg = (args.length > 1) ? args[1] : "";
 		String strtitle = (args.length > 2) ? args[2] : "";
 		String strtype = (args.length > 3) ? args[3].toLowerCase() : "info";
-		if(strmsg.equals("-info"))
-			strmsg = _.file_get_contents(strtitle);
+		if(strmsg.equals("-file")) {
+			strmsg = _.get_file_contents(strtitle);
+			strtitle = strtype;
+		} // end if
 		int itype = JOptionPane.INFORMATION_MESSAGE;
 		if(strtype.equals("error")) itype = JOptionPane.ERROR_MESSAGE;
 		else if(strtype.equals("warn")) itype = JOptionPane.WARNING_MESSAGE;

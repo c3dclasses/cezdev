@@ -2,9 +2,7 @@
 // file: CControls
 // desc: defines an object responsible for creating controls in the application 
 //-------------------------------------------------------------------------------
-package c3dclasses.csystem.cui;
-import cglobal.*; 
-import c3dclasses.ccore.*;
+package c3dclasses;
 
 //-----------------------------------------------------------------
 // name: CControls
@@ -96,7 +94,7 @@ public class CControls extends CHash {
 	} // end control()
 		
 	public boolean controlsFromJSONFile(String strjsonfile) {
-		CJSONArray cjsonarray = _.toJSONArrayFromFile(strjsonfile, false);
+		CJSONArray cjsonarray = _.to_json_array_from_file(strjsonfile, false);
 		if(cjsonarray == null)
 			return false;	
 		for(int i=0; i<cjsonarray.length(); i++) {
@@ -106,7 +104,7 @@ public class CControls extends CHash {
 	} // end controlsFromJSONFile()
 	
 	public boolean controlFromJSONFile(String strjsonfile) {
-		return this.controlFromJSONObject(_.toJSONObjectFromFile(strjsonfile, false));
+		return this.controlFromJSONObject(_.to_json_object_from_file(strjsonfile, false));
 	} // end controlFromJSONFile()
 	
 	public boolean controlFromJSONObject(CJSONObject cjsonobject) {
@@ -137,8 +135,10 @@ public class CControls extends CHash {
 		if(ccontrol != null)
 			return ccontrol;
 		ccontrol = new CControl();
-		if(ccontrol == null || !ccontrol.create(this, strtype, strid, strpathid, value, params))
+		if(ccontrol == null || !ccontrol.create(this, strtype, strid, strpathid, value, params)) {
+			_.alert("no control");
 			return null;
+		}
 		this.m_ccontrols._(strpathid, ccontrol);			
 		this.clear();
 		return ccontrol;

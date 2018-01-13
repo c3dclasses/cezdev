@@ -2,7 +2,7 @@
 // name: CEZDEV.java
 // desc: defines the ezdev application
 //------------------------------------------------------------------
-import cglobal.*;
+import c3dclasses.*;
 
 //---------------------------------------------------------
 // name: CEZDEV

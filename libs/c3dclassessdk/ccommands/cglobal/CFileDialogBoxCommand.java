@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
-import cglobal.*;
+import c3dclasses.*;
 
 //---------------------------------------------------------
 // name: CFileDialogBox

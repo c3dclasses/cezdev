@@ -2,9 +2,8 @@
 // file: CLinkedList
 // desc: defines a linked list object
 //-----------------------------------------------------------------------------------------
-package c3dclasses.ccore;
+package c3dclasses;
 import java.util.*;
-import cglobal.*;
 
 //-------------------------------------------
 // name: CLinkedList
@@ -39,8 +38,10 @@ public class CLinkedList {
 	// getting / setting
 	public CLinkedListNode head(CLinkedListNode head) { return this.m_head = head; }
 	public CLinkedListNode head() { return this.m_head; }
+	public CLinkedListNode begin() { return this.m_head; }	
 	public CLinkedListNode tail(CLinkedListNode tail) { return this.m_tail = tail; }
 	public CLinkedListNode tail() { return this.m_tail; }
+	public CLinkedListNode end() { return this.m_tail; }
 	public CLinkedListNode get(int index) {
 		if(index < 0 || index > this.m_isize-1)
 			return null;

@@ -2,7 +2,7 @@
 // file: CToken
 // desc: defines the token object found in the file 
 //---------------------------------------------------------------------------
-package cglobal;
+package c3dclasses;
 
 //--------------------------------------------------------
 // name: CToken

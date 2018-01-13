@@ -2,8 +2,7 @@
 // file: cparser.php
 // desc: parses the tokens of the input
 //---------------------------------------------------------------------------
-package cglobal;
-import c3dclasses.ccore.*;
+package c3dclasses;
 
 //---------------------------------------------------------------------
 // name: CParser 
@@ -68,7 +67,7 @@ public class CParser {
 		CHash params = new CHash();
 		params.set("cparser", this);
 		params.set("strterminationtoken", strterminationtokentype);
-		CParseTreeNode ret = (CParseTreeNode) callbackNonToken._(params);
+		CParseTreeNode ret = (CParseTreeNode) callbackNonToken._(params)._(0);
 		if(ret == null && brollbackonfailure == true)
 			this.m_ictokenindex = itokenindex;
 		return ret;

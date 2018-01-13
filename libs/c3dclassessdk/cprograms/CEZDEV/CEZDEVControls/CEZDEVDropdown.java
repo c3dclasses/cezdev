@@ -2,7 +2,6 @@
 // name: CEZDEVDropDown.java
 // desc: defines a combobox object thats created from a json file containing values
 //---------------------------------------------------------------------------------------------
-package cezdev;
 import java.awt.*;
 import java.awt.Container;
 import java.awt.FlowLayout;
@@ -10,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.applet.*;
 import javax.swing.*;
-import cglobal.*;
+import c3dclasses.*;
 
 //-------------------------------------------------------------------------------------
 // name: CEZDEVDropdown
@@ -45,8 +44,8 @@ public class CEZDEVDropdown extends CEZDEVControl {
 		
 		str = (String) cjsonobject.get("icon");
 		if(str != null && str != "") {
-			if(_.isFile(str) == false) {
-				str = _.getPath(this.getFilename()) + "\\" + str;
+			if(_.is_file(str) == false) {
+				str = _.get_path(this.getFilename()) + "\\" + str;
 		//		this.m_jbutton.setIcon(new ImageIcon(str));	
 			} // end if
 		} // end if	

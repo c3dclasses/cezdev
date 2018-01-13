@@ -3,9 +3,8 @@
 // file: CHash
 // desc: defines a hash object
 //---------------------------------------------------------------------------------
-package c3dclasses.ccore;
+package c3dclasses;
 import java.util.*;
-import cglobal.*;
 
 //-------------------------------------------
 // class CHash
@@ -32,6 +31,9 @@ public class CHash{
 	public float _float(Object key) { return Float.valueOf(this.get(key).toString()); }
 	public String _string(Object key) { return (String) this.get(key); }
 	public boolean _boolean(Object key) { return Boolean.valueOf(this.get(key).toString()); }
+	public CFunction _func(Object key) {return (CFunction) this._(key); }
+	public CObject _cobject(Object key) {return (CObject) this._(key); }
+	
 	public void _(Object key, Object value) { this.set(key, value); }
 	public void append(CHash chash) { if(chash==null) return; for(Object key : chash.keys().valueOf()) { this.set(key, chash.get(key)); } }
 	public String toJSON(boolean bpack) { return _.json_encode(this, bpack); }

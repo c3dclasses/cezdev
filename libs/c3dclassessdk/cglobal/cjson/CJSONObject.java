@@ -2,7 +2,7 @@
 // name: CJSONObject.java
 // desc: defines a combobox object thats created from a var file
 //---------------------------------------------------------------------------------------------
-package cglobal;
+package c3dclasses;
 import java.io.*;
 import java.util.*;
 import java.net.*;
@@ -10,7 +10,6 @@ import java.text.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import c3dclasses.ccore.*;
 
 //------------------------------------------------------
 // name: CJSONObject
@@ -45,7 +44,7 @@ public class CJSONObject {
 	
 	// creates the json object from a file
 	public boolean createFromFile(String strfilename) {
-		String strcontents = _.getFileContents(strfilename);
+		String strcontents = _.get_file_contents(strfilename);
 		return this.create(strcontents);
 	} // end createFromFile()
 	

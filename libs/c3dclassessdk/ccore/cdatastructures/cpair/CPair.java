@@ -2,9 +2,8 @@
 // file: CPair
 // desc: defines an object that stores a pair of objects
 //---------------------------------------------------------------------------------
-package c3dclasses.ccore;
+package c3dclasses;
 import java.util.*;
-import cglobal.*;
 
 //-------------------------------------------------------------
 // class CPair

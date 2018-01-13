@@ -2,8 +2,7 @@
 // file: cparsertreenode.php
 // desc: parses the tokens of the input
 //---------------------------------------------------------------------------
-package cglobal;
-import c3dclasses.ccore.*;
+package c3dclasses;
 
 //-----------------------------------------------------
 // name: CParseTreeNode

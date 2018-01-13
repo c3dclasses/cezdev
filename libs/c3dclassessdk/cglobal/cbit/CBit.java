@@ -2,7 +2,7 @@
 // file: CBit
 // desc: defines bit constants 
 //----------------------------------------------------------------
-package c3dclasses.ccore;
+package c3dclasses;
 
 //----------------------------------------------------------------
 // file: CBit

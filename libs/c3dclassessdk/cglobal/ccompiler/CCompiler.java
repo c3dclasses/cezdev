@@ -2,11 +2,7 @@
 // name: ccompiler.php
 // desc: defines a compiler object
 //---------------------------------------------------------------------------
-package cglobal;
-import c3dclasses.ccore.*;
-// includes
-//include_once("ctokenizer.php");
-//include_once("cparser.php");
+package c3dclasses;
 
 //--------------------------------------------------------
 // name: CComplier

@@ -2,9 +2,7 @@
 // file: CMemory
 // desc: defines the memory object
 //----------------------------------------------------------------
-package c3dclasses.csystem.cdevice;
-import cglobal.*; 
-import c3dclasses.ccore.*;
+package c3dclasses;
 
 //----------------------------------------------------------------
 // class: CMemory

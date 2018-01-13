@@ -2,7 +2,7 @@
 // file: _.java
 // desc: contains global functions exdev and c3dclasses namespace/package
 //-------------------------------------------------------------------------
-package cglobal;
+package c3dclasses;
 import java.io.*;
 import java.util.*;
 import java.net.*;
@@ -16,7 +16,7 @@ import java.applet.*;
 import javax.swing.*;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
-import c3dclasses.ccore.*;
+import org.apache.commons.lang.ArrayUtils;
 
 //-----------------------------------------------
 // class: _
@@ -31,6 +31,15 @@ public class _ {
 	public static void println(){ _.println(""); }
 	public static void printjs(Object strjstoprint) { _._print("<script>" + strjstoprint.toString() + "</script>"); }
 	public static void print(Object str) { _._print(str); }
+	public static void print(Object[] str) { _.print(str, ","); }
+	public static void print(Object[] str, String delimiter) { 
+		for(int i=0; i<str.length; i++) {		
+			_.print(str[i]);
+			if(i < str.length-1)
+				_.print(delimiter);
+		} // end for
+	} // end printArray()
+	
 	public static void _print(Object str) { if(str != null) System.out.print(str); }
 	public static void alert(Object strmessage) { _.alert(strmessage, true); }
 	public static void alert(Object strmessage, String strtitle) { alert(strmessage.toString(), strtitle); }
@@ -107,13 +116,14 @@ public class _ {
 	} // end promptForFile()
 	
 	// time
-	public static long time() { return _.getTimeInMilliseconds(); }
-	public static float getTimeInMicroseconds() { return System.nanoTime() / 1000; }
-	public static long getTimeInMilliseconds() { return System.currentTimeMillis() % 1000; }
+	public static long time() { return _.get_time_ms(); }
+	public static long get_time() { return _.get_time_ms(); }
+	public static float get_time_mms() { return System.nanoTime() / 1000; }
+	public static long get_time_ms() { return System.currentTimeMillis() % 1000; }
 
 	// file and path
-	public static String dirname(String strfilename) { return _.getPath(strfilename); }
-	public static String getHomePath() { 
+	public static String dirname(String strfilename) { return _.get_path(strfilename); }
+	public static String get_home_path() { 
 		try{
 			String str = new File(".").getCanonicalPath(); 
 			return str; 
@@ -123,7 +133,7 @@ public class _ {
 			return ""; 
 		} // end catch()
 	} // end getHomePath()
-	public static String getPath(String strfilename) {
+	public static String get_path(String strfilename) {
 		try {
 		 	File f = new File(strfilename);
          	return f.getParentFile().getCanonicalPath();
@@ -133,12 +143,12 @@ public class _ {
 			return "";
 		} // end catch()
 	} // end getPath()	
-	public static boolean isDirectory(String strpathname) {
+	public static boolean is_directory(String strpathname) {
 		try{ File f = new File(strpathname); return (f.exists() && f.isDirectory());}
 		catch(Exception ex) { CLog.error(ex.toString()); return false; }
 	} // end isDirectory()
 	
-	public static boolean isFile(String strpathname) {
+	public static boolean is_file(String strpathname) {
 		try{ File f = new File(strpathname); return (f.exists());}
 		catch(Exception ex) { CLog.error(ex.toString()); return false; }
 	} // end isFile()	
@@ -152,7 +162,7 @@ public class _ {
 	public static String FILE__() {
 		String _class = Thread.currentThread().getStackTrace()[2].getClassName();
 		String _filename = Thread.currentThread().getStackTrace()[2].getFileName();
-		return getHomePath() + "\\src\\main\\java\\" + _class.replace(".", "\\");
+		return _.get_home_path() + "\\src\\main\\java\\" + _class.replace(".", "\\");
 	} // end FILE__()
     public static String testOne() {
         return "testOne:: " + " File:" + _.FILE__() + " Class:" + _.CLASS__()
@@ -173,32 +183,32 @@ public class _ {
 	public static boolean empty(String str) { return str == null || str.equals(""); }
 	
 	// parsing	
-	public static int parseInt(String str) { return Integer.parseInt(str); }
-	public static float parseFloat(String str) { return Float.parseFloat(str); }
-	public static CJSONObject toJSONObject(String value) {
+	public static int parse_int(String str) { return Integer.parseInt(str); }
+	public static float parse_float(String str) { return Float.parseFloat(str); }
+	public static CJSONObject to_json_object(String value) {
 		CJSONObject cjsonobject = new CJSONObject();
 		return (cjsonobject == null || cjsonobject.create(value) == false) ? null : cjsonobject;
 	} // end toJSONObject()
-	public static CJSONObject toJSONObjectFromFile(String strfilename, boolean bassoc) {
+	public static CJSONObject to_json_object_from_file(String strfilename, boolean bassoc) {
 		CJSONObject cjsonobject = new CJSONObject();
 		return (cjsonobject == null || cjsonobject.createFromFile(strfilename) == false) ? null : cjsonobject;
 	} // end toJSONObject()
-	public static CJSONArray toJSONArray(String value, boolean bassoc) {
+	public static CJSONArray to_json_array(String value, boolean bassoc) {
 		CJSONArray cjsonarray = new CJSONArray();
 		return (cjsonarray == null || cjsonarray.create(value) == false) ? null : cjsonarray;
 	} // end toJSONArray()
-	public static CJSONArray toJSONArrayFromFile(String strfilename, boolean bassoc) {
+	public static CJSONArray to_json_array_from_file(String strfilename, boolean bassoc) {
 		CJSONArray cjsonarray = new CJSONArray();
 		return (cjsonarray == null || cjsonarray.createFromFile(strfilename) == false) ? null : cjsonarray;
 	} // end toJSONArray()
 	public static Object json_decode_from_file(String strfilename, boolean bchash) {
-		CJSONObject cjsonobject = _.toJSONObjectFromFile(strfilename, false);
+		CJSONObject cjsonobject = _.to_json_object_from_file(strfilename, false);
 		if(cjsonobject == null)
 			return null;
 		return (bchash == false) ? cjsonobject : cjsonobject.toCHash();
 	} // end json_decode()
 	public static Object json_decode(String strcontents, boolean bchash) {
-		CJSONObject cjsonobject = _.toJSONObject(strcontents);	
+		CJSONObject cjsonobject = _.to_json_object(strcontents);	
 		if(cjsonobject == null)
 			return null;
 		return (bchash == false) ? cjsonobject : cjsonobject.toCHash();
@@ -304,10 +314,10 @@ public class _ {
 	} // end split()
 	
 	// setting / getting file contents	
-	public static String file_get_contents(String strfilename) { return _.getFileContents(strfilename); }
-	public static boolean file_set_contents(String strfilename, String strcontents) { return _.setFileContents(strfilename, strcontents); }
+	//public static String file_get_contents(String strfilename) { return _.get_file_contents(strfilename); }
+	//public static boolean file_set_contents(String strfilename, String strcontents) { return _.setFileContents(strfilename, strcontents); }
 	public static boolean file_exists(String strfilename) { File f = new File(strfilename); return f.exists(); }
-	public static ArrayList<String> getLinesFromFile(String strfilename) {
+	public static ArrayList<String> get_lines_from_file(String strfilename) {
 		if(strfilename == null || strfilename == "")
 			return null;
 		try{
@@ -325,7 +335,7 @@ public class _ {
 			return null; 
 		} // end catch() 
 	} // end getLinesFromFile()	
-	public static String getFileContents(String strfilename) {
+	public static String get_file_contents(String strfilename) {
 		String strcontents = "";
 		try {
 			Reader in = new BufferedReader(new FileReader(strfilename));
@@ -344,7 +354,7 @@ public class _ {
 		} // end catch()
 		return strcontents;
 	} // end getFileContents()
-	public static boolean setFileContents(String strfilename, String strcontents) {
+	public static boolean set_file_contents(String strfilename, String strcontents) {
 		if(strcontents == null || strcontents == "")
 			return false;
 		try{
@@ -360,19 +370,19 @@ public class _ {
 	} // end setFileContents()
 		
 	// runs a command asynchoronously
-	public static boolean execCommand(String strcommand) {
+	public static boolean exec_command(String strcommand) {
 		try { 
 			Process p = Runtime.getRuntime().exec(strcommand); 
 			int returnCode = p.waitFor(); 
-			CLog.info("_._execCommand(): executed command: " + strcommand);	
+			CLog.info("_.exec_command(): executed command: " + strcommand);	
 			return true; 
 		} // end try
 		catch(Exception ex) { 
-			CLog.info("_._execCommand(): couldn't execute command: " + strcommand);
+			CLog.info("_.exec_command(): couldn't execute command: " + strcommand);
 			return false; 
 		} // end catch()
-	} // end execCommand()
-	public static boolean execAsyncCommand(String strcommand) {
+	} // end exec_command()
+	public static boolean exec_async_command(String strcommand) {
 		try { 
 			Process p = Runtime.getRuntime().exec(strcommand); 
 			System.out.println("SUCCESS: _.execCommand(): executed command: " + strcommand); 
@@ -382,19 +392,94 @@ public class _ {
 			System.out.println("ERROR: _.execCommand(): couldn't execute command: " + strcommand + " reason: " + ex.getMessage());
 			return false; 
 		} // end catch()
-	} // end execCommand()
+	} // end exec_async_command()
+	
+	// returns true if pid is running
+	public static boolean is_pid_running(long pid) {
+        try {
+            Runtime runtime = Runtime.getRuntime();
+            String cmds[] = {"cmd", "/c", "tasklist /FI \"PID eq " + pid + "\""};
+            Process proc = runtime.exec(cmds);
+            InputStream inputstream = proc.getInputStream();
+            InputStreamReader inputstreamreader = new InputStreamReader(inputstream);
+            BufferedReader bufferedreader = new BufferedReader(inputstreamreader);
+            String line;
+            while ((line = bufferedreader.readLine()) != null) {
+                if (line.contains(" " + pid + " ")) {
+                    return true;
+                } // end if
+            } // end while
+            return false;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println("Cannot query the tasklist for some reason.");
+            System.exit(0);
+        } // end catch
+        return false;
+    } // end is_pid_running()
+	
+	// prints all the running pids
+    public static String to_str_pids() {
+        try {
+            Runtime runtime = Runtime.getRuntime();
+            String cmds[] = {"cmd", "/c", "tasklist"};
+            Process proc = runtime.exec(cmds);
+            InputStream inputstream = proc.getInputStream();
+            InputStreamReader inputstreamreader = new InputStreamReader(inputstream);
+            BufferedReader bufferedreader = new BufferedReader(inputstreamreader);
+            String line;
+			String str = "";
+            while ((line = bufferedreader.readLine()) != null) {
+                str += line + "\n";
+            } // end while
+			return str;
+        } // end try 
+		catch (Exception ex) {
+            ex.printStackTrace();
+       		return "";
+	    } // end catch()
+    } // end to_str_pids()
 	
 	// returns pid of process
-	public static long getPID() { 
+	public static long get_pid() { 
 		String jvmName = ManagementFactory.getRuntimeMXBean().getName(); 
 		return Long.valueOf(jvmName.split("@")[0]); 
-	} // end getPID()
+	} // end get_pid()
+	
+	// packs the arguments and returns an array
+	public static CArray args(Object... args) { return new CArray(args); }
+	public static CArray args() { return new CArray(); }
+	
+	public static CArray params(Object... params) { return new CArray(params); }
+	public static Object [] obj(int [] a) { 
+		Object [] obj = new Object[a.length];
+		for(int i=0; i<a.length; i++)
+			obj[i] = new Integer(a[i]);
+		return obj;
+	} // end _obj()
 		
+	
 	// chash, cpair, carray
+	public static CArray carray() { return new CArray(); }
+	public static CArray carray(Object... objects) { return new CArray(objects); }
 	public static CHash chash() { return new CHash(); }
 	public static CHash chash2(CHash chash) { return (chash == null) ? new CHash() : chash; }
 	public static CHash chash(CHash chash) { return (chash == null) ? new CHash() : chash; }
 	public static CHash chash(CPair... cpairs) { return new CHash(cpairs); }
 	public static CPair cpair(Object first, Object second) { return new CPair(first, second); }
 	public static CPair nv(Object first, Object second) { return new CPair(first, second); }	
+	public static CObject cobject() { return new CObject(); }
+	public static CObject cobject(Object... namevalues) {
+		if(namevalues == null || namevalues.length == 0)
+			return null;
+		CObject cobject = new CObject();
+		if(cobject == null)
+			return null;
+		for(int i=0; i<namevalues.length; i+=2) {
+			String name = (String)namevalues[i];
+			Object value = namevalues[i+1];
+			cobject._(name, value);		
+		} // end for()
+		return cobject;
+	} // end cobject()
 } // end _

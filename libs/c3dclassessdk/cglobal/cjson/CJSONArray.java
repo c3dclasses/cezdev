@@ -2,7 +2,7 @@
 // name: CJSONArray.java
 // desc: defines a json array object
 //------------------------------------------------------
-package cglobal;
+package c3dclasses;
 import java.io.*;
 import java.util.*;
 import java.net.*;
@@ -42,7 +42,7 @@ public class CJSONArray {
 	
 	// creates the json object from a file
 	public boolean createFromFile(String strfilename) {
-		String strcontents = _.getFileContents(strfilename);
+		String strcontents = _.get_file_contents(strfilename);
 		return this.create(strcontents);
 	} // end createFromFile()
 	

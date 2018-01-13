@@ -2,9 +2,7 @@
 // file: CJSONMemoryDriver
 // desc: defines a json memory object 
 //----------------------------------------------------------------
-package c3dclasses.csystem.cdevice;
-import cglobal.*; 
-import c3dclasses.ccore.*;
+package c3dclasses;
 
 //----------------------------------------------------------------
 // file: CJSONMemoryDriver
@@ -18,7 +16,7 @@ public class CJSONMemoryDriver extends CMemoryDriver {
 		CHash json = null;
 		String strcontents = "";
 		if(_.file_exists(strpath) == false ||
-			(strcontents = _.file_get_contents(strpath)) == "" ||
+			(strcontents = _.get_file_contents(strpath)) == "" ||
 			(json = (CHash)_.json_decode(strcontents, true)) == null)
 			json = new CHash();
 		if(super.open(strpath, strtype, params) == false)
@@ -27,7 +25,7 @@ public class CJSONMemoryDriver extends CMemoryDriver {
 		return true;	
 	} // end open()
 	public boolean close() { return this.save(); }
-	public boolean save() { return _.file_set_contents(this.path(), (this.m_json != null) ? this.m_json.toJSON(true) : "");}
+	public boolean save() { return _.set_file_contents(this.path(), (this.m_json != null) ? this.m_json.toJSON(true) : "");}
 	// CRUDS - create / retrieve / update / delete / sync	
 	public CReturn create(CHash cvar) { 
 		if(cvar == null) { // no var
@@ -95,7 +93,7 @@ public class CJSONMemoryDriver extends CMemoryDriver {
 	
 	public boolean restore() {
 		this.m_json = null;
-		String strcontents = _.file_get_contents(this.path());
+		String strcontents = _.get_file_contents(this.path());
 		if(strcontents == null)
 			return false;		
 		CHash json = (CHash) _.json_decode(strcontents, true);

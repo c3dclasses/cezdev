@@ -2,7 +2,7 @@
 // file: CReturn.java
 // desc: defines constructs to use to simulate feature found in multithread programming lang 
 //-----------------------------------------------------------------------------------------------
-package cglobal;
+package c3dclasses;
 
 //--------------------------------------------------------------------------------
 // name: CReturn

@@ -5,7 +5,8 @@
 
 // includes
 import javax.swing.JOptionPane;
-import cglobal.*;
+import c3dclasses.*;
+
 
 //------------------------------------------------------------------------
 // name: CMessageBox

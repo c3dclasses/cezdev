@@ -2,7 +2,6 @@
 // name: CEZDEVButton
 // desc: defines a button control object used by EZDEV
 //---------------------------------------------------------------------------------------------
-package cezdev;
 import java.awt.*;
 import java.awt.Container;
 import java.awt.FlowLayout;
@@ -10,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.applet.*;
 import javax.swing.*;
-import cglobal.*;
+import c3dclasses.*;
 
 //----------------------------------------------------------------------------------
 // name: CEZDEVButton
@@ -44,8 +43,8 @@ public class CEZDEVButton extends CEZDEVControl {
 		} // end if
 		
 		str = (String) cjsonobject.get("icon");
-		if(str != null || str != "" || _.isFile(str) == false) {
-			str = _.getPath(this.getFilename()) + "\\" + str;
+		if(str != null || str != "" || _.is_file(str) == false) {
+			str = _.get_path(this.getFilename()) + "\\" + str;
 			this.m_jbutton.setIcon(new ImageIcon(str));	
 		} // end if	
 		

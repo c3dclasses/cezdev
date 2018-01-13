@@ -1,5 +1,5 @@
 ::------------------------------------------------------
-:: name: c3dclassessdk_init.bat
+:: name: c3dclassessdk.bat
 :: desc: initializes the c3dclassessdk framework
 ::------------------------------------------------------
 set C3DCLASSESSDK_VERSION=1.0

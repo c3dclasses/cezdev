@@ -3,9 +3,7 @@
 // desc: 
 //-------------------------------------------------------
 import javax.swing.JOptionPane;
-import cglobal.*;
-import c3dclasses.csystem.cui.*;
-import c3dclasses.ccore.*;
+import c3dclasses.*;
 
 public class CControlsProgram2 {				
 	public static void main(String[] args) {
