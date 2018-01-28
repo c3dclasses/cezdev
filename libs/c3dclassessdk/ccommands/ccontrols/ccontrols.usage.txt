@@ -1,2 +1,0 @@
-ccontrols -init				- intializes the controls object
-ccontrols -deinit			- deinitializes the controls object

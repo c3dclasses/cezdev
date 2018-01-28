@@ -1,21 +1,20 @@
 //-----------------------------------------------------------------------------------------
 // file: CArray
-// desc: defines an array object
+// desc: 
 //-----------------------------------------------------------------------------------------
 package c3dclasses;
 import java.util.*;
 
 //-------------------------------------------
 // class CArray
-// desc: creates a array object
+// desc: 
 //-------------------------------------------
 public class CArray {
-	protected ArrayList m_array = new ArrayList();
 	public CArray() { this.clear(); }
 	public CArray(int capacity) { for(int i=0; i<capacity; i++){ this.push(null); } }
+	public CArray(Object element) { this.push(element); }
 	public CArray(Object [] elements) { for (Object element : elements) this.push(element); }
 	public CArray(ArrayList array) { for (Object element : array) this.push(element); }
-	//public CArray(CArray carray) { super(carray.m_array); }
 	public int length() { return this.m_array.size(); }
     public int indexOf(Object element) { return this.m_array.indexOf(element); }
 	public int lastIndexOf(Object element) {  return this.m_array.lastIndexOf(element); }
@@ -27,19 +26,40 @@ public class CArray {
 	public Object set(int iindex, Object object) { return this.m_array.set(iindex, object); }
 	public Object pop() { return (this.length() > 0) ? this.m_array.remove(this.length() - 1) : null; }
 	public int push(Object element) { this.m_array.add(element); return this.length(); } 
+	public int append(CArray carray){ if(carray == null) return this.length(); for(int i=0; i<carray.length(); i++) this.push(carray._(i)); return this.length(); } 
 	public CArray concat(Object [] elements) { return new CArray(elements); }
     public CArray concat(CArray carray) { return new CArray(carray.m_array); }
-    public String join(String seperator) { int len = m_array.size(); String str = ""; for(int i=0; i<len; i++) str += m_array.get(i).toString() + ((i!=len-1) ? ""+seperator : ""); return str; }
-    public CArray reverse() { for(int last=this.length()-1, first=0; first <= last; first++, last--) { Object tmp = this.get(first);this.set(first, this.get(last)); this.set(last, tmp); } return this; } // end reverse();
+    public String join(String seperator) { 
+		int len = m_array.size(); 
+		String str = ""; 
+		for(int i=0; i<len; i++) 
+			str += m_array.get(i).toString() + ((i!=len-1) ? ""+seperator : ""); 
+		return str; 
+	} // end join()
+    public CArray reverse() { 
+		for(int last=this.length()-1, first=0; first <= last; first++, last--) { 
+			Object tmp = this.get(first);
+			this.set(first, this.get(last)); 
+			this.set(last, tmp); } 
+			return this; 
+	} // end reverse();
     public Object shift() { Object element = this.get(0); this.removeAt(0); return element; }
 	public int unshift(Object element) { this.m_array.add(0, element); return this.length(); }
     public CArray slice(int start, int end) { return new CArray(this.m_array.subList(start, end).toArray()); }
     public CArray slice(int start) { return new CArray(this.m_array.subList(start, this.length()).toArray()); }
-	public CArray splice(int index, int howmany, Object [] replacements) { int len=index+howmany; for(int i=0; i<howmany; i++) this.removeAt(index); if(replacements != null) this.set(index, replacements); return this;}
+	public CArray splice(int index, int howmany, Object [] replacements) { 
+		int len=index+howmany; 
+		for(int i=0; i<howmany; i++) 
+		this.removeAt(index); 
+		if(replacements != null) 
+			this.set(index, replacements); 
+		return this;
+	} // end splice()
 	public CArray splice(int index, int howmany) { return this.splice(index, howmany, null); }
 	public String toString() { return _.print_r(this.m_array, true); }
-	public String toJSON(boolean bpack) { return "[]"; }
-    public ArrayList valueOf() { return this.m_array; }
+	//public String toString() { return this.toJSON(true); }
+	public String toJSON(boolean bpack) { return CJSON.encode(this, bpack); }
+	public ArrayList valueOf() { return this.m_array; }
     public void sort(Comparator cmp) { Collections.sort(this.m_array, cmp); }
 	public void sort() { Collections.sort(this.m_array, null); }
 	public void sort(CFunction sortfunc, CFunction cmpfunc) { 
@@ -51,7 +71,6 @@ public class CArray {
 			this._(i,a[i]);
 	} // end sort()
 	public int compare(int i, int j, CFunction cmpfunc) { return cmpfunc._(_.args(this._(i), this._(j)))._int(0); } 
-	
 	public ArrayList _() { return this.m_array; }
     public Object _(int index) { return this.get(index); }
     public Object _(int index, Object value) { return this.set(index, value); }
@@ -60,15 +79,35 @@ public class CArray {
 	public int _int(int index) { return Integer.valueOf(this.get(index).toString()); }
 	public float _float(int index) { return Float.valueOf(this.get(index).toString()); }
 	public String _string(int index) { return (String)this.get(index); }
+	public Object [] _array(int index){ return (Object [])this.get(index); }	
 	public CArray _carray(int index) { return (CArray) this.get(index); }
 	public CHash _chash(int index) { return (CHash)this.get(index); }
-	public CFunction _func(int index) {return (CFunction) this._(index); }
 	public CObject _cobject(int index) {return (CObject) this._(index); }
-
+	public CFunction _cfunction(int index) {return (CFunction) this._(index); }
 	public void visit(CFunction cfunction) { this.visit(cfunction, null); }
-    public void visit(CFunction cfunction, Object obj) { int i=0; for(Object element : m_array) { cfunction._(new Object []  { i, element, obj }); i++; } return; }
-    public String toStringVisit(CFunction cfunction, Object input) { String str = ""; int i=0; for(Object element : m_array) { str += (String)cfunction._(new Object []  { i, element, input }); i++; } return str; } 
-	public Object [] toArray() { Object [] arr = new Object [this.length()]; for(int i=0; i<arr.length; i++) arr[i] = this._(i); return (arr != null && arr.length > 0) ? arr : null; }
+    public void visit(CFunction cfunction, Object obj) { 
+		int i = 0; 
+		for(Object element : this.m_array) { 
+			cfunction._(new Object []  { i, element, obj }); 
+			i++; 
+		} // end for
+		return; 
+	} // end visit()
+	public String toStringVisit(CFunction cfunction, Object input) { 
+		String str = ""; 
+		int i=0; 
+		for(Object element : m_array) { 
+			str += (String)cfunction._(new Object []  { i, element, input }); 
+			i++; 
+		} // end for
+		return str; 
+	} // end toStringVisit()  
+	public Object [] toArray() { 
+		Object [] arr = new Object [this.length()]; 
+		for(int i=0; i<arr.length; i++) 
+			arr[i] = this._(i); 
+		return (arr != null && arr.length > 0) ? arr : null; 
+	} // end toArray()
     public void removeAt(int index) { this.m_array.remove(index); }
 	public void removeAll(Object element) { while(this.remove(element)) {} }
     public boolean remove(Object element) { return this.m_array.remove(element); }
@@ -81,4 +120,5 @@ public class CArray {
 		} // end if
 		return false;
 	} // end swap()
+	protected ArrayList m_array = new ArrayList();
 } // end CArray

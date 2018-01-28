@@ -8,8 +8,10 @@ package c3dclasses;
 // name: CResource
 // desc: an object treated as a resource or (singleton) to be used throughout the SDK  
 //---------------------------------------------------------------------------------------
-public class CResource extends CHash {
+public class CResource extends CObject {
 	public CResource() {} 
+	
+	// methods 
 	public boolean open(String strpath, String strtype, CHash params) {
 		this.append(params);
 		this.set("cresource_path", strpath);
@@ -21,6 +23,7 @@ public class CResource extends CHash {
 	public String path() { return (String) this.get("cresource_path"); }
 	public String type(){ return (String) this.get("cresource_type"); }
 	public String toString(){ return super.toString(); }
+	
 	// ClassMethods
 	// include / use
 	public static CResource include(String strid, String strpath, String strtype, CHash params) { return CResource._register(strid, strpath, strtype, params); }

@@ -19,6 +19,10 @@ IF NOT EXIST %EZDEV_META% (
 	mkdir %EZDEV_META% 
 )
 
+:: set the commands on the path
+set PYTHON_COMMANDS=%EZDEV_HOME%/libs/python/python-3.5.4-embed-amd64
+set PATH=%PATH%;%PYTHON_COMMANDS%
+
 :: initialize EZDEV
 cd /d %EZDEV_HOME%/libs/c3dclassessdk/ccommands
 call c3dclassessdk

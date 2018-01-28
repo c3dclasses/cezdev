@@ -9,98 +9,41 @@ package c3dclasses;
 // desc: defines a return contruct or statement for asynchonous methods
 // 		 its used in cdatastream objects that use ajax operations
 //--------------------------------------------------------------------------------
-public class CReturn {
-	protected Object m_data;
-	protected CFunction m_fnformat;
-	protected String m_strerror;
-	protected int m_icode;
-	protected String m_strstatus;
-	
+public class CReturn extends CObject {
 	public CReturn() { 
-		this.m_data = null;
-		this.m_fnformat = null;
-		this.m_strerror = "";
-		this.m_icode = CReturn.NULL;
-		this.m_strstatus = "";
+		this._("m_data", null);
+		this._("m_fnformat", null);
+		this._("m_strerror", "");
+		this._("m_icode", CReturn.NULL);
+		this._("m_strstatus", "");
 	} // end CReturn()
 	
-	public String error(String strerror) {
-		if(strerror != null || strerror != "")
-			this.m_strerror = strerror;
- 		return this.m_strerror; 
-	} // end error()
+	public void error(String strerror) { this._("m_strerror", strerror); } 
+	public String error() { return (String) this._("m_strerror"); }
 	
-	public int code(int code) { 
-		this.m_icode = code;
- 		return this.m_icode; 
-	} // end status();
+	public void code(int code) { this._("m_icode", code); }
+	public int code() { return this._int("m_icode"); }
 	
-	public String status(String strstatus) { 
-		if(strstatus != null || strstatus != "")
-			this.m_strstatus = strstatus;
- 		return this.m_strstatus; 
-	} // end status();
+	public void status(String strstatus) { this._("m_strstatus", strstatus); } 
+	public String status() { return (String) this._("m_strstatus"); }
 	
-	public Object data(Object data) {
-		if(data != null)
-			this.m_data = data;	
-		return (this.m_fnformat != null) ? this.m_fnformat._(this.m_data) : this.m_data; 
-	} // end data()
-	public boolean _boolean() { return Boolean.valueOf(this.data(null).toString()); }
-	public int _int() { return Integer.valueOf(this.data(null).toString()); }
-	public float _float() { return Float.valueOf(this.data(null).toString()); }
-	public String _string() { return (String)this.data(null); }
+	public void data(Object data) { this._("m_data", data); } 
+	public Object data() { return this._("m_data"); }
 	
-	public Object results() {
-		return this.data(null);
-	} // end results
+	public Object results() { return this.data();}
+	public boolean _boolean() { return Boolean.valueOf(this.data().toString()); }
+	public int _int() { return Integer.valueOf(this.data().toString()); }
+	public float _float() { return Float.valueOf(this.data().toString()); }
+	public String _string() { return (String)this.data().toString(); }
 	
-	public String toString() {
-		String str = "CReturn: [";
-		str += "m_fnformat:" + this.m_fnformat + ",";
-		str += "m_strerror:" + this.m_strerror + ",";
-		str += "m_icode:" + this.m_icode + ",";
-		str += "m_strstatus:" + this.m_strstatus + ",";
-		str += "m_data:" + this.m_data;
-		str += "]";
-		return str;
-	} // end toString()
+	public boolean isdone() { return this._int("m_icode")  ==  CReturn.DONE; }
+	public boolean isbusy() { return this._int("m_icode") == CReturn.BUSY; }
+	public boolean isnull() { return this._int("m_icode") == CReturn.NULL; }
+	public boolean iserror() { return this._int("m_icode") == CReturn.ERROR; } 
 	
-	public CFunction formatefn(CFunction fn) {
-		if(fn != null)
-			this.m_fnformat = fn;
-		return this.m_fnformat;
-	} // end format() 
-	
-	public boolean isdone() { 
-		return this.m_icode  ==  CReturn.DONE;
-	} // end isdone()
-	
-	public boolean isbusy() {
-		return this.m_icode == CReturn.BUSY;
-	} // end isbusy()
-	
-	public boolean isnull() {
-		return this.m_icode == CReturn.NULL;
-	} // end isnull()
-	
-	public boolean iserror() {
-		return this.m_icode == CReturn.ERROR;
-	} // end isnull()
-
-	public CReturn _(int code, Object data) {
-		this.code(code);
-		this.data(data);
-		return this;
-	} // end _return()
-
-	public CReturn done(Object data) {
-		return this._(CReturn.DONE, data);
-	} // end _done()
-
-	public CReturn busy() {
-		return this._(CReturn.BUSY, null);
-	} // end _busy()
+	public CReturn _(int code, Object data) { this.code(code); this.data(data); return this; }
+	public CReturn done(Object data) { return this._(CReturn.DONE, data); } 
+	public CReturn busy() { return this._(CReturn.BUSY, null); }
 	
 	// ClassMethods
 	public static int NULL = 0;		// the function/method is not called yet
@@ -122,6 +65,10 @@ public class CReturn {
 
 	public static CReturn _busy() {
 		return CReturn._return(CReturn.BUSY, null);
+	} // end _busy()
+	
+	public static CReturn _error() {
+		return CReturn._return(CReturn.ERROR, null);
 	} // end _busy()
  	// end ClassMethods
 } // end CReturn()

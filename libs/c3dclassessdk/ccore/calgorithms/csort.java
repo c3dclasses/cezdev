@@ -35,4 +35,10 @@ public class csort {
 		}};
 	} // end bubble_sort_func()
 	
+	static public void heap_sort(Object a[], CFunction fncompare) {}
+	static public void quick_sort(Object a[], CFunction fncompare) {}
+	static public void radix_sort(Object a[], CFunction fncompare) {}
+	static public void count_sort(Object a[], CFunction fncompare) {}
+	static public void bucket_sort(Object a[], CFunction fncompare) {}
+	
 } // end csort

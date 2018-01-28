@@ -40,6 +40,18 @@ public class csearch {
 		return csearch.binary_search_rec(a, l, mid-1,  objtofind, fncompare);
 	} // end binary_search_rec()
 	
+	public static int k_select() {
+		return -1;
+	} // end k_select()
+	
+	public static int max() {
+		return -1;
+	} // end max()
+	
+	public static int min() {
+		return -1;
+	} // end min()
+	
 	/*
 	public static int kth_smallest(Object [] a) {
 		return 0;

@@ -1,0 +1,10 @@
+Data Mining
+	Data Storage, organization
+	Statistical/Computational Problems, Framework
+	Bioinformatics
+	Supervised / Unsupervised Learning
+	Statistical Learning - Predict / Identify / Estimate
+	
+Learning from data - patterns, trends, associations
+	Quantitative (stock prices) / Categorical (heart attack/no heart attack)
+	Given a set of features predict Quantitatively or Categorically 

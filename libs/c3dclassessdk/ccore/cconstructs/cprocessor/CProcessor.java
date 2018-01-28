@@ -11,12 +11,12 @@ package c3dclasses;
 public class CProcessor extends CHash {
 	protected CHash m_cinstructions; // stores the instuction set object	
 	public CProcessor() { this.m_cinstructions = new CHash(); } 
-	public Object process(Object operand) {
+	public CObject process(CObject operand) {
 		if(operand == null) return null;
 		CFunction cfunction = (CFunction) this._(this.toInstruction(operand));
 		return (cfunction == null) ? null : cfunction._(operand);			
 	} // end process() 
 	public boolean addCInstructions(String strinstructionname, Object cinstructions) { this.m_cinstructions._(strinstructionname, cinstructions); return true; }
 	public Object getCInstructions(String strinstruction) { return this.m_cinstructions._(strinstruction); }
-	public String toInstruction(Object operand) { return ""; }
+	public String toInstruction(CObject operand) { return ""; }
 } // end CProcessor

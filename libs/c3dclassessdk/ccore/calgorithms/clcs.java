@@ -3,7 +3,6 @@
 // desc: longest common subsequence
 //--------------------------------------------------
 package c3dclasses;
-import java.util.*;
 
 //--------------------------------------------------------
 // file: clcs

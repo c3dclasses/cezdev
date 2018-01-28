@@ -25,5 +25,5 @@ public class CLog {
 		CLog.m_strmsg[i] = "";
 		return strmsg;		 
 	} // end msg()
-	protected static void msg(int i, String strmsg) { CLog.m_strmsg[i] += strmsg + "\n"; }
+	protected static void msg(int i, String strmsg) { CLog.m_strmsg[i] = CLog.m_strmsg[i] + strmsg + "\n"; }
 } // end CFunction
