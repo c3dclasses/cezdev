@@ -26,7 +26,9 @@ public class CResource extends CObject {
 	
 	// ClassMethods
 	// include / use
-	public static CResource include(String strid, String strpath, String strtype, CHash params) { return CResource._register(strid, strpath, strtype, params); }
+	public static CResource include(String strid, String strpath, String strtype, CHash params) { 
+		return CResource._register(strid, strpath, strtype, params); 
+	} // end include()
 	public static CResource use(String strid) { return CResource._getByID(strid); }
 	// no need to call these methods below
 	protected static CHash m_pathtoresource = new CHash();	// stores the "filepath" -> resource

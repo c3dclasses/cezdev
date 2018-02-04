@@ -45,14 +45,14 @@ public class CReturnUnitTest extends CUnitTest {
 		this.assertTrue(creturn.iserror() == true);
 		this.assertTrue(creturn.isbusy() == false);	
 		this.assertTrue(creturn.isdone() == false);	
-		this.assertTrue(creturn.data() == null);	
+		this.assertTrue(creturn._boolean() == true);	
 	
 		creturn = CReturnUnitTest.asyncfunc_busy(true);
 		this.assertTrue(creturn.isnull() == false);
 		this.assertTrue(creturn.iserror() == false);
 		this.assertTrue(creturn.isbusy() == true);	
 		this.assertTrue(creturn.isdone() == false);	
-		this.assertTrue(creturn.data() == null);	
+		this.assertTrue(creturn._boolean() == true);	
 	} // end test()
 	
 	public static CReturn asyncfunc_done(Object data) {
@@ -60,10 +60,10 @@ public class CReturnUnitTest extends CUnitTest {
 	} // end asyncfunc()
 	
 	public static CReturn asyncfunc_busy(Object data) {
-		return CReturn._busy();
+		return CReturn._busy(data);
 	} // end asyncfunc_busy()
 	
 	public static CReturn asyncfunc_error(Object data) {
-		return CReturn._error();
+		return CReturn._error(data);
 	} // end asyncfunc_error()
 } // end CReturnUnitTest()

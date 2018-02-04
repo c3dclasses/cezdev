@@ -24,8 +24,8 @@ public class CHash {
 	public CArray values() { return new CArray(this.m_hash.values().toArray()); }
 	public HashMap valueOf() { return this.m_hash; }
 	public HashMap _() { return this.m_hash; }
-	public void set(Object key, Object value) { this.m_hash.put(key,value); }
-	public void _(Object key, Object value) { this.set(key, value); }	
+	public CHash set(Object key, Object value) { this.m_hash.put(key,value); return this; }
+	public CHash _(Object key, Object value) { return this.set(key, value); }	
 	public Object get(Object key) { return this.m_hash.get(key); }
 	public Object _(Object key) { return this.get(key); }
 	public Object _object(Object key) { return this.get(key); }

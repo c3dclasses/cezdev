@@ -43,7 +43,7 @@ public class CHook {
 		if(chook == null)
 			return false;
 		for(int i=0; i<chook.length(); i++)
-			chook._cfunction(i)._((CArray)null);
+			chook._cfunction(i).call((CArray)null);
 		return true;	
 	} // end fire()
 } // end CHook

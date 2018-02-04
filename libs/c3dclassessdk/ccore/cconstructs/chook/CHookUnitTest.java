@@ -14,43 +14,42 @@ public class CHookUnitTest extends CUnitTest {
 	@Test
 	public void test() {	
 		CHook.add("onload", new CFunction() {
-			public CArray _(CArray args) {
+			public CReturn call(CArray args) {
 				CHookUnitTest.m_count++;
 				return null;
 			} // end _()
 		}); // end CHook.add()
 		
 		CHook.add("onload", new CFunction() {
-			public CArray _(CArray args) {
+			public CReturn call(CArray args) {
 				CHookUnitTest.m_count++;
 				return null;
 			} // end _()
 		}); // end CHook.add()
 		
 		CHook.add("onload", new CFunction() {
-			public CArray _(CArray args) {
-				CHookUnitTest.m_count++;
-				return null;
-			} // end _()
-		}); // end CHook.add()
-		
-		
-		CHook.add("oninit", new CFunction() {
-			public CArray _(CArray args) {
+			public CReturn call(CArray args) {
 				CHookUnitTest.m_count++;
 				return null;
 			} // end _()
 		}); // end CHook.add()
 		
 		CHook.add("oninit", new CFunction() {
-			public CArray _(CArray args) {
+			public CReturn call(CArray args) {
+				CHookUnitTest.m_count++;
+				return null;
+			} // end _()
+		}); // end CHook.add()
+		
+		CHook.add("oninit", new CFunction() {
+			public CReturn call(CArray args) {
 				CHookUnitTest.m_count++;
 				return null;
 			} // end _()
 		}); // end CHook.add()
 		
 		CFunction cfunction = new CFunction() {
-			public CArray _(CArray args) {
+			public CReturn call(CArray args) {
 				CHookUnitTest.m_count++;
 				return null;
 			} // end _()

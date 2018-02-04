@@ -70,7 +70,7 @@ public class CArray {
 		for(int i=0; i<a.length; i++)
 			this._(i,a[i]);
 	} // end sort()
-	public int compare(int i, int j, CFunction cmpfunc) { return cmpfunc._(_.args(this._(i), this._(j)))._int(0); } 
+	public int compare(int i, int j, CFunction cmpfunc) { return cmpfunc.call(_.args(this._(i), this._(j)))._int(0); } 
 	public ArrayList _() { return this.m_array; }
     public Object _(int index) { return this.get(index); }
     public Object _(int index, Object value) { return this.set(index, value); }

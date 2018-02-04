@@ -246,6 +246,7 @@ public class _ {
 		if(strcontents == null || strcontents == "")
 			return false;
 		try{
+			_.alert("set file contents here");
 			FileWriter out = new FileWriter(strfilename);
 			out.write(strcontents);
 			out.close();
