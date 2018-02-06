@@ -22,5 +22,7 @@ public class CFunction extends CObject {
 	}; // end m_null;
 	static public CFunction get(String strname) { return CFunction.m_cfunctions._cfunction(strname); }
 	static public void set(String strname, CFunction cfunction) { CFunction.m_cfunctions._(strname, cfunction); }
+	static public void map(String strname, String strfuncname) { CFunction.set(strname,CFunction.get(strfuncname)); }
+	
 	static public CFunction _error() { return CFunction.m_error; }
 } // end CFunction

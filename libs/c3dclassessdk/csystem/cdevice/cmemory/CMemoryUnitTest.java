@@ -127,6 +127,20 @@ public class CMemoryUnitTest extends CUnitTest {
 		creturn = cmemory.upsert("charlie", "charlie and the chocolate factory", "string", null);
 		this.assertTrue(creturn != null);
 		cvar = (CHash) creturn.data();
-		this.assertTrue(cvar == null);				
+		this.assertTrue(cvar == null);		
+		
+		// global driver
+		strpath = "C:/Users/developer/Desktop/cezdev2/libs/c3dclassessdk/csystem/cdevice/cmemory/json_driver.json";
+		this.assertTrue(CMemory.include("cmemory-test10", strpath, "json_driver", null) != null);
+		cmemory3 = CMemory.use("cmemory-test10");
+		// create
+		creturn = cmemory3.create("kevin", "is here", "string", null);
+		this.assertTrue(creturn != null);
+		cvar = (CHash) creturn._chash();
+		this.assertTrue(cvar != null);
+		this.assertTrue(cvar._string("m_strname").equals("kevin"));
+		this.assertTrue(cvar._string("m_value").equals("is here"));
+		
+				
 	} // end test()
 } // end CHookUnitTest
