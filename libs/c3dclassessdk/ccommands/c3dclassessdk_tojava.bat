@@ -64,6 +64,8 @@ if not exist "%dstpath%/src/main/java" (
 )
 :: move all java files from source location to dest
 call cpfiles "*UnitTest.java" "%srcpath%" "%dstpath%/src/test/java"
+call cpfiles "*unittest.java" "%srcpath%" "%dstpath%/src/test/java"
+
 
 :: go back to home dir
 cd /d %HOME%

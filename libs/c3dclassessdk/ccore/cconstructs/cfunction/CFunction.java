@@ -14,6 +14,8 @@ public class CFunction extends CObject {
 	public CReturn call(CArray args) { return null; }
 	public CReturn call(CHash params) { return null; }
 	public CReturn call(Object obj) { return null; }
+	public CReturn call(Object... obj) { return null; }
+	
 	protected static CHash m_cfunctions = _.chash();
 	protected static CFunction m_error = new CFunction() { 
 		public CReturn call(Object obj){ return CReturn._error(null); }

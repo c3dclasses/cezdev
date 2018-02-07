@@ -109,7 +109,7 @@ public class CMemory extends CResource {
 	} // end toString()
 	
 	public CFunction driver(String func) { 
-		_.alert(this._string("cmemory_driver_type") + "." + func);
+	//_.alert(this._string("cmemory_driver_type") + "." + func);
 	
 		CFunction cfunction = CFunction.get(this._string("cmemory_driver_type") + "." + func);
 		return (cfunction != null) ? cfunction : CFunction._error();
