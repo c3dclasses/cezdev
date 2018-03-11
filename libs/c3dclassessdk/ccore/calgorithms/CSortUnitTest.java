@@ -37,5 +37,10 @@ public class CSortUnitTest extends CUnitTest {
 		carray = _.carray(31,41,59,26,41,58);
 		sorted_carray = _.carray(59,58,41,41,31,26);
 		this.assertTrue(csort.insertion_sort(carray, nonincreasing).toString().equals(sorted_carray.toString()));
+		
+		// selection sort
+		this.assertTrue(csort.selection_sort(carray, compare).toString().equals(sorted_carray.toString()));
+		
+		
 	} // end test()
 } // end CSortUnitTest

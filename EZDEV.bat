@@ -3,32 +3,52 @@
 :: desc: starts the EZDEV application
 ::------------------------------------------------------
 
-## starting message
+::-----------------------------------
+:: starting message
+::-----------------------------------
 @echo on
 echo Starting EasyDeveloper ..........................................
 
+::-----------------------------------
 :: initialize the variables 
+::-----------------------------------
 set EZDEV_VERSION=1.0
 set EZDEV_NAME=EZDEV
 set EZDEV_DEBUG=true
 set EZDEV_HOME=%CD%
 set EZDEV_META=%EZDEV_HOME%/meta
 
+::------------------------------------------------
 :: create the meta directory if it doesn't exist
-IF NOT EXIST %EZDEV_META% ( 
-	mkdir %EZDEV_META% 
-)
+::------------------------------------------------
+IF NOT EXIST %EZDEV_META% ( mkdir %EZDEV_META% )
 
-:: set the commands on the path
+::------------------------------------------------
+:: initialize EZDEV libs
+::------------------------------------------------
+
+:: python library
+set INITLIBSHOME=%CD%
 set PYTHON_COMMANDS=%EZDEV_HOME%/libs/python/python-3.5.4-embed-amd64
 set PATH=%PATH%;%PYTHON_COMMANDS%
 
-:: initialize EZDEV
-cd /d %EZDEV_HOME%/libs/c3dclassessdk/ccommands
-call c3dclassessdk
+:: java library
+set JAVA_HOME=%EZDEV_HOME%/libs/java/jdk1.8.0_121
+set JAVA_BIN=%JAVA_HOME%/bin
 
-:: pause before terminating
-pause
+:: maven library
+set MAVEN_BIN=%EZDEV_HOME%/libs/java/apache-maven-3.2.3/bin
+set PATH=%PATH%;%JAVA_BIN%;%MAVEN_BIN%;%CD%;
 
+:: boot commands
+javac %EZDEV_HOME%/libs/boot/*.java
+set PATH=%PATH%;%EZDEV_HOME%/libs/boot
+
+:: c3dclassessdk library
+call %EZDEV_HOME%/libs/c3dclassessdk/ccommands/c3dclassessdk
+:: cd %INITLIBSHOME%
+
+::---------------------------------------------------
 :: run the terminal to run additional commands 
+::---------------------------------------------------
 cmd

@@ -1,12 +1,12 @@
 //----------------------------------------------------------------
 // file: CMemory
-// desc: defines the memory object
+// desc: 
 //----------------------------------------------------------------
 package c3dclasses;
 
 //----------------------------------------------------------------
 // class: CMemory
-// desc: defines the memory object
+// desc: 
 //----------------------------------------------------------------
 public class CMemory extends CResource { 
 	public CMemory() { 
@@ -18,7 +18,7 @@ public class CMemory extends CResource {
 	public boolean open(String strpath, String strtype, CHash params) {
 		if(!super.open(strpath, strtype, params))
 			return false;	
-		if(this.driver("open").call((Object)this) == null)
+		if(this.driver("open", _.args(this)) == null)
 			return false;	
 		this.m_cache = _.chash();
 		if(params != null && params.containsKey("cmemory_cache")) {
@@ -27,13 +27,13 @@ public class CMemory extends CResource {
 		} // end if
 		CReturn creturn = this.sync();
 		if(creturn.isdone() && creturn.data() != null) {
-			this.m_cache = creturn._chash();
+			this.m_cache = creturn.chash();
 		} // end if
 		return true;	
 	} // end open()
 	
 	public boolean close() {
-		CReturn creturn = this.driver("close").call((Object)this);		
+		CReturn creturn = this.driver("close", _.args(this));		
 		this._("cmemory_driver_type", "");
 		this.m_cache = null; 
 		return true;
@@ -41,37 +41,37 @@ public class CMemory extends CResource {
 	
 	// remote CRUD
 	public CReturn create(String strname, Object value, String strtype, CHash params) {
-		CReturn creturn = this.driver("create").call(_.args(this, strname, value, strtype, params));
+		CReturn creturn = this.driver("create", _.args(this, strname, value, strtype, params));
 		if(creturn.isdone() && creturn.data() != null)
 			this.m_cache._(strname,creturn.data());
 		return creturn; 
 	} // end create()
     
 	public CReturn retrieve(String strname) {
-		CReturn creturn = this.driver("retrieve").call(_.args(this, strname));
+		CReturn creturn = this.driver("retrieve", _.args(this, strname));
 		if(creturn.isdone() && creturn.data() != null)
 			this.m_cache._(strname,creturn.data());
 		return creturn;
 	} // end retrieve()
 	
 	public CReturn update(String strname, Object value, String strtype, CHash params) {
-		CReturn creturn = this.driver("update").call(_.args(this, strname, value, strtype, params));
+		CReturn creturn = this.driver("update",_.args(this, strname, value, strtype, params));
 		if(creturn.isdone() && creturn.data() != null)
 			this.m_cache._(strname,creturn.data());
 		return creturn; 
 	} // end update()
 	
 	public CReturn delete(String strname) {
-		CReturn creturn = this.driver("delete").call(_.args(this, strname));
+		CReturn creturn = this.driver("delete", _.args(this, strname));
 		if(creturn.isdone() && creturn.data() != null)
 			this.m_cache.remove(strname);
 		return creturn;
 	} // end delete()
 	
 	public CReturn sync() { 
-		CReturn creturn = this.driver("sync").call((Object)this);
+		CReturn creturn = this.driver("sync", _.args(this));
 		if(creturn.isdone() && creturn.data() != null)
-			this.cache(creturn._chash());
+			this.cache(creturn.chash());
 		return creturn;
 	} // end sync()
 	
@@ -108,11 +108,9 @@ public class CMemory extends CResource {
 		return super.toJSON(false) + "\n" + this.m_cache.toJSON(false); 
 	} // end toString()
 	
-	public CFunction driver(String func) { 
-	//_.alert(this._string("cmemory_driver_type") + "." + func);
-	
+	public CReturn driver(String func, CArray args) { 
 		CFunction cfunction = CFunction.get(this._string("cmemory_driver_type") + "." + func);
-		return (cfunction != null) ? cfunction : CFunction._error();
+		return (cfunction != null) ? cfunction.call(args) : CReturn._error(null);		
 	} // end driver()
 	
 	// include / use 

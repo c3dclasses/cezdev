@@ -24,6 +24,17 @@ public class csort {
 		return A;
 	} // end insertion_sort()
 	
+	static public CArray selection_sort(CArray A, CFunction compare) {
+		for(int i=0; i < A.length(); i++) {
+			int smallest_i = i; 
+			for(int j=i+1; j < A.length(); j++) {
+				if(compare.call(_.args(A._(j), A._(smallest_i)))._boolean())
+					smallest_i = j; 
+			} // end for
+			A.swap(i, smallest_i);
+		} // end for
+		return A;
+	} // end selection_sort()
 	
 	/*
 	////////////////////

@@ -23,4 +23,14 @@ public class calgorithms {
 		C.reverse();
 		return C;
 	} // end add_nbit_numbers()
+	
+	public static boolean has_repeated_elements_bf(CArray A, CFunction compare) {
+		for(int i=0; i<A.length(); i++) {
+			for(int j=0; j<A.length(); j++) {
+				if(i != j && compare.call(_.args(A._(i), A._(j)))._boolean())
+					return true;
+			} // end for
+		} // end for		
+		return false;
+	} // end has_repeated_elements()
 } // end calgorithms

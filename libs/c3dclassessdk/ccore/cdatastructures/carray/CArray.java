@@ -9,9 +9,23 @@ import java.util.*;
 // class CArray
 // desc: 
 //-------------------------------------------
-public class CArray {
+public class CArray extends CCast {
 	public CArray() { this.clear(); }
-	public CArray(int capacity) { for(int i=0; i<capacity; i++){ this.push(null); } }
+	public CArray(int [] capacity) { 
+		this(capacity, 0);
+	} // end CArray()
+	public CArray(int [] capacity, int index) {
+		if(capacity == null || index >= capacity.length)
+			return;
+		else if(capacity != null && index == capacity.length-1) {
+			for(int i=0; i < capacity[index]; i++)
+				this.push(null); 
+			return;
+		} // end if
+		for(int i=0; i < capacity[index]; i++)
+			this.push(new CArray(capacity, index+1)); 
+		return;
+	} // end CArray()
 	public CArray(Object element) { this.push(element); }
 	public CArray(Object [] elements) { for (Object element : elements) this.push(element); }
 	public CArray(ArrayList array) { for (Object element : array) this.push(element); }
@@ -23,12 +37,22 @@ public class CArray {
 	public Object first() { return this.get(0); }
 	public Object last() { return this.get(this.length()-1); }
 	public Object top() { return this.last(); }
-	public Object set(int iindex, Object object) { return this.m_array.set(iindex, object); }
+	public CCast set(int iindex, Object object) { this.m_array.set(iindex, object); return this; }
 	public Object pop() { return (this.length() > 0) ? this.m_array.remove(this.length() - 1) : null; }
 	public int push(Object element) { this.m_array.add(element); return this.length(); } 
 	public int append(CArray carray){ if(carray == null) return this.length(); for(int i=0; i<carray.length(); i++) this.push(carray._(i)); return this.length(); } 
 	public CArray concat(Object [] elements) { return new CArray(elements); }
     public CArray concat(CArray carray) { return new CArray(carray.m_array); }
+	public CArray union(CArray carray) {
+		CHash chash = _.chash();
+		for(int i=0; i<this.length(); i++) {
+			chash._(this._(i), "");
+		} // end for()
+		for(int i=0; i<carray.length(); i++) {
+			chash._(carray._(i), "");
+		} // end for()
+		return chash.keys();
+	} // end union()
     public String join(String seperator) { 
 		int len = m_array.size(); 
 		String str = ""; 
@@ -74,16 +98,25 @@ public class CArray {
 	public ArrayList _() { return this.m_array; }
     public Object _(int index) { return this.get(index); }
     public Object _(int index, Object value) { return this.set(index, value); }
-	public CArray _(int sindex, int eindex) { return this.slice(sindex, eindex+1); } // adding 1 make sindex and eindex inclusize ranges 
-	public boolean _boolean(int index) { return Boolean.valueOf(this.get(index).toString()); }
-	public int _int(int index) { return Integer.valueOf(this.get(index).toString()); }
-	public float _float(int index) { return Float.valueOf(this.get(index).toString()); }
-	public String _string(int index) { return (String)this.get(index); }
-	public Object [] _array(int index){ return (Object [])this.get(index); }	
-	public CArray _carray(int index) { return (CArray) this.get(index); }
-	public CHash _chash(int index) { return (CHash)this.get(index); }
-	public CObject _cobject(int index) {return (CObject) this._(index); }
-	public CFunction _cfunction(int index) {return (CFunction) this._(index); }
+	//public CArray _(int sindex, int eindex) { return this.slice(sindex, eindex+1); } // adding 1 make sindex and eindex inclusize ranges 
+	public CArray powerset() { return this.powerset(-1); }
+	public CArray powerset(int itemsize) {
+		int setsize = this.length();
+		int n = (int) Math.pow(2, setsize);
+		CArray powerset = _.carray();
+		for(int i=0; i<n; i++) {
+			CArray set = _.carray();
+			for(int j=0; j<setsize; j++) {
+				if((i&(1<<j)) > 0) {
+					set.push(this._(j));
+				} // end if
+			} // end for
+			if(itemsize == set.length() || itemsize == -1)
+				powerset.push(set);
+		} // end for
+		return powerset;
+	} // end powerset()
+	
 	public void visit(CFunction cfunction) { this.visit(cfunction, null); }
     public void visit(CFunction cfunction, Object obj) { 
 		int i = 0; 

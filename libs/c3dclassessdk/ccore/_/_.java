@@ -8,12 +8,14 @@ import java.util.*;
 import java.net.*;
 import java.text.*;
 import java.awt.*;
+import java.awt.image.*;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.applet.*;
 import javax.swing.*;
+import javax.imageio.*;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import org.apache.commons.lang.ArrayUtils;
@@ -115,7 +117,7 @@ public class _ {
 	public static long time() { return _.get_time_ms(); }
 	public static long get_time() { return _.get_time_ms(); }
 	public static float get_time_mms() { return System.nanoTime() / 1000; }
-	public static long get_time_ms() { return System.currentTimeMillis() % 1000; }
+	public static long get_time_ms() { return System.currentTimeMillis(); }
 
 	// sleep
 	public static void sleep(int milliseconds) { try { Thread.sleep(milliseconds); } catch(InterruptedException ex) {} }
@@ -169,7 +171,28 @@ public class _ {
         return "testOne:: " + " File:" + _.FILE__() + " Class:" + _.CLASS__()
                 + " Method:" + _.METHOD__() + " Line:" + _.LINE__();
     } // end testOne()
-		
+	
+	
+	public static void traverse_path(String strstartpath, CFunction fncallback) {
+		traverse_path(new File(strstartpath), fncallback);
+	} // end traverse_path()
+	
+	public static void traverse_path(File dir, CFunction fncallback) {
+		try {
+			CReturn creturn = fncallback.call((Object)dir);
+			//if(creturn._boolean(false))
+			//	return;
+			if(dir.isDirectory()) {
+				String[] children = dir.list();
+				for (int i=0; children != null && i<children.length; i++)
+					traverse_path(new File(dir,children[i]), fncallback);	
+			} // end if
+		} // end try
+		catch(Exception ex) {
+			return;
+		} // end catch
+	} // end traverse_files()
+	 
 	// allocation
 	public static Object _new(String strclassname) { 
 		try { 
@@ -199,10 +222,37 @@ public class _ {
 		return strings;	
 	} // end split()
 	
+	public static CArray explode(String strseperator, String strtoseperate) {
+		return _.split(strseperator, strtoseperate);
+	} // end explode()
+	
 	// setting / getting file contents	
 	public static String file_get_contents(String strfilename) { return _.get_file_contents(strfilename); }
 	public static boolean file_set_contents(String strfilename, String strcontents) { return _.set_file_contents(strfilename, strcontents); }
 	public static boolean file_exists(String strfilename) { File f = new File(strfilename); return f.exists(); }
+	public static CArray get_lines_from_file(String strfilename) { return _.get_lines_from_file(strfilename, false, null); }
+	public static CArray load_csv_file(String strfilepathname) { return _.get_lines_from_file(strfilepathname, true, ","); }
+	public static CArray get_lines_from_file(String strfilename, boolean bsplitlines, String strdelimiter) {
+		if(strfilename == null || strfilename == "")
+			return null;
+		try{
+			CArray lines = _.carray();
+			String strline = "";
+			LineNumberReader in = new LineNumberReader(new FileReader(strfilename));
+			while((strline = in.readLine()) != null) { 
+				lines.push((!bsplitlines) ? strline : _.split(strdelimiter, strline)); 
+			} // end while()	
+			in.close();
+			return lines;		
+		} // end try
+		catch(Exception ex) {
+			//CLog.error(ex.toString());
+			_.alert(ex.getMessage());
+			return null; 
+		} // end catch()
+	} // end get_lines_from_file()
+
+	/*
 	public static ArrayList<String> get_lines_from_file(String strfilename) {
 		if(strfilename == null || strfilename == "")
 			return null;
@@ -221,6 +271,7 @@ public class _ {
 			return null; 
 		} // end catch() 
 	} // end getLinesFromFile()	
+	*/
 	public static String get_file_contents(String strfilename) {
 		String strcontents = "";
 		try {
@@ -243,7 +294,7 @@ public class _ {
 		return strcontents;
 	} // end getFileContents()
 	public static boolean set_file_contents(String strfilename, String strcontents) {
-		if(strcontents == null || strcontents == "")
+		if(strcontents == null)
 			return false;
 		try{
 			//_.alert("set file contents here");
@@ -257,7 +308,75 @@ public class _ {
 		} // end catch() 	
 		return true;
 	} // end setFileContents()
+	
+	public static boolean append_file_contents(String strfilename, String strcontents) {
+		if(strcontents == null || strcontents == "")
+			return false;
+		try{
+			//_.alert("set file contents here");
+			FileWriter out = new FileWriter(strfilename, true);
+			out.write(strcontents);
+			out.close();
+		} // end try
+		catch(Exception ex) {
+			//CLog.error(ex.toString());
+			return false;
+		} // end catch() 	
+		return true;
+	} // end append_file_contents()
+	
+	public static BufferedImage _load_img_file(String strfilename) {
+		try {
+			return ImageIO.read(new File(strfilename));
+		} // end try 
+		catch (IOException e) {
+			return null;
+		} // end catch()
+	} // end load_img_file()
 		
+	public static CArray load_img_file(String strfilename) {
+		BufferedImage img = _._load_img_file(strfilename);
+		if(img == null)
+			return null;
+		int w = img.getWidth();
+		int h = img.getHeight();
+		CArray cimg = _.carray_c(w, h);
+		for(int x=0; x<w; x++) {
+			for(int y=0; y<h; y++) {	
+				cimg._carray(x)._(y, (Object)(img.getRGB(x,y) & 0xFF));
+			} // end for
+		} // end for
+		return cimg;
+	} // end load_img_file()
+	
+	public static boolean save_img_file(String stroutfilename, String strformat, CArray img) {
+		int w = img.length();
+		int h = img._carray(0).length();
+		BufferedImage bimg = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+		if(bimg == null)
+			return false;
+		for(int x=0; x<w; x++) {
+			for(int y=0; y<h; y++) {
+				int graylevel = img._carray(x)._int(y);
+				int gray = (graylevel << 16) + (graylevel << 8) + graylevel; 
+				bimg.setRGB(x,y,gray);
+			} // end for
+		} // end for
+		return _.save_img_file(stroutfilename, strformat, bimg);
+	} // end 
+		
+	public static boolean save_img_file(String stroutfilename, String strformat, BufferedImage img) {
+		try {
+			ImageIO.write(img, strformat, new File(stroutfilename));
+			return true;
+		} // end try 
+		catch (IOException e) {
+			return false;
+		} // end catch()
+	} // end load_img_file()
+
+		
+
 	// runs a command asynchoronously
 	public static boolean exec_command(String strcommand) {
 		try { 
@@ -334,8 +453,9 @@ public class _ {
 		String jvmName = ManagementFactory.getRuntimeMXBean().getName(); 
 		return Long.valueOf(jvmName.split("@")[0]); 
 	} // end get_pid()
-		
+	
 	// chash, carray, cobject, args, params, obj
+	public static CArray carray_c(int... capacity) { return new CArray(capacity); }
 	public static CArray carray() { return new CArray(); }
 	public static CArray carray(Object... objects) { return new CArray(objects); }
 	public static CHash chash() { return new CHash(); }
@@ -346,9 +466,51 @@ public class _ {
 	public static CFunction cfunction(String strname) { return CFunction.get(strname); }
 	public static CArray args(Object... args) { return _.carray(args); }
 	public static CArray args() { return _.carray(); }
+	public static CArray a() { return new CArray(); }
+	public static CArray a(Object... objects) { return new CArray(objects); }
 	public static CHash params(Object... params) { return _.chash(params); }
 	public static CHash params() { return _.chash(); }	
+	public static CHash h(Object... params) { return _.chash(params); }
+	public static CHash h() { return _.chash(); }	
 	public static CObject obj(Object... namevalues){ return _.cobject(namevalues); }
 	public static CObject obj(){ return _.cobject(); }
+	public static CObject o(Object... namevalues){ return _.cobject(namevalues); }
+	public static CObject o(){ return _.cobject(); }
 	public static CFunction func(String strname) { return _.cfunction(strname); }
-} // end _
+	
+	// interval / timeout
+	public static int setInterval(CFunction cfunction, int imilliseconds) { return CIntervalConcurrentEvent.setInterval(cfunction, imilliseconds); }
+	public static void clearInterval(int id) { CIntervalConcurrentEvent.clearInterval(id); }
+	public static int setTimeout(CFunction cfunction, int imilliseconds) { return CTimeoutConcurrentEvent.setTimeout(cfunction, imilliseconds); }
+	public static void clearTimeout(int id) { CTimeoutConcurrentEvent.clearInterval(id); }	
+	
+	// driver code
+	public static void include_driver(String strdriverclassname) { CDriver.include(strdriverclassname); }	
+	
+	// file / dir
+	public static CHash m_filetodir = null; 
+	public static String file_path(String strfilename) {		
+		if(_.m_filetodir == null)
+			_.m_filetodir = CJSON.toCHash(_.file_get_contents(_.get_home_path() + "/c3dclasses-src.json"));
+		return (_.m_filetodir != null) ? _.m_filetodir._string(strfilename) : "";	
+	} // end file()
+	public static String file_path(Object object) { return _.file_path(object.getClass().getSimpleName() + ".java"); }
+	public static String dir_path(String strfilename) { return _.get_path(_.file_path(strfilename)); }
+	public static String dir_path(Object object) { return _.get_path(_.file_path(object)); }
+	
+	// out
+	public static void out(String strfilename, String strcontents) { _.file_set_contents(strfilename, strcontents);}
+	public static void out_append(String strfilename, String strcontents) { _.append_file_contents(strfilename, strcontents);}
+	public static void outln(String strfilename, String strcontents) { _.out_append(strfilename, strcontents + "\n");}
+	public static void out(Object object, Object contents) { 
+		String strpath = _.dir_path(object.getClass().getSimpleName() + ".java");
+		String strfilename = object.getClass().getSimpleName() + ".out";
+		_.out(strpath + "/" + strfilename, contents.toString());
+	} // end out()
+	public static void out_append(Object object, Object contents) { 
+		String strpath = _.dir_path(object.getClass().getSimpleName() + ".java");
+		String strfilename = object.getClass().getSimpleName() + ".out";
+		_.out_append(strpath + "/" + strfilename, contents.toString());
+	} // end out_append()
+	public static void outln(Object object, Object contents) { _.out_append(object, contents + "\n"); }
+} // end 
