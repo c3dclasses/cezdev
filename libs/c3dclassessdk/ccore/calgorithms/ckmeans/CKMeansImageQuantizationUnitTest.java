@@ -23,41 +23,27 @@ public class CKMeansImageQuantizationUnitTest extends CUnitTest {
 		CArray img = _.load_img_file(strinfilename);
 		int bw = 2;
 		int bh = 2;
-		int nb = 6;
+		int nb = 6; // number of vectors in the codebook
 		int niterations = 20000;
 		int h = img.length();
 		int w = img._carray(0).length();
 		
 		// convert image to vector of nxn img blocks
 		CArray blocks = convert_img_to_vectors(img, bw, bh);
-		CArray output = cwekakmeans._(nb, blocks, niterations, "image-quantization");
+		CArray output = ckmeans._(nb, blocks, niterations, "image-quantization");
 		CArray codebook = output._carray(0);
 		CArray clusterassignments = output._carray(1);
+		
+		// generate and build the compressed image
 		CArray compressedblocks = compress_img_using_clusters(codebook, clusterassignments);
 	
+		// output the code block
 		CArray cbimg = convert_vectors_to_img(codebook,nb*bw, bh, bw, bh);
 		_.save_img_file(_.dir_path(this) + "\\codebook.png", "png", cbimg);
 	
-	
+		// output the compressed image
 		CArray cpimg = convert_vectors_to_img(compressedblocks, w, h, bw, bh);
-		_.save_img_file(stroutfilename, "png", cpimg);
-	
-		
-		//CArray img2 = convert_vectors_to_img(blocks, w, h, bw, bh);
-		//_.save_img_file(stroutfilename, "png", img2);
-		
-		
-		//_.out(c, clusters.toJSON(false));
-		
-		
-		/*
-		//CArray clusters = ckmeans.find_clusters(means, blocks);
-		// convert the vector of nxn blocks back into an image
-		*/
-	//	CArray img2 = convert_vectors_to_img(blocks, w, h, bw, bh);
-	//	_.save_img_file(stroutfilename, "png", img2);
-		
-		
+		_.save_img_file(stroutfilename, "png", cpimg);	
 	} // end test()
 	
 	//--------------------------------------------------------
