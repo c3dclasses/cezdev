@@ -28,7 +28,7 @@ public class CMemoryUnitTest extends CUnitTest {
 		// create
 		CReturn creturn = cmemory.create("kevin", "is here", "string", null);
 		this.assertTrue(creturn != null);
-		CHash cvar = (CHash) creturn.chash();
+		CHash cvar = (CHash) creturn._chash();
 		this.assertTrue(cvar != null);
 		this.assertTrue(cvar._string("m_strname").equals("kevin"));
 		this.assertTrue(cvar._string("m_value").equals("is here"));
@@ -136,7 +136,7 @@ public class CMemoryUnitTest extends CUnitTest {
 		// create
 		creturn = cmemory3.create("kevin", "is here", "string", null);
 		this.assertTrue(creturn != null);
-		cvar = (CHash) creturn.chash();
+		cvar = (CHash) creturn._chash();
 		this.assertTrue(cvar != null);
 		this.assertTrue(cvar._string("m_strname").equals("kevin"));
 		this.assertTrue(cvar._string("m_value").equals("is here"));

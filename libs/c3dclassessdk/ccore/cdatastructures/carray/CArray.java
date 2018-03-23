@@ -43,6 +43,7 @@ public class CArray extends CCast {
 	public int append(CArray carray){ if(carray == null) return this.length(); for(int i=0; i<carray.length(); i++) this.push(carray._(i)); return this.length(); } 
 	public CArray concat(Object [] elements) { return new CArray(elements); }
     public CArray concat(CArray carray) { return new CArray(carray.m_array); }
+	public CArray copy(){ return this.concat(this); }
 	public CArray union(CArray carray) {
 		CHash chash = _.chash();
 		for(int i=0; i<this.length(); i++) {
@@ -95,10 +96,10 @@ public class CArray extends CCast {
 			this._(i,a[i]);
 	} // end sort()
 	public int compare(int i, int j, CFunction cmpfunc) { return cmpfunc.call(_.args(this._(i), this._(j)))._int(0); } 
+	public boolean equals(CArray carray) { return this.toString().equals(carray.toString()); }
 	public ArrayList _() { return this.m_array; }
     public Object _(int index) { return this.get(index); }
     public Object _(int index, Object value) { return this.set(index, value); }
-	//public CArray _(int sindex, int eindex) { return this.slice(sindex, eindex+1); } // adding 1 make sindex and eindex inclusize ranges 
 	public CArray powerset() { return this.powerset(-1); }
 	public CArray powerset(int itemsize) {
 		int setsize = this.length();

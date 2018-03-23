@@ -8,74 +8,27 @@ package c3dclasses;
 // name: CCast
 // desc: 
 //-----------------------------------------------------------------------------
-public class CCast {
-	protected boolean m_bparsed = true;
-	public boolean _isparsed() { return this.m_bparsed; }
-	
-	// creturn
+public class CCast {	
+	// simple
 	public CCast set(Object data) { return this; } 
 	public Object get() { return null; }
 	public boolean _boolean() { return Boolean.valueOf(this.get().toString()); }
 	public int _int() { return Integer.valueOf(this.get().toString()); }
 	public float _float() { return Float.valueOf(this.get().toString()); }
 	public String _string() { return (String)this.get().toString(); }
-	public CArray carray() { return (CArray)this.get(); }
-	public CHash chash() { return (CHash)this.get(); }
-	public CFunction cfunction() { return (CFunction)this.get(); }
+	public CArray _carray() { return (CArray)this.get(); }
+	public CHash _chash() { return (CHash)this.get(); }
+	public CFunction _cfunction() { return (CFunction)this.get(); }
+	public boolean _nan() { return this._is_nan(this.get()); }
 	
-	// carray
+	// indexed
 	public CCast set(int iindex, Object object) { return this; }
 	public Object get(int iindex) { return null; }
-	public boolean _boolean(int index) { 
-		try { 
-			this.m_bparsed = true; 
-			return Boolean.valueOf(this.get(index).toString()); 
-		} // end try 
-		catch(Exception ex){ 
-			this.m_bparsed = false; 
-			return false; 
-		} // end catch
-	} // end _boolean()
-	public int _int(int index) { 
-		try { 
-			this.m_bparsed = true; 
-			return Integer.valueOf(this.get(index).toString()); 
-		} // end try 
-		catch(Exception ex) { 
-			this.m_bparsed = false; 
-			return 0; 
-		} // end catch() 
-	} // end _int()
-	public long _long(int index) { 
-		try { 
-			this.m_bparsed = true;
-			return Long.parseLong(this.get(index).toString()); 
-		} // end try
-		catch(Exception ex) {
-			this.m_bparsed = false; 
-			return 0;
-		} // end catch
-	} // end _long()
-	public double _double(int index) { 
-		try { 
-			this.m_bparsed = true;
-			return Double.valueOf(this.get(index).toString()); 
-		} // end try
-		catch(Exception ex) {
-			this.m_bparsed = false; 
-			return 0;
-		} // end catch
-	} // end _double()
-	public float _float(int index) { 
-		try { 
-			this.m_bparsed = true;
-			return Float.valueOf(this.get(index).toString());
-		} // end try
-		catch(Exception ex) {
-			this.m_bparsed = false; 
-			return 0;
-		} // end catch		
-	} // end _float
+	public boolean _boolean(int index) { return Boolean.valueOf(this.get(index).toString()); }
+	public int _int(int index) { return Integer.valueOf(this.get(index).toString()); } 
+	public long _long(int index) { return Long.parseLong(this.get(index).toString()); }
+	public double _double(int index) { return Double.valueOf(this.get(index).toString()); } 
+	public float _float(int index) { return Float.valueOf(this.get(index).toString());} 
 	public String _string(int index) { return (String)this.get(index); }
 	public Object [] _array(int index){ return (Object [])this.get(index); }	
 	public CArray _carray(int index) { return (CArray) this.get(index); }
@@ -84,9 +37,9 @@ public class CCast {
 	public CFunction _cfunction(int index) {return (CFunction) this.get(index); }
 	public CReturn _creturn(int index) {return (CReturn) this.get(index); }
 	public CArray _explode(int index, String delimiter) { return _.explode(delimiter,this._string(index)); } 
-	public boolean isnumeric(int index ){ return true; }
+	public boolean _nan(int index) { return this._is_nan(this.get(index)); }
 	
-	// chash
+	// hashed
 	public CCast  set(Object key, Object value) { return this; }
 	public Object get(Object key) { return null; }
 	public Object _(Object key) { return this.get(key); }
@@ -104,6 +57,7 @@ public class CCast {
 	public CFunction _cfunction(Object key) {return (CFunction) this._(key); }
 	public CReturn _creturn(Object key) {return (CReturn) this._(key); }
 	public CArray _explode(Object key, String delimiter) { return _.explode(delimiter, this._string(key)); }
+	public boolean _nan(Object key) { return this._is_nan(this.get(key)); }
 	
 	// helper
 	public CCast get(Object...params) {
@@ -122,5 +76,9 @@ public class CCast {
 		} // end for()
 		return ccast;
 	} // end get()
-	
+	public boolean _is_int(Object object) { try { Integer.parseInt(object.toString()); return true;} catch(Exception ex) { return false; }}
+	public boolean _is_long(Object object) { try { Long.parseLong(object.toString()); return true;} catch(Exception ex) { return false; }}
+	public boolean _is_double(Object object) { try { Double.parseDouble(object.toString()); return true;} catch(Exception ex) { return false; }}
+	public boolean _is_float(Object object) { try { Float.parseFloat(object.toString()); return true;} catch(Exception ex) { return false; }}
+	public boolean _is_nan(Object o) { return (!this._is_int(o) && !this._is_double(o) && !this._is_float(o) && !this._is_long(o)); }
 } // end CCast

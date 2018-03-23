@@ -4,12 +4,14 @@
 //--------------------------------------------------
 package c3dclasses;
 import org.junit.Test;
+import org.junit.Ignore;
 
 //--------------------------------------------------------
 // name: CAprioriUnitTest
 // desc:
 //--------------------------------------------------------
 public class CAprioriUnitTest extends CUnitTest {
+	@Ignore
 	@Test 
 	public void test() {
 		/* load the mushroom items from the file

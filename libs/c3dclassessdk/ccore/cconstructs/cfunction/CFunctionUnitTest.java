@@ -43,8 +43,8 @@ public class CFunctionUnitTest extends CUnitTest{
 
 		// call and print the values of the function
 		CReturn ret = cfunction2.call(_.params("prop1", 8, "prop2", 20));
-		this.assertTrue(ret.carray()._int(0) == 8);	
-		this.assertTrue(ret.carray()._int(1) == 20);	
+		this.assertTrue(ret._carray()._int(0) == 8);	
+		this.assertTrue(ret._carray()._int(1) == 20);	
 		
 		////////////////////////////////////////
 		// use CFunction as a CObject

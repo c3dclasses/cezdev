@@ -5,7 +5,7 @@
 package c3dclasses;
 
 //--------------------------------------------------------
-// name: CThread
+// name: CThreadd
 // desc: 
 //--------------------------------------------------------
 public class CThread extends CObject {

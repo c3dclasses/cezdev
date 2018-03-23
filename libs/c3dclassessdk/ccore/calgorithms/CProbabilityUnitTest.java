@@ -5,12 +5,14 @@
 package c3dclasses;
 
 import org.junit.Test;
+import org.junit.Ignore;
 
 //--------------------------------------------------------
 // name: CProbabilityUnitTest
 // desc: 
 //--------------------------------------------------------
 public class CProbabilityUnitTest {
+	@Ignore
 	@Test 
 	public void test() {
 		CHash cond_dist = _.chash(_.h(

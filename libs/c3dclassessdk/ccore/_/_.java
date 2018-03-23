@@ -232,6 +232,27 @@ public class _ {
 	public static boolean file_exists(String strfilename) { File f = new File(strfilename); return f.exists(); }
 	public static CArray get_lines_from_file(String strfilename) { return _.get_lines_from_file(strfilename, false, null); }
 	public static CArray load_csv_file(String strfilepathname) { return _.get_lines_from_file(strfilepathname, true, ","); }
+	public static boolean save_csv_file(String strfilepathname, CArray carray) { 
+		int l1 = carray.length();
+		//int j2 = (l > 0 && carray._carray(0)) ? carray._carray(0).length();
+		String str = "";
+		for(int i=0; i<l1; i++) {
+			if(carray._carray(i) != null) {
+				str += carray._carray(i).join(",");
+				if(i < l1-1)
+					str += "\n";
+			} // end if
+			/*
+			for(int j=0; j<l2; j++) {
+				str += carray._carray(i)._(j);
+				if(j<l2-1)
+					str += ",";
+			} // end for
+			*/
+		} // end for
+		return _.set_file_contents(strfilepathname, str);
+	} // end save_csv_file()
+	
 	public static CArray get_lines_from_file(String strfilename, boolean bsplitlines, String strdelimiter) {
 		if(strfilename == null || strfilename == "")
 			return null;

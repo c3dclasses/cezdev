@@ -27,7 +27,7 @@ public class CMemory extends CResource {
 		} // end if
 		CReturn creturn = this.sync();
 		if(creturn.isdone() && creturn.data() != null) {
-			this.m_cache = creturn.chash();
+			this.m_cache = creturn._chash();
 		} // end if
 		return true;	
 	} // end open()
@@ -71,7 +71,7 @@ public class CMemory extends CResource {
 	public CReturn sync() { 
 		CReturn creturn = this.driver("sync", _.args(this));
 		if(creturn.isdone() && creturn.data() != null)
-			this.cache(creturn.chash());
+			this.cache(creturn._chash());
 		return creturn;
 	} // end sync()
 	

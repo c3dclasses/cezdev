@@ -13,16 +13,7 @@ public class CReturn extends CCast {
 	protected String m_strerror = "";
 	protected int m_icode = CReturn.NULL;
 	protected String m_strstatus = "";
-	
-	/*
-	public CReturn() { 
-		this.m_data", null);
-		this.m_strerror", "");
-		this.m_icode", CReturn.NULL);
-		this.m_strstatus", "");
-	} // end CReturn()
-	*/
-	
+		
 	public void error(String strerror) { this.m_strerror = strerror; } 
 	public String error() { return this.m_strerror; }
 	
@@ -36,17 +27,6 @@ public class CReturn extends CCast {
 	public Object data() { return this.m_data; }
 	public CCast set(Object data) { this.m_data = data; return this; } 
 	public Object get() { return this.m_data; }
-	
-	
-	/*
-	public boolean _boolean() { return Boolean.valueOf(this.data().toString()); }
-	public int _int() { return Integer.valueOf(this.data().toString()); }
-	public float _float() { return Float.valueOf(this.data().toString()); }
-	public String _string() { return (String)this.data().toString(); }
-	public CArray _carray() { return (CArray)this.data(); }
-	public CHash _chash() { return (CHash)this.data(); }
-	public CFunction _cfunction() { return (CFunction)this.data(); }
-	*/
 	
 	public boolean isdone() { return this.m_icode == CReturn.DONE; }
 	public boolean isbusy() { return this.m_icode == CReturn.BUSY; }

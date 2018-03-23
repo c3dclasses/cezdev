@@ -4,12 +4,14 @@
 //--------------------------------------------------
 package c3dclasses;
 import org.junit.Test;
+import org.junit.Ignore;
 
 //--------------------------------------------------------
 // name: CSearchUnitTest
 // desc:
 //--------------------------------------------------------
 public class CSearchUnitTest extends CUnitTest {
+	@Ignore
 	@Test 
 	public void test() {
 		CFunction compare = new CFunction() {
