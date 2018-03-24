@@ -24,7 +24,7 @@ public class capriori {
 			} // end for
 			Ck = capriori._large(Ck, minsup);
 			_.println("Completed Frequent Itemset of length " + L.length() + " of " + Ck.size() + " items.");		
-			_.set_file_contents("C:/Users/developer/Desktop/cezdev2/libs/c3dclassessdk/cnotes/cmodels/cdatamining/hw1/Lk" + (L.length() + 1) + "-output.txt", Ck.toString());
+			_.set_file_contents("C:/Users/developer/Desktop/cezdev/libs/c3dclassessdk/cnotes/cmodels/cdatamining/hw1/Lk" + (L.length() + 1) + "-output.txt", Ck.toString());
 			L.push((Ck.size()>0)?Ck:null);	
 		} // end for
 		return L;		

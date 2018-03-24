@@ -12,8 +12,8 @@ import org.junit.Test;
 public class CCompilerUnitTest extends CUnitTest {
 	@Test
 	public void test() {
-		String strinput = _.file_get_contents("C:/Users/developer/Desktop/cezdev2/libs/c3dclassessdk/ccore/cmodels/ccompiler/source-test.js");
-		String stroutput = _.file_get_contents("C:/Users/developer/Desktop/cezdev2/libs/c3dclassessdk/ccore/cmodels/ccompiler/translation-test.js");
+		String strinput = _.file_get_contents("C:/Users/developer/Desktop/cezdev/libs/c3dclassessdk/ccore/cmodels/ccompiler/source-test.js");
+		String stroutput = _.file_get_contents("C:/Users/developer/Desktop/cezdev/libs/c3dclassessdk/ccore/cmodels/ccompiler/translation-test.js");
 		
 		CCompiler ccompiler = new CCompiler();
 		this.assertTrue(ccompiler != null);

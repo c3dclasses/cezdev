@@ -25,6 +25,7 @@ public class CHash extends CCast {
 	public HashMap _() { return this.m_hash; }
 	public CCast set(Object key, Object value) { this.m_hash.put(key,value); return this; }
 	public Object get(Object key) { return this.m_hash.get(key); }
+	public Object _(Object key) { return this.get(key); }
 	public CHash _(Object key, Object value) { this.set(key, value); return this; }	
 	public void append(CHash chash) { if(chash==null) return; for(Object key : chash.keys().valueOf()) { this.set(key, chash.get(key)); } }
 	public String toJSON(boolean bpack) { return CJSON.encode(this, bpack); }

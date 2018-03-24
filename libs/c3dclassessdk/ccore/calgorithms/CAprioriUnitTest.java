@@ -15,7 +15,7 @@ public class CAprioriUnitTest extends CUnitTest {
 	@Test 
 	public void test() {
 		/* load the mushroom items from the file
-		CArray D = _.get_lines_from_file("C:/Users/developer/Desktop/cezdev2/libs/c3dclassessdk/cnotes/cmodels/cdatamining/hw1/agaricus-lepiota.data.txt");
+		CArray D = _.get_lines_from_file("C:/Users/developer/Desktop/cezdev/libs/c3dclassessdk/cnotes/cmodels/cdatamining/hw1/agaricus-lepiota.data.txt");
 			
 		// make sure the items in each row are indexed
 		for(int i=0; i<D.length(); i++) {

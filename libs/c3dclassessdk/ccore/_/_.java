@@ -499,6 +499,17 @@ public class _ {
 	public static CObject o(){ return _.cobject(); }
 	public static CFunction func(String strname) { return _.cfunction(strname); }
 	
+	// vectors and matrices
+	public static CVector cvector() { return new CVector(); }
+	public static CVector cvector(CVector cvector) { return new CVector(cvector); }
+	public static CVector cvector(Object... objects) { return new CVector(objects); }
+	public static CVector cvector(int size) { return new CVector(size); }
+	public static CMatrix cmatrix() { return new CMatrix(); }
+	public static CMatrix cmatrix(CMatrix cmatrix) { return new CMatrix(cmatrix); }
+	public static CMatrix cmatrix(CVector... cvector) { return new CMatrix(cvector); }
+	public static CMatrix cmatrix(int nrows, int ncols) { return new CMatrix(nrows, ncols); }
+	
+	
 	// interval / timeout
 	public static int setInterval(CFunction cfunction, int imilliseconds) { return CIntervalConcurrentEvent.setInterval(cfunction, imilliseconds); }
 	public static void clearInterval(int id) { CIntervalConcurrentEvent.clearInterval(id); }

@@ -38,11 +38,12 @@ public class CCast {
 	public CReturn _creturn(int index) {return (CReturn) this.get(index); }
 	public CArray _explode(int index, String delimiter) { return _.explode(delimiter,this._string(index)); } 
 	public boolean _nan(int index) { return this._is_nan(this.get(index)); }
+	public CVector _cvector(int index) {return (CVector) this.get(index); }
+	public CMatrix _cmatrix(int index) {return (CMatrix) this.get(index); }
 	
 	// hashed
 	public CCast  set(Object key, Object value) { return this; }
 	public Object get(Object key) { return null; }
-	public Object _(Object key) { return this.get(key); }
 	public Object _object(Object key) { return this.get(key); }
 	public int _int(Object key) { return Integer.valueOf(this.get(key).toString()); }
 	public long _long(Object key) { return Long.parseLong(this.get(key).toString()); }
@@ -51,13 +52,15 @@ public class CCast {
 	public String _string(Object key) { return (String) this.get(key); }
 	public boolean _boolean(Object key) { return Boolean.valueOf(this.get(key).toString()); }
 	public Object [] _array(Object key) { return (Object [])this.get(key); }
-	public CHash _chash(Object key) {return (CHash) this._(key); }
-	public CObject _cobject(Object key) {return (CObject) this._(key); }
-	public CArray _carray(Object key) {return (CArray) this._(key); }
-	public CFunction _cfunction(Object key) {return (CFunction) this._(key); }
-	public CReturn _creturn(Object key) {return (CReturn) this._(key); }
+	public CHash _chash(Object key) {return (CHash) this.get(key); }
+	public CObject _cobject(Object key) {return (CObject) this.get(key); }
+	public CArray _carray(Object key) {return (CArray) this.get(key); }
+	public CFunction _cfunction(Object key) {return (CFunction) this.get(key); }
+	public CReturn _creturn(Object key) {return (CReturn) this.get(key); }
 	public CArray _explode(Object key, String delimiter) { return _.explode(delimiter, this._string(key)); }
 	public boolean _nan(Object key) { return this._is_nan(this.get(key)); }
+	public CVector _cvector(Object key) {return (CVector) this.get(key); }
+	public CMatrix _cmatrix(Object key) {return (CMatrix) this.get(key); }	
 	
 	// helper
 	public CCast get(Object...params) {

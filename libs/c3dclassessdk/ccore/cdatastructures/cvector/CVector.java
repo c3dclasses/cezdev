@@ -9,19 +9,23 @@ package c3dclasses;
 // desc: 
 //---------------------------------------------------------------------------------
 public class CVector extends CArray{	
-	
-	float magnitude() {
-		float sum = 0.0;
+	public CVector() { super(); } 
+	public CVector(CVector CVector) { super(CVector); } 
+	public CVector(int length) { super(new int[]{length},0,0.0);} 
+	public CVector(Object [] objects) { super(objects); } 
+
+	public float magnitude() {
+		float sum = 0;
 		int l = this.length();
 		for(int i=0; i<l; i++)
 			sum += this._float(i) * this._float(i);
 		return (float)Math.sqrt(sum);
 	} // end magnitude()
 	
-	CVector normalize() {
+	public CVector normalize() {
 		int l = this.length();
 		float m = this.magnitude();
-		CVector n = _.cvector_c(l);
+		CVector n = _.cvector(l);
 		for(int i=0; i<l; i++)
 			n._(i, this._float(i)/m);
 		return n;
@@ -35,18 +39,18 @@ public class CVector extends CArray{
 	} // equals()
 	
 	boolean equalComponents(CVector v) {
-		if(v == null)
+		if(v == null && v.length() != this.length())
 			return false;
 		int l = this.length();
 		for(int i=0; i<l; i++)
 			if(!cmath.equal(this._float(i), v._float(i)))
 				return false;
 		return true;
-	} // end equal_components()
+	} // end equalComponents()
 
-	boolean equalMagnitude(CArray v) {
+	boolean equalMagnitude(CVector v) {
 		return cmath.equal(this.magnitude(),v.magnitude());
-	} // end equal_magnitude()
+	} // end equalMagnitude()
 	
 	float euclideanDistance(CVector v) {
 		float result = 0;
@@ -54,84 +58,78 @@ public class CVector extends CArray{
 		for(int i=0; i<l; i++)
 			result += Math.pow((this._float(i)-v._float(i)), 2);
 		return (float)Math.sqrt(result);
-	} // end euclidean_distance()
+	} // end euclideanDistance()
 	
-	boolean isWithinRange(CArray vmin, CArray vmax) {
+	boolean isWithinRange(CVector vmin, CVector vmax) {
 		if(vmin == null || vmax == null)
 			return false;
 		int l=this.length();
 		for(int i=0; i<l; i++) {
-			if(cmath.is_value_within_range(this._float(i), vmin._float(i), vmax._float(i)))
+			if(!cmath.is_value_within_range(this._float(i), vmin._float(i), vmax._float(i)))
 				return false;
 		} // end for
 		return true;
-	} // end isWithinVectorRange()
+	} // end isWithinRange()
 	
 	////////////////////
 	// static methods
-	static CVector getMinComponentVector(CArray cvectors) {
-		if(vectors == null)
+	static CVector getMinComponentVector(CMatrix cvectors) {
+		if(cvectors == null)
 			return null;
-		int l1 = vectors.length();
-		if(l1<=0)
+		int nr = cvectors.rowLength();
+		int nc = cvectors.columnLength();
+		if(nr<=0 || nc <=0)
 			return null;
-		CVector v1 = vectors._cvector(0).copy();
-		for(int i1=1; i1<l1; i1++) {
-			CVector v2 = vectors._cvector(i1);
-			int l2 = v2.length();
-			for(int i2=0; i2<l2; i2++) {
-				v1._(i2,(float)Math.min(v1._float(i2),v2._float(i2)));
-			} // end for
-		} // end for	
-		return v1;
+		CVector v = _.cvector(cvectors.row(0));
+		for(int r=1; r<nr; r++)
+			for(int c=0; c<nc; c++)
+				v._(c,(float)Math.min(v._float(c),cvectors.get(r,c)));
+		return v;
 	} // end getMinComponentVector()
-
-	static CVector getMaxComponentVector(CArray cvectors) {
-		if(vectors == null)
+	
+	static CVector getMaxComponentVector(CMatrix cvectors) {
+		if(cvectors == null)
 			return null;
-		int l1 = vectors.length();
-		if(l1<=0)
+		int nr = cvectors.rowLength();
+		int nc = cvectors.columnLength();
+		if(nr<=0 || nc <=0)
 			return null;
-		CVector v1 = vectors._cvector(0).copy();
-		for(int i1=1; i1<l1; i1++) {
-			CVector v2 = vectors._cvector(i1);
-			int l2 = v2.length();
-			for(int i2=0; i2<l2; i2++) {
-				v1._(i2,(float)Math.max(v1._float(i2),v2._float(i2)));
-			} // end for
-		} // end for	
-		return v1;
+		CVector v = _.cvector(cvectors.row(0));
+		for(int r=1; r<nr; r++)
+			for(int c=0; c<nc; c++)
+				v._(c,(float)Math.max(v._float(c),cvectors.get(r,c)));
+		return v;
 	} // end getMaxComponentVector()
-
+	
 	static CVector getRandomVectorFromRange(CVector vmin, CVector vmax) {
 		if(vmin == null || vmax == null)
 			return null;
 		int l = vmin.length();
-		CVector vrand = _.cvector_c(l);
+		CVector vrand = _.cvector(l);
 		for(int i=0; i<l; i++)
-			vrand._(i, cmath.get_random_value_from_range(vmin._float(i)+1, vmax._float(i)-1));
+			vrand._(i, cmath.get_random_value_from_range(vmin._float(i), vmax._float(i)));
 		return vrand;
 	} // end getRandomVectorFromRange()
-	
-	static CArray getRandomVectorsFromRange(int n, CVector vmin, CVector vmax) {
+
+	static CMatrix getRandomVectorsFromRange(int n, CVector vmin, CVector vmax) {
 		if(n < 1 || vmin == null || vmax == null)
 			return null;
 		int l = vmin.length();
-		CArray vrands = _.carray();
+		CMatrix vrands = _.cmatrix();
 		for(int i=0; i<n; i++)
 			vrands.push(CVector.getRandomVectorFromRange(vmin, vmax));
 		return vrands;
 	} // end getRandomVectorsFromRange()
-
-	static boolean areVectorsWithinRange(CArray vectors, CVector vmin, CVector vmax) {
-		if(v == null)
+	
+	static boolean areVectorsWithinRange(CMatrix cvectors, CVector vmin, CVector vmax) {
+		if(cvectors == null)
 			return false;
-		int l=vectors.length();
+		int l=cvectors.length();
 		for(int i=0; i<l; i++) {
-			CVector v = (CVector)vectors._(i);
+			CVector v = (CVector)cvectors._(i);
 			if(!v.isWithinRange(vmin, vmax))
 				return false;
 		} // end for
 		return true;
-	} // end isVectorsWithinVectorRange()	
+	} // end areVectorsWithinRange()	
 } // end CVector

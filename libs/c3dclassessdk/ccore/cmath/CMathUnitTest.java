@@ -18,6 +18,8 @@ public class CMathUnitTest extends CUnitTest{
 		value = cmath.get_random_value_from_range(3.0f, 10.0f);
 		this.assertTrue(cmath.is_value_within_range(value, 3.0f, 10.0f));
 	
+	
+	/*
 		// vectors
 		CArray v1 = _.carray(3.0,4.0,5.0);
 		CArray v2 = _.carray(4.0,5.0,6.0);	
@@ -47,6 +49,7 @@ public class CMathUnitTest extends CUnitTest{
 		CArray vrand = cvector.get_random_vector_from_range(vmin,vmax);
 		CArray vrands = cvector.get_random_vectors_from_range(10,vmin,vmax);
 		this.assertTrue(cvector.is_vector_within_vector_range(vrand, vmin, vmax));
-		this.assertTrue(cvector.is_vectors_within_vector_range(vrands, vmin, vmax));	
+		this.assertTrue(cvector.is_vectors_within_vector_range(vrands, vmin, vmax));
+*/		
 	} // end main()
 } // end CMathUnitTest

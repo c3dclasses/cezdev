@@ -30,7 +30,7 @@
         <artifactId>weka</artifactId>
         <scope>system</scope>
         <version>1</version>
-        <systemPath>C:\Users\developer\Desktop\cezdev2\libs\java\weka-3-7-12\weka.jar</systemPath>
+        <systemPath>C:\Users\developer\Desktop\cezdev\libs\java\weka-3-7-12\weka.jar</systemPath>
     </dependency>
   </dependencies>
   <build>

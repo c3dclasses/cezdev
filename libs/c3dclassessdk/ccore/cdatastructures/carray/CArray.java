@@ -12,23 +12,25 @@ import java.util.*;
 public class CArray extends CCast {
 	public CArray() { this.clear(); }
 	public CArray(int [] capacity) { 
-		this(capacity, 0);
+		this(capacity, 0, null);
 	} // end CArray()
-	public CArray(int [] capacity, int index) {
+	public CArray(int [] capacity, int index, Object value) {
 		if(capacity == null || index >= capacity.length)
 			return;
 		else if(capacity != null && index == capacity.length-1) {
 			for(int i=0; i < capacity[index]; i++)
-				this.push(null); 
+				this.push(value); 
 			return;
 		} // end if
 		for(int i=0; i < capacity[index]; i++)
-			this.push(new CArray(capacity, index+1)); 
+			this.push(new CArray(capacity, index+1, value)); 
 		return;
 	} // end CArray()
+	public CArray(CArray carray) { this(carray.m_array); }
 	public CArray(Object element) { this.push(element); }
 	public CArray(Object [] elements) { for (Object element : elements) this.push(element); }
 	public CArray(ArrayList array) { for (Object element : array) this.push(element); }
+	public void capacity(int minCapacity) { this.m_array.ensureCapacity(minCapacity); }
 	public int length() { return this.m_array.size(); }
     public int indexOf(Object element) { return this.m_array.indexOf(element); }
 	public int lastIndexOf(Object element) {  return this.m_array.lastIndexOf(element); }

@@ -12,7 +12,7 @@ import org.junit.Test;
 public class CMemoryUnitTest extends CUnitTest {
 	@Test
 	public void test() {	
-		String strpath = "C:/Users/developer/Desktop/cezdev2/libs/c3dclassessdk/csystem/cdevice/cmemory/cmemory-test.json";
+		String strpath = "C:/Users/developer/Desktop/cezdev/libs/c3dclassessdk/csystem/cdevice/cmemory/cmemory-test.json";
 		
 		// include / open
 		this.assertTrue(CMemory.include("cmemory-test", strpath, "c3dclasses.CJSONMemoryDriver", null) != null);
@@ -130,7 +130,7 @@ public class CMemoryUnitTest extends CUnitTest {
 		this.assertTrue(cvar == null);		
 		
 		// global driver
-		strpath = "C:/Users/developer/Desktop/cezdev2/libs/c3dclassessdk/csystem/cdevice/cmemory/json_driver.json";
+		strpath = "C:/Users/developer/Desktop/cezdev/libs/c3dclassessdk/csystem/cdevice/cmemory/json_driver.json";
 		this.assertTrue(CMemory.include("cmemory-test10", strpath, "json_driver", null) != null);
 		cmemory3 = CMemory.use("cmemory-test10");
 		// create
