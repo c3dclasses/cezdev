@@ -32,6 +32,13 @@
         <version>1</version>
         <systemPath>C:\Users\developer\Desktop\cezdev\libs\java\weka-3-7-12\weka.jar</systemPath>
     </dependency>
+	<dependency>
+        <groupId>Jama</groupId>
+        <artifactId>jama</artifactId>
+        <scope>system</scope>
+        <version>1</version>
+        <systemPath>C:\Users\developer\Desktop\cezdev\libs\java\Jama-1.0.3\Jama-1.0.3.jar</systemPath>
+    </dependency>
   </dependencies>
   <build>
   <plugins>

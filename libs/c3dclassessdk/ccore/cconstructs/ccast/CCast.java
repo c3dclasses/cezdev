@@ -3,6 +3,7 @@
 // desc: 
 //------------------------------------------------------------------------------------------------
 package c3dclasses;
+import java.math.BigDecimal;
 
 //-----------------------------------------------------------------------------
 // name: CCast
@@ -27,8 +28,8 @@ public class CCast {
 	public boolean _boolean(int index) { return Boolean.valueOf(this.get(index).toString()); }
 	public int _int(int index) { return Integer.valueOf(this.get(index).toString()); } 
 	public long _long(int index) { return Long.parseLong(this.get(index).toString()); }
-	public double _double(int index) { return Double.valueOf(this.get(index).toString()); } 
-	public float _float(int index) { return Float.valueOf(this.get(index).toString());} 
+	public double _double(int index) { return Double.valueOf((new BigDecimal(this.get(index).toString())).toPlainString()); } 
+	public float _float(int index) { return Float.valueOf((new BigDecimal(this.get(index).toString())).toPlainString());} 
 	public String _string(int index) { return (String)this.get(index); }
 	public Object [] _array(int index){ return (Object [])this.get(index); }	
 	public CArray _carray(int index) { return (CArray) this.get(index); }
@@ -38,8 +39,8 @@ public class CCast {
 	public CReturn _creturn(int index) {return (CReturn) this.get(index); }
 	public CArray _explode(int index, String delimiter) { return _.explode(delimiter,this._string(index)); } 
 	public boolean _nan(int index) { return this._is_nan(this.get(index)); }
-	public CVector _cvector(int index) {return (CVector) this.get(index); }
-	public CMatrix _cmatrix(int index) {return (CMatrix) this.get(index); }
+	//public CVector _cvector(int index) {return (CVector) this.get(index); }
+	//public CMatrix _cmatrix(int index) {return (CMatrix) this.get(index); }
 	
 	// hashed
 	public CCast  set(Object key, Object value) { return this; }
@@ -47,8 +48,8 @@ public class CCast {
 	public Object _object(Object key) { return this.get(key); }
 	public int _int(Object key) { return Integer.valueOf(this.get(key).toString()); }
 	public long _long(Object key) { return Long.parseLong(this.get(key).toString()); }
-	public float _float(Object key) { return Float.valueOf(this.get(key).toString()); }
-	public double _double(Object key) { return Double.valueOf(this.get(key).toString()); }
+	public float _float(Object key) { return Float.valueOf((new BigDecimal(this.get(key).toString())).toPlainString()); }
+	public double _double(Object key) { return Double.valueOf((new BigDecimal(this.get(key).toString())).toPlainString()); }
 	public String _string(Object key) { return (String) this.get(key); }
 	public boolean _boolean(Object key) { return Boolean.valueOf(this.get(key).toString()); }
 	public Object [] _array(Object key) { return (Object [])this.get(key); }
@@ -59,8 +60,8 @@ public class CCast {
 	public CReturn _creturn(Object key) {return (CReturn) this.get(key); }
 	public CArray _explode(Object key, String delimiter) { return _.explode(delimiter, this._string(key)); }
 	public boolean _nan(Object key) { return this._is_nan(this.get(key)); }
-	public CVector _cvector(Object key) {return (CVector) this.get(key); }
-	public CMatrix _cmatrix(Object key) {return (CMatrix) this.get(key); }	
+	//public CVector _cvector(Object key) {return (CVector) this.get(key); }
+	//public CMatrix _cmatrix(Object key) {return (CMatrix) this.get(key); }	
 	
 	// helper
 	public CCast get(Object...params) {

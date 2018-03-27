@@ -252,7 +252,7 @@ public class _ {
 		} // end for
 		return _.set_file_contents(strfilepathname, str);
 	} // end save_csv_file()
-	
+
 	public static CArray get_lines_from_file(String strfilename, boolean bsplitlines, String strdelimiter) {
 		if(strfilename == null || strfilename == "")
 			return null;
@@ -479,6 +479,22 @@ public class _ {
 	public static CArray carray_c(int... capacity) { return new CArray(capacity); }
 	public static CArray carray() { return new CArray(); }
 	public static CArray carray(Object... objects) { return new CArray(objects); }
+	public static CArray carray(CMatrix cmatrix) {
+		int nr = cmatrix.rowLength();
+		int nc = cmatrix.columnLength();
+		CArray rows = new CArray();
+		CArray cols = new CArray();
+		for(int j=0; j<nc; j++)
+			cols.push("Z"+j);
+		rows.push(cols);
+		for(int i=0; i<nr; i++) {
+			cols = new CArray();
+			for(int j=0; j<nc; j++)
+				cols.push(cmatrix.ij(i,j));
+			rows.push(cols);
+		} // end for
+		return rows;
+	} // end carray()
 	public static CHash chash() { return new CHash(); }
 	public static CHash chash(CHash chash) { return (chash == null) ? new CHash() : chash; }
 	public static CHash chash(Object... objects) { return new CHash(objects); }	
@@ -499,16 +515,59 @@ public class _ {
 	public static CObject o(){ return _.cobject(); }
 	public static CFunction func(String strname) { return _.cfunction(strname); }
 	
+	
+	// vectors and matrices
+	public static CVector cvector() { return new CVector(); }
+	public static CVector cvector(CVector cvector) { return new CVector(cvector); }
+	public static CVector cvector(double... v) { return new CVector(v); }
+	public static CVector cvector_c(int size) { return new CVector(size); }
+	public static CVector v(double... v) { return new CVector(v); }
+	public static CMatrix cmatrix() { return new CMatrix(); }
+	public static CMatrix cmatrix(CMatrix cmatrix) { return new CMatrix(cmatrix); }
+	public static CMatrix cmatrix(CVector... cvectors) { return new CMatrix(cvectors); }
+	public static CMatrix cmatrix(CArray carray) { return _.cmatrix(carray, null); }
+	public static CMatrix cmatrix(CArray carray, CArray skip) {
+		CArray incarray = carray._carray(0);
+		if(incarray == null)
+			return null;
+		int sl = (skip != null) ? skip.length() : 0; 
+		int nr = carray.length();
+		int nc = incarray.length();
+		CMatrix M = new CMatrix(nr,nc - sl);
+		for(int i=0; i<nr; i++)
+			for(int j=0; j<nc; j++)
+				if(skip == null || skip.indexOf(j) == -1)
+					if(!carray._carray(i)._nan(j))
+						M.ij(i,j, carray._carray(i)._double(j));
+		return M;
+	} // end cmatrix()
+	
+	
+	
+	/*public static CMatrix cmatrix2(int nrows, int ncols) { 
+		CMatrix OUT = _.cmatrix(); 
+		for(int r=0; r<nrows; r++)
+			OUT.push(_.cvector(ncols));
+		return OUT;
+	} // end cmatrix()
+	*/
+	/*
 	// vectors and matrices
 	public static CVector cvector() { return new CVector(); }
 	public static CVector cvector(CVector cvector) { return new CVector(cvector); }
 	public static CVector cvector(Object... objects) { return new CVector(objects); }
 	public static CVector cvector(int size) { return new CVector(size); }
+	public static CVector v(Object... objects) { return new CVector(objects); }
 	public static CMatrix cmatrix() { return new CMatrix(); }
 	public static CMatrix cmatrix(CMatrix cmatrix) { return new CMatrix(cmatrix); }
 	public static CMatrix cmatrix(CVector... cvector) { return new CMatrix(cvector); }
-	public static CMatrix cmatrix(int nrows, int ncols) { return new CMatrix(nrows, ncols); }
-	
+	public static CMatrix cmatrix(int nrows, int ncols) { 
+		CMatrix OUT = _.cmatrix(); 
+		for(int r=0; r<nrows; r++)
+			OUT.push(_.cvector(ncols));
+		return OUT;
+	} // end cmatrix()
+	*/
 	
 	// interval / timeout
 	public static int setInterval(CFunction cfunction, int imilliseconds) { return CIntervalConcurrentEvent.setInterval(cfunction, imilliseconds); }

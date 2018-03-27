@@ -28,9 +28,12 @@ IF NOT EXIST %EZDEV_META% ( mkdir %EZDEV_META% )
 ::------------------------------------------------
 
 :: python library
-set INITLIBSHOME=%CD%
 set PYTHON_COMMANDS=%EZDEV_HOME%/libs/python/python-3.5.4-embed-amd64
 set PATH=%PATH%;%PYTHON_COMMANDS%
+
+:: r library
+set R_COMMANDS=C:/Program Files/R/R-3.4.3/bin
+set PATH=%PATH%;%R_COMMANDS%
 
 :: java library
 set JAVA_HOME=%EZDEV_HOME%/libs/java/jdk1.8.0_121
@@ -46,7 +49,6 @@ set PATH=%PATH%;%EZDEV_HOME%/libs/boot
 
 :: c3dclassessdk library
 call %EZDEV_HOME%/libs/c3dclassessdk/ccommands/c3dclassessdk
-:: cd %INITLIBSHOME%
 
 ::---------------------------------------------------
 :: run the terminal to run additional commands 
