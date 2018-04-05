@@ -13,18 +13,20 @@ import java.io.PrintWriter;
 import java.io.BufferedReader;
 import java.io.StreamTokenizer;
 
-
 //---------------------------------------------------------------------------------
 // name: CMatrix
 // desc: 
 //---------------------------------------------------------------------------------
 public class CMatrix extends CArray {	
+	
+	///////////////////////
+	// constructors
 	public CMatrix() { super(); } 
 	public CMatrix(CMatrix cmatrix) { } 
 	public CMatrix(double [][] m) {	
 		for(int i=0; i<m.length; i++)
 			this.push(new CVector(m[i]));
-	} // end 
+	} // end CMatrix()
 	public CMatrix(int nr, int nc) { 
 		for(int i=0; i<nr; i++)
 			this.push(new CVector(nc));
@@ -33,8 +35,23 @@ public class CMatrix extends CArray {
 		for(int i=0; i<cvectors.length; i++)
 			this.push(cvectors[i]);
 	} // end CMatrix()
+	/*
+	public CMatrix(CVector v, int nrows) { 
+		for(int i=0; i<v.length(); i++)
+			if(i%nrows) {
+				this.push(cvectors[i]);
+				v = new CVec
+			}
+	} // end CMatrix()
+	*/
+	
+	////////////////////////
+	// checking
 	public int rowLength() { return this.length(); }
 	public int columnLength() { return this.i(0).length(); }
+	
+	////////////////////////
+	// indexing
 	public CVector row(int i) { return (CVector)this._(i); }
 	public CVector column(int i) { 
 		int l = this.rowLength();
@@ -43,8 +60,14 @@ public class CMatrix extends CArray {
 			cvector.i(r, this.ij(r, i));
 		return cvector;
 	} // end column()
+	public CVector i(int i) { return this.row(i); }
+	public CVector j(int i) { return this.column(i); } 
+	public void set(int row, int column, double value) { this.row(row).i(column, value); }
+	public double get(int row, int column) { return this.row(row).i(column);  }
+	public void ij(int row, int column, double value) { this.set(row, column, value); }
+	public double ij(int row, int column) { return this.get(row, column);  }
 	public CVector diagonal() {
-		if(!this.issquared())
+		if(!this.squared())
 			return null;
 		int nr = this.rowLength();
 		CVector v = new CVector(nr);
@@ -52,15 +75,82 @@ public class CMatrix extends CArray {
 			v.i(i, this.ij(i,i));
 		return v;
 	} // end diagonal()
-	public CVector i(int i) { return this.row(i); }
-	public CVector j(int i) { return this.column(i); } 
-	public void set(int row, int column, double value) { this.row(row).i(column, value); }
-	public double get(int row, int column) { return this.row(row).i(column);  }
-	public void ij(int row, int column, double value) { this.set(row, column, value); }
-	public double ij(int row, int column) { return this.get(row, column);  }
+	public CMatrix subRowMatrix(int srow, int erow) { return this.subMatrix(srow, erow, 0, this.columnLength()-1); }
+	public CMatrix subColumnMatrix(int scol, int ecol) { return this.subMatrix(0, this.rowLength()-1, scol, ecol); }
+	public CMatrix subMatrix(int srow, int erow, int scol, int ecol) {
+		int nr = this.rowLength();
+		if( nr < 1 || srow < 0 || srow >= nr || erow < 0 || erow >= nr || (erow - srow) + 1 < 1)
+			return new CMatrix();
+		CMatrix M = new CMatrix();
+		for(int i=srow; i<erow+1; i++)
+			M.push(this.i(i).subVertex(scol, ecol));		
+		return M;
+	} // end subMatrix()
+	public CMatrix subMatrix(int srow, int erow, int scol, int ecol, CMatrix mat) {
+		return null;
+	} // end subMatrix()
+	
+	//////////////////////////////
+	// statistics
+	public CVector minRowComponents() {
+		int nr = this.rowLength();
+		int nc = this.columnLength();
+		if(nr<=0 || nc <=0)
+			return null;
+		CVector v = new CVector(this.row(0));
+		for(int r=1; r<nr; r++)
+			for(int c=0; c<nc; c++)
+				v.i(c,(double)Math.min(v.i(c), this.get(r,c)));
+		return v;
+	} // end minRowComponents()
+	public CVector maxRowComponents() {
+		int nr = this.rowLength();
+		int nc = this.columnLength();
+		if(nr<=0 || nc <=0)
+			return null;
+		CVector v = new CVector(this.row(0));
+		for(int r=1; r<nr; r++)
+			for(int c=0; c<nc; c++)
+				v.i(c,(double)Math.max(v.i(c), this.get(r,c)));
+		return v;
+	} // end maxRowComponents()
+	public CVector maxColumnComponents() {
+		int nr = this.rowLength();
+		int nc = this.columnLength();
+		if(nr<=0 || nc <=0)
+			return null;
+		CVector v = new CVector(this.column(0));
+		for(int c=1; c<nc; c++)
+			for(int r=0; r<nr; r++)
+				v.i(r,(double)Math.max(v.i(r), this.get(r,c)));
+		return v;
+	} // end maxRowComponents()
+	public CVector minColumnComponents() {
+		int nr = this.rowLength();
+		int nc = this.columnLength();
+		if(nr<=0 || nc <=0)
+			return null;
+		CVector v = new CVector(this.column(0));
+		for(int c=1; c<nc; c++)
+			for(int r=0; r<nr; r++)
+				v.i(r,(double)Math.min(v.i(r), this.get(r,c)));
+		return v;
+	} // end minColumnComponents()
+	
+	public CVector packByRow() { 
+		return null;
+	} // end packByRow()
+	public CVector packByColumn() { 
+		return null;
+	} // end packByColumn()
+	
+	
+	//////////////////////////////////////////
+	// equality, compatibility, initialized
+	public boolean empty() { return this.columnLength()<1 && this.rowLength()<1; }
 	public boolean compatible(CMatrix B) { return this.columnLength() == B.rowLength(); }
 	public boolean compatible(CVector v) { return this.columnLength() == v.length(); }
-	public boolean issquared(){return this.rowLength() == this.columnLength(); }
+	public boolean squared(){return this.rowLength() == this.columnLength(); }
 	public boolean equals(CMatrix B) { return this.equalComponents(B); }
 	public boolean equalDimensions(CMatrix B) { 
 		return (B != null && this.rowLength() == B.rowLength() && 
@@ -76,6 +166,20 @@ public class CMatrix extends CArray {
 				return false;
 		return true;
 	} // end equalComponents()
+	public boolean between(CVector vmin, CVector vmax) {
+		int l=this.length();
+		for(int i=0; i<l; i++) {
+			CVector v = (CVector)this.row(i);
+			if(!v.between(vmin, vmax))
+				return false;
+		} // end for
+		return true;
+	} // end between()
+	public boolean singular() { return this.determinant() == 0; }
+	public boolean degenerate() { return this.determinant() == 0; }
+	
+	///////////////////////////////
+	// operations
 	public CMatrix multiply(double b) {
 		int nr = this.rowLength();
 		CMatrix B = new CMatrix();
@@ -83,6 +187,7 @@ public class CMatrix extends CArray {
 			B.push(this.i(r).multiply(b));
 		return B;
 	} // end multiply()
+	public CMatrix times(CVector v) { return multiply(v); }
 	public CMatrix multiply(CVector v) {
 		if(!this.compatible(v))
 			return new CMatrix();
@@ -92,6 +197,7 @@ public class CMatrix extends CArray {
 			B.ij(r,0,this.i(r).multiply(v));
 		return B;
 	} // end multiply()
+	public CMatrix times(CMatrix B) { return multiply(B); }
 	public CMatrix multiply(CMatrix B) {
 		if(!this.compatible(B))
 			return new CMatrix();
@@ -120,7 +226,6 @@ public class CMatrix extends CArray {
 			C.push(this.i(r).add(B.i(r)));	
 		return C;
 	} // end add()
-	
 	public CMatrix addByColumn(CVector v) {
 		int nr = this.rowLength();
 		int nc = this.columnLength();
@@ -132,7 +237,6 @@ public class CMatrix extends CArray {
 				C.ij(r,c,(v.i(c)+this.ij(r,c)));	
 		return C;
 	} // end addByColumn()
-	
 	public CMatrix multiplyByColumn(CVector v) {
 		int nr = this.rowLength();
 		int nc = this.columnLength();
@@ -144,8 +248,7 @@ public class CMatrix extends CArray {
 				C.ij(r,c,(v.i(c)*this.ij(r,c)));
 			}				
 		return C;
-	} // end addByColumn()
-	
+	} // end multiplyByColumn()
 	public CMatrix addByRow(CVector v) {
 		int nr = this.rowLength();
 		int nc = this.columnLength();
@@ -156,28 +259,10 @@ public class CMatrix extends CArray {
 			for(int c=0; c<nc; c++)
 				C.ij(r,c,(v.i(r)+this.ij(r,c)));	
 		return C;
-	} // end addByRow()
-	
-	public CMatrix subRowMatrix(int srow, int erow) { return this.subMatrix(srow, erow, 0, this.columnLength()-1); }
-	public CMatrix subColumnMatrix(int scol, int ecol) { return this.subMatrix(0, this.rowLength()-1, scol, ecol); }
-	public CMatrix subMatrix(int srow, int erow, int scol, int ecol) {
-		int nr = this.rowLength();
-		if( nr < 1 || srow < 0 || srow >= nr || erow < 0 || erow >= nr || (erow - srow) + 1 < 1)
-			return new CMatrix();
-		CMatrix M = new CMatrix();
-		for(int i=srow; i<erow+1; i++)
-			M.push(this.i(i).subVertex(scol, ecol));		
-		return M;
-	} // end subMatrix()
-	
-	public static CMatrix I(int n) {
-		CMatrix I = new CMatrix(n,n);
-		for(int i=0; i<n; i++)
-			I.ij(i,i,1);
-		return I;
-	} // end I()
-	
-	public double determinant() { return this.determinant(this.rowLength()); }
+	} // end addByRow()	
+	public double determinant() { 
+		return this.determinant(this.rowLength()); 
+	} // end determinant
     public double determinant(int n) {
 		int D = 0;
 		if (n == 1)
@@ -224,7 +309,7 @@ public class CMatrix extends CArray {
 			} // end for
 		} // end for
 		return Adj.transpose();
-    } // adjugate()
+    } // adjugate()	
 	public CMatrix transpose() {
 		int nc = this.columnLength();
 		int nr = this.rowLength();
@@ -234,8 +319,6 @@ public class CMatrix extends CArray {
 				o.set(c,r, this.get(r,c));
 		return o;
 	} // end transpose()
-	boolean isSingular() { return this.determinant() == 0; }
-	boolean isDegenerate() { return this.determinant() == 0; }
 	public CMatrix inverse() {
 		double det = this.determinant();
 		if (det == 0)
@@ -249,9 +332,9 @@ public class CMatrix extends CArray {
 				Inv.set(i,j, Adj.get(i,j)/det); // inverse(A) = adj(A)/det(A)
 		return Inv;
 	} // inverse()
-	
-	public CMatrix covariance() { return this.transpose().multiply(this).multiply(1/(double)this.length()); }
-	
+	public CMatrix covariance() { 
+		return this.transpose().multiply(this).multiply(1/(double)this.length()); 
+	} // end covariance
 	public CArray svd() {
 		int nr = this.rowLength();
 		int nc = this.rowLength();
@@ -259,40 +342,38 @@ public class CMatrix extends CArray {
 		for(int i=0; i<nr; i++)
 			for(int j=0; j<nr; j++) 
 				m[i][j] = this.ij(i,j);
-		Matrix Mj = new Matrix(m);	
-		
-	
-		System.out.println("AA = U S V^T");
-		System.out.println();
+		Matrix Mj = new Matrix(m);		
 		SingularValueDecomposition s = Mj.svd();
-		System.out.print("U = ");
-		Matrix U = s.getU();
-		U.print(9, 6);
-		System.out.print("Sigma = ");
-		Matrix S = s.getS();
-		S.print(9, 6);
-		System.out.print("V = ");
-		Matrix V = s.getV();
-		V.print(9, 6);
-		System.out.println("rank = " + s.rank());
-		System.out.println("condition number = " + s.cond());
-		System.out.println("2-norm = " + s.norm2());
-		// print out singular values
-		System.out.print("singular values = ");
-		Matrix svalues = new Matrix(s.getSingularValues(), 1);
-		
 		Matrix Uj = s.getU();
 		Matrix Sj = s.getS();
 		Matrix Vj = s.getV();
-		
-		
 		return _.args(
 			new CMatrix(Uj.getArray()),
 			new CMatrix(Sj.getArray()),
 			new CMatrix(Vj.getArray())
 		); // end _.args()	
 	} // end svd()
+	
+	// AddByColumn()
+	// multiplyByColumn()
+	// AddByRow()
+	// multiplyByRow()
+	// addByComponent()
+	// multiplyByComponent()
+	// norm1()
+	// norm2()
+	// normInf()
+	// normF()
+	// minus()
+	// plusEquals()
+	// timesEquals()
+	// minusEquals()
+	// divideEquals()
 
+	////////////////////////////
+	// toString(), toJSON()
+	public String toJSON() { return this.toJSON(true);}
+	public String toJSON(boolean bpack) {return "";}
 	public String toString() { return this.toString(12,6); }
 	public String toString(int w, int d) {
 		DecimalFormat format = new DecimalFormat();
@@ -316,4 +397,27 @@ public class CMatrix extends CArray {
 		} // end for
 		return str;
 	} // end toString()
+	
+	//////////////////
+	// static 
+	public static CMatrix identity(int n) {
+		CMatrix I = new CMatrix(n,n);
+		for(int i=0; i<n; i++)
+			I.ij(i,i,1);
+		return I;
+	} // end I()
+	public static CMatrix rand(int nrows, CVector vmin, CVector vmax) {
+		if(nrows < 1 || vmin == null || vmax == null || vmin.length() <= 0 || vmax.length() <= 0)
+			return null;
+		CMatrix A = new CMatrix();
+		for(int i=0; i<nrows; i++)
+			A.push(CVector.rand(vmin, vmax));
+		return A;
+	} // end rand()
+	public static CMatrix rand(int nrows, int ncols) {
+		CMatrix A = new CMatrix();
+		for(int i=0; i<nrows; i++)
+			A.push(CVector.rand(ncols));
+		return A;
+	} // end rand()
 } // end CMatrix

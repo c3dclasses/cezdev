@@ -124,7 +124,7 @@ public class CLinkedList {
 	public boolean removeHead() {
 		CLinkedListNode curhead = this.m_head;
 		if(curhead == null) {
-			_.alert("no curhead");
+			//_.alert("no curhead");
 			return false;
 		} // end if
 		CLinkedListNode node = curhead.next();	
@@ -134,14 +134,14 @@ public class CLinkedList {
 		} // end if
 		else this.m_head = node;
 		curhead.detach();
-		_.alert("removed curhead");
+		//_.alert("removed curhead");
 		this.m_isize--;
 		return true;
 	} // end removeHead()
 	public boolean removeTail() {
 		CLinkedListNode curtail = this.m_tail;
 		if(curtail == null) {
-			_.alert("no curtail");
+			//_.alert("no curtail");
 			return false;
 		} // end if
 		CLinkedListNode node = curtail.prev();
@@ -151,7 +151,7 @@ public class CLinkedList {
 		} // end if
 		else this.m_tail = node;
 		curtail.detach();
-		_.alert("removed curtail");
+		//_.alert("removed curtail");
 		this.m_isize--;
 		return true;
 	} // end removeHead()
@@ -168,7 +168,7 @@ public class CLinkedList {
 		if(nodeAtIndex == null)
 			return false;
 		nodeAtIndex.detach();
-		_.alert("remove at index");
+	//	_.alert("remove at index");
 		this.m_isize--;
 		return true;
 	} // end removeAt()	

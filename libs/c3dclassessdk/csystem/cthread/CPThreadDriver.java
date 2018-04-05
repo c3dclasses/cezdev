@@ -45,8 +45,8 @@ public class CPThreadDriver extends CDriver {
 					int ioptype = cthread._int("m_ioptype");
 					switch(ioptype) {
 						case CThread.START: 
-							_.alert("starting");
-							_.alert(cthread._int("m_iintervalms"));
+							//_.alert("starting");
+							//_.alert(cthread._int("m_iintervalms"));
 							if(cthread._cfunction("m_fnrun") != null)
 								cthread._("m_iintervalid", _.setInterval(cthread._cfunction("m_fnrun"), cthread._int("m_iintervalms")));		
 						break;

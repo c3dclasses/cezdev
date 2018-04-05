@@ -20,7 +20,7 @@ public class CMatrixUnitTest extends CUnitTest{
 			 _.v(852, 2, 1, 36)
 		);
 		
-		_.alert(Z);
+		//_.alert(Z);
 		
 		
 		this.assertTrue(Z.columnLength()==4);
@@ -109,13 +109,13 @@ public class CMatrixUnitTest extends CUnitTest{
 							);
 		
 		predictions = house_sizes.multiply(hypotheses);
-		_.alert(predictions);
+		//_.alert(predictions);
 		//this.assertTrue(predictions.toString().equals("[[486.0, 410.40002, 691.60004], [314.0, 341.6, 416.40002], [343.5, 353.40002, 463.60004], [423.0, 385.2, 590.8]]"));
 		
-		this.assertTrue(hypotheses.multiply(CMatrix.I(3)).equals(hypotheses)); // H * I = H
-		this.assertTrue(!CMatrix.I(3).multiply(hypotheses).equals(hypotheses)); // I * H != H
-		this.assertTrue(CMatrix.I(3).issquared());
-		this.assertTrue(!hypotheses.issquared());
+		this.assertTrue(hypotheses.multiply(CMatrix.identity(3)).equals(hypotheses)); // H * I = H
+		this.assertTrue(!CMatrix.identity(3).multiply(hypotheses).equals(hypotheses)); // I * H != H
+		this.assertTrue(CMatrix.identity(3).squared());
+		this.assertTrue(!hypotheses.squared());
 	
 		CMatrix M4 = _.cmatrix(
 						 _.v(1, 0, 2, -1),
@@ -145,42 +145,10 @@ public class CMatrixUnitTest extends CUnitTest{
 		CMatrix M6 = M5.multiply(M5.inverse());
 		CMatrix M7 = M5.inverse().multiply(M5);
 		this.assertTrue(M6.equals(M7));
-		this.assertTrue(M7.equals(CMatrix.I(4)));
-		
+		this.assertTrue(M7.equals(CMatrix.identity(4)));
 	
-		//_.alert(M5.inverse());
-		//import java.math.BigDecimal;
-		//_.alert(M5.adjugate() + "\n\n" + M5.inverse().multiply(M5));
-		
-		/*
-      // create M-by-N matrix that doesn't have full rank
-      int M = 8, N = 5;
-      Matrix BB = Matrix.random(5, 3);
-      Matrix AA = Matrix.random(M, N).times(BB).times(BB.transpose());
-      System.out.print("AA = ");
-      AA.print(9, 6);
+		this.assertTrue(R10.diagonal().equals(_.v(-12,208,-2,12)));
+	
 
-      // compute the singular vallue decomposition
-      System.out.println("AA = U S V^T");
-      System.out.println();
-      SingularValueDecomposition s = AA.svd();
-      System.out.print("U = ");
-      Matrix U = s.getU();
-      U.print(9, 6);
-      System.out.print("Sigma = ");
-      Matrix S = s.getS();
-      S.print(9, 6);
-      System.out.print("V = ");
-      Matrix V = s.getV();
-      V.print(9, 6);
-      System.out.println("rank = " + s.rank());
-      System.out.println("condition number = " + s.cond());
-      System.out.println("2-norm = " + s.norm2());
-	
-      // print out singular values
-      System.out.print("singular values = ");
-      Matrix svalues = new Matrix(s.getSingularValues(), 1);
-      svalues.print(9, 6);
-	*/
 	} // end test()
 } // end CMatrixUnitTest

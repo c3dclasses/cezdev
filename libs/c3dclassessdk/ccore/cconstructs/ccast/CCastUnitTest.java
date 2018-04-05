@@ -19,6 +19,6 @@ public class CCastUnitTest extends CUnitTest{
 		this.assertTrue(arr._nan(3) == true);
 		this.assertTrue(arr._nan(4) == false);
 		this.assertTrue(arr._nan(5) == false);
-		_.alert(arr);
+		//_.alert(arr);
 	} // end main()
 } // end CCastUnitTest

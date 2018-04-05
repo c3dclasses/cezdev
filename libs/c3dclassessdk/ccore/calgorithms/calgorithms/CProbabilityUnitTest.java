@@ -34,7 +34,7 @@ public class CProbabilityUnitTest {
 		
 		
 		
-		_.alert(cond_dist);
+		//_.alert(cond_dist);
 		
 		
 	} // end test

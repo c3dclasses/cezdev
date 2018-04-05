@@ -304,12 +304,11 @@ public class _ {
 				sb.append(chars, 0, length);
 			} // end while()
 			strcontents = sb.toString();
-			_.print(strcontents);	
 			in.close();
 		} // end try
 		catch(Exception ex) {
 			//CLog.error(ex.toString());
-			_.alert(ex.getMessage());
+			//_.alert(ex.getMessage());
 			return "";
 		} // end catch()
 		return strcontents;
@@ -403,11 +402,10 @@ public class _ {
 		try { 
 			Process p = Runtime.getRuntime().exec(strcommand); 
 			int returnCode = p.waitFor(); 
-			//CJSONUnitTest.info("_.exec_command(): executed command: " + strcommand);	
 			return true; 
 		} // end try
 		catch(Exception ex) { 
-			//CLog.info("_.exec_command(): couldn't execute command: " + strcommand);
+			_.alert(ex.getMessage());
 			return false; 
 		} // end catch()
 	} // end exec_command()
@@ -495,25 +493,30 @@ public class _ {
 		} // end for
 		return rows;
 	} // end carray()
-	public static CHash chash() { return new CHash(); }
-	public static CHash chash(CHash chash) { return (chash == null) ? new CHash() : chash; }
-	public static CHash chash(Object... objects) { return new CHash(objects); }	
-	public static CObject cobject() { return new CObject(); }
-	public static CObject cobject(Object... objects) { return new CObject(objects); }
-	public static CFunction cfunction(String strname) { return CFunction.get(strname); }
 	public static CArray args(Object... args) { return _.carray(args); }
 	public static CArray args() { return _.carray(); }
 	public static CArray a() { return new CArray(); }
 	public static CArray a(Object... objects) { return new CArray(objects); }
+	
+	public static CHash chash() { return new CHash(); }
+	public static CHash chash(CHash chash) { return (chash == null) ? new CHash() : chash; }
+	public static CHash chash(Object... objects) { return new CHash(objects); }	
 	public static CHash params(Object... params) { return _.chash(params); }
 	public static CHash params() { return _.chash(); }	
 	public static CHash h(Object... params) { return _.chash(params); }
 	public static CHash h() { return _.chash(); }	
+	
+	public static CObject cobject() { return new CObject(); }
+	public static CObject cobject(Object... objects) { return new CObject(objects); }
 	public static CObject obj(Object... namevalues){ return _.cobject(namevalues); }
 	public static CObject obj(){ return _.cobject(); }
 	public static CObject o(Object... namevalues){ return _.cobject(namevalues); }
 	public static CObject o(){ return _.cobject(); }
+	
+	public static CFunction cfunction(String strname) { return CFunction.get(strname); }
 	public static CFunction func(String strname) { return _.cfunction(strname); }
+	public static CFunction f(String strname) { return _.cfunction(strname); }
+	//public static CFunction f(String strname, CFunction cfunction) { return CFunction.set(strname, cfunction); }
 	
 	
 	// vectors and matrices
@@ -604,4 +607,26 @@ public class _ {
 		_.out_append(strpath + "/" + strfilename, contents.toString());
 	} // end out_append()
 	public static void outln(Object object, Object contents) { _.out_append(object, contents + "\n"); }
+	
+	/*
+	public static String exec_command(String command) {
+		StringBuffer output = new StringBuffer();
+		Process p;
+		try {
+			p = Runtime.getRuntime().exec(command);
+			p.waitFor();
+			BufferedReader reader = 
+                            new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line = "";			
+			while ((line = reader.readLine())!= null) {
+				output.append(line + "\n");
+			}
+		} // end try
+		catch (Exception e) {
+			e.printStackTrace();
+		} // end catch()
+		return output.toString();
+	}
+	*/
+	
 } // end 

@@ -10,6 +10,8 @@ import java.util.*;
 // desc: 
 //-------------------------------------------
 public class CArray extends CCast {
+	//////////////////
+	// constructor
 	public CArray() { this.clear(); }
 	public CArray(int [] capacity) { 
 		this(capacity, 0, null);
@@ -30,17 +32,32 @@ public class CArray extends CCast {
 	public CArray(Object element) { this.push(element); }
 	public CArray(Object [] elements) { for (Object element : elements) this.push(element); }
 	public CArray(ArrayList array) { for (Object element : array) this.push(element); }
+	
+	///////////////////
+	// info
 	public void capacity(int minCapacity) { this.m_array.ensureCapacity(minCapacity); }
 	public int length() { return this.m_array.size(); }
-    public int indexOf(Object element) { return this.m_array.indexOf(element); }
+    
+	/////////////////////////
+	// equality
+	public int compare(int i, int j, CFunction cmpfunc) { return cmpfunc.call(_.args(this._(i), this._(j)))._int(0); } 
+	public boolean equals(CArray carray) { return this.toString().equals(carray.toString()); }
+	
+	///////////////////
+	// indexing
+	public int indexOf(Object element) { return this.m_array.indexOf(element); }
 	public int lastIndexOf(Object element) {  return this.m_array.lastIndexOf(element); }
-	public void clear() { this.m_array = new ArrayList(); }
+	public CCast set(int iindex, Object object) { this.m_array.set(iindex, object); return this; }
 	public Object get(int iindex) { return (this.m_array != null && iindex >= 0 && iindex < this.length()) ? this.m_array.get(iindex) : null; }
 	public Object first() { return this.get(0); }
 	public Object last() { return this.get(this.length()-1); }
 	public Object top() { return this.last(); }
-	public CCast set(int iindex, Object object) { this.m_array.set(iindex, object); return this; }
 	public Object pop() { return (this.length() > 0) ? this.m_array.remove(this.length() - 1) : null; }
+	public Object _(int index) { return this.get(index); }
+    public Object _(int index, Object value) { return this.set(index, value); }
+	
+	////////////////////
+	// operations
 	public int push(Object element) { this.m_array.add(element); return this.length(); } 
 	public int append(CArray carray){ if(carray == null) return this.length(); for(int i=0; i<carray.length(); i++) this.push(carray._(i)); return this.length(); } 
 	public CArray concat(Object [] elements) { return new CArray(elements); }
@@ -83,9 +100,6 @@ public class CArray extends CCast {
 		return this;
 	} // end splice()
 	public CArray splice(int index, int howmany) { return this.splice(index, howmany, null); }
-	public String toString() { return _.print_r(this.m_array, true); }
-	//public String toString() { return this.toJSON(true); }
-	public String toJSON(boolean bpack) { return CJSON.encode(this, bpack); }
 	public ArrayList valueOf() { return this.m_array; }
     public void sort(Comparator cmp) { Collections.sort(this.m_array, cmp); }
 	public void sort() { Collections.sort(this.m_array, null); }
@@ -97,12 +111,9 @@ public class CArray extends CCast {
 		for(int i=0; i<a.length; i++)
 			this._(i,a[i]);
 	} // end sort()
-	public int compare(int i, int j, CFunction cmpfunc) { return cmpfunc.call(_.args(this._(i), this._(j)))._int(0); } 
-	public boolean equals(CArray carray) { return this.toString().equals(carray.toString()); }
 	public ArrayList _() { return this.m_array; }
-    public Object _(int index) { return this.get(index); }
-    public Object _(int index, Object value) { return this.set(index, value); }
-	public CArray powerset() { return this.powerset(-1); }
+	public void clear() { this.m_array = new ArrayList(); }
+		public CArray powerset() { return this.powerset(-1); }
 	public CArray powerset(int itemsize) {
 		int setsize = this.length();
 		int n = (int) Math.pow(2, setsize);
@@ -119,7 +130,6 @@ public class CArray extends CCast {
 		} // end for
 		return powerset;
 	} // end powerset()
-	
 	public void visit(CFunction cfunction) { this.visit(cfunction, null); }
     public void visit(CFunction cfunction, Object obj) { 
 		int i = 0; 
@@ -129,6 +139,36 @@ public class CArray extends CCast {
 		} // end for
 		return; 
 	} // end visit()
+	public void removeAt(int index) { this.m_array.remove(index); }
+	public void removeAll(Object element) { while(this.remove(element)) {} }
+    public boolean remove(Object element) { return this.m_array.remove(element); }
+	public boolean swap(int i, int j) {	
+		Object tmp = this._(i); 
+		if(tmp != null && this._(j) != null) { 
+			this._(i, this._(j)); 
+			this._(j, tmp); 
+			return true;
+		} // end if
+		return false;
+	} // end swap()
+	int partition(int low, int high, CFunction fncompare) {   	
+		Object pivot = this._(high);  	
+		int i = (low-1);
+		for (int j = low; j <= high-1; j++) {
+			if (fncompare.call(_.args(pivot, this._(j)))._boolean()) {
+				i++;   
+				this.swap(i,j);
+			} // end if
+		} // end for 
+		this.swap(i+1,high);
+		return (i+1);
+	} // end partition()
+	
+	//////////////////////////
+	// toString, toJSON()
+	public String toString() { return _.print_r(this.m_array, true); }
+	public String toJSON(boolean bpack) { return CJSON.encode(this, bpack); }
+	public String toJSON() { return this.toJSON(false); }
 	public String toStringVisit(CFunction cfunction, Object input) { 
 		String str = ""; 
 		int i=0; 
@@ -144,17 +184,5 @@ public class CArray extends CCast {
 			arr[i] = this._(i); 
 		return (arr != null && arr.length > 0) ? arr : null; 
 	} // end toArray()
-    public void removeAt(int index) { this.m_array.remove(index); }
-	public void removeAll(Object element) { while(this.remove(element)) {} }
-    public boolean remove(Object element) { return this.m_array.remove(element); }
-	public boolean swap(int i, int j) {	
-		Object tmp = this._(i); 
-		if(tmp != null && this._(j) != null) { 
-			this._(i, this._(j)); 
-			this._(j, tmp); 
-			return true;
-		} // end if
-		return false;
-	} // end swap()
-	protected ArrayList m_array = new ArrayList();
+    protected ArrayList m_array = new ArrayList();
 } // end CArray

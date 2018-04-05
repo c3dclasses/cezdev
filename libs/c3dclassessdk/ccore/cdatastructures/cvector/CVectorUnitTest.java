@@ -26,17 +26,20 @@ public class CVectorUnitTest extends CUnitTest{
 		this.assertTrue(cmath.equal(v1.euclideanDistance(v2),1.7320508f));
 		
 		CMatrix cvectors = _.cmatrix(v1,v2);
-		CVector vmin = CVector.getMinComponentVector(cvectors);
+		CVector vmin = cvectors.minRowComponents();
 		this.assertTrue(vmin.equals(_.v(3.0,4.0,5.0)));
 		
 		cvectors = _.cmatrix(v1,v2);
-		CVector vmax = CVector.getMaxComponentVector(cvectors);
+		CVector vmax = cvectors.maxRowComponents();
 		this.assertTrue(vmax.equals(_.v(4.0,5.0,6.0)));
 		
-		v = CVector.getRandomVectorFromRange(vmin, vmax);
-		this.assertTrue(v.isWithinRange(vmin, vmax));
+		v = CVector.rand(vmin, vmax);
+		this.assertTrue(v.between(vmin, vmax));
 		
-		cvectors = CVector.getRandomVectorsFromRange(10, vmin, vmax);
-		this.assertTrue(CVector.areVectorsWithinRange(cvectors, vmin, vmax));
+		v = cvectors.maxColumnComponents();
+		this.assertTrue(v.equals(_.v(5.0,6.0)));
+		
+		cvectors = CMatrix.rand(10, vmin, vmax);
+		this.assertTrue(cvectors.between(vmin, vmax));
 	} // end main()
 } // end CVectorUnitTest

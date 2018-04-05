@@ -35,6 +35,10 @@ set PATH=%PATH%;%PYTHON_COMMANDS%
 set R_COMMANDS=C:/Program Files/R/R-3.4.3/bin
 set PATH=%PATH%;%R_COMMANDS%
 
+:: octave library
+set OCTAVE_COMMANDS=%EZDEV_HOME%/libs/octave-4.0.0/bin
+set PATH=%PATH%;%OCTAVE_COMMANDS%
+
 :: java library
 set JAVA_HOME=%EZDEV_HOME%/libs/java/jdk1.8.0_121
 set JAVA_BIN=%JAVA_HOME%/bin

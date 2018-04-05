@@ -49,10 +49,10 @@ public class CFilesToPathsCommand {
 				for (String file : files)
 					str += CFilesToPathsCommand.toStringFiletoFolder(new File(srcfolder, file));
 			} // end if
-			else {
+			else {				
 				str += "\"" + srcfolder.getName() + "\"";
 				str += ":";
-				str += "\"" + srcfolder + "\"";
+				str += "\"" + srcfolder.toString().replace("\\","/") + "\"";
 				str += ",";
 			} // end else
 		} // end try
