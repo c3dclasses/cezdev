@@ -169,6 +169,7 @@ public class CArray extends CCast {
 	public String toString() { return _.print_r(this.m_array, true); }
 	public String toJSON(boolean bpack) { return CJSON.encode(this, bpack); }
 	public String toJSON() { return this.toJSON(false); }
+	public void toJSONFile(String strfilename) { _.file_set_contents(strfilename, this.toJSON(true)); }
 	public String toStringVisit(CFunction cfunction, Object input) { 
 		String str = ""; 
 		int i=0; 

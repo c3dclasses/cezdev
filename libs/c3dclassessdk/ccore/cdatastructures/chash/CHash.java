@@ -10,6 +10,7 @@ import java.util.*;
 // desc: 
 //-------------------------------------------
 public class CHash extends CCast {
+	
 	/////////////////
 	// constructor
 	public CHash() {} 
@@ -46,8 +47,10 @@ public class CHash extends CCast {
 	/////////////////////////
 	// toString(), toJSON()
 	public String toJSON(boolean bpack) { return CJSON.encode(this, bpack); }
+	public void   toJSONFile(String strfilename) { _.file_set_contents(strfilename, this.toJSON(true)); }
 	public String toString() { return this.toJSON(true); }
 	
+	//////////////
 	// members
 	protected HashMap m_hash = new HashMap();
 } // end CHash	

@@ -17,6 +17,7 @@ public class CFunction extends CObject {
 	public CReturn call(CHash params) { return null; }
 	public CReturn call(Object obj) { return null; }
 	public CReturn call(Object... obj) { return null; }
+	public CFunction map(String strfuncname) { CFunction.set(strfuncname, this); return this; }
 	public void setObject(Object object) { this.m_object = object; }
 	public CFunction bind(Object object) { 
 		CFunction cfunction = (CFunction) _._new(this.getClass().getName()); 

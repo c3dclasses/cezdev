@@ -32,13 +32,13 @@ public class CNode extends CHash {
 		this._("m_strname", strname);
 		this._("m_itype", -1);	
 		this._("m_cnodes", _.carray());
-		this._("m_strtranslation", ""); // translate node
+		this._("m_strtranslation", strname); // translate node
 		this._("m_bskip", false); 		// skip node
 		this._("m_write", "");			// write node to file
 	} // end CNode()
 		
  	public String toString(String strinput) { 
-		return (strinput == "" || (this._int("m_epos") - this._int("m_spos")) <= 0) ? 
+		return (strinput == "" || (this._int("m_epos") - this._int("m_spos")) < 0) ? 
 		"" : strinput.substring(this._int("m_spos"), this._int("m_epos"));
 	} // end toString()
 	
@@ -53,7 +53,9 @@ public class CNode extends CHash {
 	} // toStringAfterToken();
 
 	public String toStringTranslation() {
-		 return this._string("m_strtranslation");
+		//if(this._string("m_strname").equals("UNNAMED-TOKEN"))
+			
+		return this._string("m_strtranslation");
 	} // toStringTranslation();
 
 	public String getName(){

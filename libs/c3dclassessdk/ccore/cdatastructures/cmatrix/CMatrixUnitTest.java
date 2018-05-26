@@ -148,7 +148,58 @@ public class CMatrixUnitTest extends CUnitTest{
 		this.assertTrue(M7.equals(CMatrix.identity(4)));
 	
 		this.assertTrue(R10.diagonal().equals(_.v(-12,208,-2,12)));
-	
-
+		
+		CMatrix M = _.m(_.v(10, 20, 10),
+						_.v(-20, -30, 10),
+						_.v(30, 50, 0));
+		this.assertTrue(M.rank() == 2);
+		
+		this.assertTrue(M.toVector().equals(_.v(10, 20, 10, -20, -30, 10, 30, 50, 0)));
+		
+		M.appendRows(_.m(_.v(-30, -40, 20),_.v(40, 50, 60)));
+		this.assertTrue(M.equals(_.m(
+			_.v(10, 20, 10),
+			_.v(-20, -30, 10),
+			_.v(30, 50, 0),
+			_.v(-30, -40, 20),
+			_.v(40, 50, 60)
+		)));
+		
+		M.appendColumns(_.m(_.v(-30, -40, 20, 10, 0),_.v(40, 50, 60, 70, 80)));
+		this.assertTrue(M.equals(_.m(
+			_.v(10, 20, 10,-30,40),
+			_.v(-20, -30, 10, -40, 50),
+			_.v(30, 50, 0, 20, 60),
+			_.v(-30, -40, 20, 10, 70),
+			_.v(40, 50, 60, 0, 80)
+		)));
+		
+		//_.println(M);
+		
+		CMatrix Mrand = CMatrix.rand(768,5000);
+		//_.println(Mrand);
+		
+		/*
+		CMatrix Mpoints = CMatrix.rand(20,3);
+		Mpoints.j(2,0);
+		CMatrix Mgrid = Mpoints.subMatrixGrid(3,3);
+		Mgrid.j(2,0);
+		
+		Mgrid = Mpoints.closestRowsToMatrix(Mgrid);
+		Mgrid.j(2,1);
+		
+		CVector min = Mpoints.minRowComponents();
+		CVector max = Mpoints.maxRowComponents();
+		min.i(2,2);
+		max.i(2,2);
+		
+		Mpoints.appendRows(Mgrid);
+		Mpoints.push(min);
+		Mpoints.push(max);
+		
+		//_.println(Mgrid);
+		Mpoints.toFile(_.dir_path(this) + "/Mpoints.txt");
+		Mgrid.toFile(_.dir_path(this) + "/Mgrid.txt");
+		*/
 	} // end test()
 } // end CMatrixUnitTest

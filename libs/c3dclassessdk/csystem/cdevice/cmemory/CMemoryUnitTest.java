@@ -140,7 +140,5 @@ public class CMemoryUnitTest extends CUnitTest {
 		this.assertTrue(cvar != null);
 		this.assertTrue(cvar._string("m_strname").equals("kevin"));
 		this.assertTrue(cvar._string("m_value").equals("is here"));
-		
-				
 	} // end test()
 } // end CHookUnitTest

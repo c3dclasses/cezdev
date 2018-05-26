@@ -23,6 +23,8 @@ public class CParser {
 		this.m_strinput = "";
 	} // end CParser()
 	
+	public String getInputString() { return this.m_strinput; }
+	
 	public boolean create(CTokenizer ctokenizer) {
 		if(ctokenizer != null && ctokenizer.getTokens().length() < 1)
 			return false;
@@ -81,10 +83,29 @@ public class CParser {
 		} // end if
 		CNode ctokenbefore = (CNode) this.m_ctokens.get(itokenindex - 1);
 		if(ctokenbefore != null)
-		 	ret._("m_spos", ctokenbefore._int("m_epos") + 1);	
+		 	ret._("m_spos", ctokenbefore._int("m_epos"));	
 		CNode ctokenafter = (CNode) this.m_ctokens.get(this.m_ictokenindex);
 		if(ctokenafter != null) 
-			ret._("m_epos", ctokenafter._int("m_spos") - 1);
+			ret._("m_epos", ctokenafter._int("m_spos"));
+		return ret;
+	} // end acceptNonToken()
+	
+	public CNode acceptNonToken(CFunction callbackNonToken, CArray strterminationtokentypes, boolean brollbackonfailure) {
+		if(callbackNonToken == null) 
+			return null;
+		int itokenindex = this.m_ictokenindex;
+		CNode ret = (CNode) callbackNonToken.call(_.args(this, strterminationtokentypes)).data();
+		if(ret == null) {
+			if(brollbackonfailure == true)
+				this.m_ictokenindex = itokenindex;
+			return ret;
+		} // end if
+		CNode ctokenbefore = (CNode) this.m_ctokens.get(itokenindex - 1);
+		if(ctokenbefore != null)
+		 	ret._("m_spos", ctokenbefore._int("m_epos"));	
+		CNode ctokenafter = (CNode) this.m_ctokens.get(this.m_ictokenindex);	
+		if(ctokenafter != null) 
+			ret._("m_epos", ctokenafter._int("m_spos"));
 		return ret;
 	} // end acceptNonToken()
 	
@@ -118,6 +139,14 @@ public class CParser {
 		CNode ctoken = (CNode)this.m_ctokens.get(this.m_ictokenindex);
 		return (!this.done() && strtokentype != null && ctoken != null && (ctoken._string("m_strtype").equals(strtokentype)));
 	} // end check()	
+
+	public boolean check(CArray strtokentypes) {
+		if(strtokentypes != null)
+			for(int i=0; i<strtokentypes.length(); i++)
+				if(this.check(strtokentypes._string(i)))
+					return true;
+		return false;
+	} // end check()	
 	
 	public CNode parse(CFunction callback) {		
 		return this.parse(callback, "");
@@ -144,22 +173,19 @@ public class CParser {
 	public String translate_rec(CNode cnode) {		
 		String str="";
 		if(cnode == null)
-			return str;
-		
+			return str;		
 		if(cnode.getCNodes() == null) {
 			str += cnode.toStringBeforeToken(this.m_strinput,this.m_index);
 			str += cnode.toStringTranslation();
 			this.m_index = cnode.getEndPos();
 			return str;
 		} // end if
-		
 		CArray cnodes = null;
 		if((cnodes=cnode.getCNodes()) != null) {
 			for(int i=0; i<cnodes.length(); i++) {
 				str += this.translate_rec((CNode)cnodes._(i));
 			} // end for
 		} // end if
-		
 		return str;
 	} // end translate_rec()
 	

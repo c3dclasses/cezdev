@@ -6,4 +6,5 @@
 set ALERTHOME=%CD%
 cd /d %EZDEV_HOME%/libs/boot
 java CMessageBoxCommand %*
+java
 cd /d %ALERTHOME%

@@ -3,6 +3,9 @@
 // desc: 
 //---------------------------------------------------------------------------------
 package c3dclasses;
+import java.io.*;
+import java.util.*;
+
 
 //---------------------------------------------------------------------------------
 // name: CVector
@@ -26,6 +29,8 @@ public class CVector {
 	// indexing
 	public double i(int i) { return this.m_data[i]; }
 	public void i(int i, double value) { this.m_data[i] = value; }
+	public void set(double v) { int l = this.length(); for(int i=0; i<l; i++) this.i(i,v); } 
+	public CVector copy(){ return new CVector(this);}
 	public CVector subVertex(int e) { return this.subVertex(0, e); }
 	public CVector subVertex(int s, int e) {
 		int l = this.length();
@@ -40,6 +45,7 @@ public class CVector {
 	
 	///////////////////////
 	// operations
+	public double times(CVector v) { return this.multiply(v); }
 	public double multiply(CVector v) {
 		int l = this.length();
 		if(l != v.length())
@@ -58,13 +64,22 @@ public class CVector {
 		}
 		return o;
 	} // end inverse()
+	public CVector divide(CVector vector) {
+		int l = this.length();
+		CVector o = new CVector(l);
+		for(int i=0; i<l; i++)
+			o.i(i,this.i(i)/vector.i(i));
+		return o;
+	} // end divide()
+	public CVector times(double s) { return this.multiply(s); }
+	public CVector divide(double s) { return this.multiply(1/s); }
 	public CVector multiply(double s) {
 		int l = this.length();
 		CVector o = new CVector(l);
 		for(int i=0; i<l; i++) 
 			o.i(i,this.i(i)*s);
 		return o;
-	} // multiply()
+	} // multiply()	
 	public double magnitude() {
 		double sum = 0;
 		int l = this.length();
@@ -80,6 +95,7 @@ public class CVector {
 			n.i(i, this.i(i)/m);
 		return n;
 	} // end normalize()
+	public double distance(CVector v) { return this.euclideanDistance(v); }
 	public double euclideanDistance(CVector v) {
 		double result = 0;
 		int l = this.length();
@@ -87,6 +103,7 @@ public class CVector {
 			result += Math.pow(this.i(i)-v.i(i), 2);
 		return (double)Math.sqrt(result);
 	} // end euclideanDistance()
+	public CVector plus(CVector v) { return this.add(v); }	
 	public CVector add(CVector v) {
 		int l = this.length();
 		if(l != v.length())
@@ -94,6 +111,16 @@ public class CVector {
 		CVector o = new CVector(l);
 		for(int i=0; i<l; i++)
 			o.i(i,this.i(i)+v.i(i));
+		return o;
+	} // end add()
+	public CVector minus(CVector v) { return this.subtract(v); }	
+	public CVector subtract(CVector v) {
+		int l = this.length();
+		if(l != v.length())
+			return null;
+		CVector o = new CVector(l);
+		for(int i=0; i<l; i++)
+			o.i(i,this.i(i)-v.i(i));
 		return o;
 	} // end add()
 	
@@ -183,13 +210,35 @@ public class CVector {
 	public String toJSON(boolean bpack) {return "";}
 	public String toString() {
 		String str = "";
-		for(int i=0; i<this.m_data.length; i++) { 
+		int l = Math.min(this.m_data.length,100);
+		for(int i=0; i<l; i++) { 
 			str += this.m_data[i];
 			if(i < this.m_data.length-1)
 				str += ",";
 		} // end for()
+		if(l>100)
+			str += ",...";
 		return str;
 	} // end toString()
+	public CMatrix toMatrix(int nrows, int ncols) { return new CMatrix(this, nrows, ncols); } 
+	public boolean toFile(String strfilename) {
+		try {
+			if(strfilename == null || strfilename == "")
+				return false;
+			FileWriter out = new FileWriter(strfilename, true);
+			int l = this.m_data.length;
+			for(int i=0; i<l; i++) { 
+				out.write(""+this.m_data[i]);
+				if(i < this.m_data.length-1)
+					out.write(",");
+			} // end for
+			out.close();
+			return true;
+		}
+		catch(Exception ex) {
+			return false;
+		} // end catch()	
+	} // end toFile()
 	
 	////////////
 	// static 
@@ -208,4 +257,5 @@ public class CVector {
 			v.i(i, Math.random());
 		return v;
 	} // end rand()
+	
 } // end CVector

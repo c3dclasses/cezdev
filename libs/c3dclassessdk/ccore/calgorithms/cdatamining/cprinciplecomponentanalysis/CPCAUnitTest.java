@@ -4,12 +4,14 @@
 //--------------------------------------------------
 package c3dclasses;
 import org.junit.Test;
+import org.junit.Ignore;
 
 //--------------------------------------------------------
 // name: CPCAUnitTest
 // desc:
 //--------------------------------------------------------
 public class CPCAUnitTest extends CUnitTest {
+	@Ignore
 	@Test 
 	public void test() throws Exception {
 		// set k dimension to reduce to 
