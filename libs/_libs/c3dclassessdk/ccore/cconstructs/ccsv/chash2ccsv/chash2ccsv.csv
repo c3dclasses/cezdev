@@ -1,0 +1,10 @@
+Student ID,Class,Grade,Area,Mentor,StudentID-Class,GPA
+001,Biology,A,,,5000-null,6000
+001,Chemistry,B,,,5000-null,6000
+001,Programming,C,,,5000-null,6000
+001,,,Neural Models,Markov,5000-Markov,6000
+001,,,Compiler,Joe,5000-Joe,6000
+002,English,A,,,10000-null,12000
+002,Philosophy,B,,,10000-null,12000
+002,,,Trees,Amotz,10000-Amotz,12000
+002,,,Software Transformation,Zeplin,10000-Zeplin,12000
