@@ -1,6 +1,0 @@
-install.packages('ggplot2', dep = TRUE, repos = "http://cran.us.r-project.org")
-library(ggplot2)
-args = commandArgs(trailingOnly=TRUE)
-dataset = read.csv("C:/Users/developer/Desktop/cezdev/libs/c3dclassessdk/ccore/cmath/data.out")
-ggplot(dataset, aes(x, y)) + geom_point()
-dev.off()
