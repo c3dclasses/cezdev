@@ -1,0 +1,99 @@
+:: --------------------------------------------------
+:: cplatform.crud.bat
+:: Runs CRUD operation scripts for platforms
+:: Usage: cplatform.crud <crudop> <platform-dir> [platform]
+:: Example: cplatform.crud create C:\platforms aws
+:: --------------------------------------------------
+
+@echo off
+
+set "CRUDOP=%~1"
+set "PLATFORM_DIR=%~2"
+set "PLATFORM=%~3"
+
+:: Validate required params
+if "%CRUDOP%"=="" (
+    echo Usage: cplatform.crud ^<crudop^> ^<platform-dir^> [platform]
+    exit /b 1
+)
+
+if "%PLATFORM_DIR%"=="" (
+    echo Usage: cplatform.crud ^<crudop^> ^<platform-dir^> [platform]
+    exit /b 1
+)
+
+:: --------------------------------------------------
+:: Run all platforms if no platform specified
+:: --------------------------------------------------
+if "%PLATFORM%"=="" (
+    echo.
+    echo ::---------------------------------------------------------------------------------------
+    echo ::  %~nx0: Starting CRUD Utility
+    echo ::---------------------------------------------------------------------------------------
+    echo [INFO] Operation: %CRUDOP%
+    echo [INFO] Platform directory: %PLATFORM_DIR%
+    for /d %%P in ("%PLATFORM_DIR%\*") do (
+        echo Creating: %%~nP
+        call "%~f0" "%CRUDOP%" "%PLATFORM_DIR%" "%%~nP"
+    )
+    echo ::---------------------------------------------------------------------------------------
+    echo ::  %~nx0: Ending CRUD Utility
+    echo ::---------------------------------------------------------------------------------------
+    echo.
+    exit /b 0
+)
+
+:: --------------------------------------------------
+:: Run a single platform
+:: --------------------------------------------------
+set "SCRIPT=%PLATFORM_DIR%\%PLATFORM%\%PLATFORM%.%CRUDOP%.bat"
+for %%D in ("%PLATFORM_DIR%") do set "PLATFORM_DIR_NAME=%%~nxD"
+
+REM For create operations
+if /i "%CRUDOP%"=="create" (
+    REM Nothing special for create without versioning
+)
+
+REM For delete operations
+if /i "%CRUDOP%"=="delete" (
+    REM Nothing special for delete without versioning
+)
+
+REM For update operations
+if /i "%CRUDOP%"=="update" (
+    REM Nothing special for update without versioning
+)
+
+REM For read operations, display platform information
+if /i "%CRUDOP%"=="read" (
+    set "PLATFORMPATH=%PLATFORM_DIR%\%PLATFORM%" 
+    REM Read description from description.txt if exists
+    set "DESCFILE=%PLATFORM_DIR%\%PLATFORM%\description.txt"
+    if exist "%PLATFORM_DIR%\%PLATFORM%\description.txt" (
+        set /p DESC=<"%PLATFORM_DIR%\%PLATFORM%\description.txt"
+    ) else (
+        echo description: ^(none^)
+    )
+    
+    call echo path: %%PLATFORM_DIR%%\%%PLATFORM%%
+    
+    REM List bat files
+    echo bat files:
+    set "BATFOUND=0"
+    for %%B in ("%PLATFORM_DIR%\%PLATFORM%\*.bat") do (
+        echo - %%~nxB
+        set "BATFOUND=1"
+    )
+    if "%BATFOUND%"=="0" echo ^(none^)
+    echo --------------------------------------------------
+)
+
+if exist "%SCRIPT%" (
+    call "%SCRIPT%" || exit /b 1
+) 
+
+::else (
+    ::echo Skipping %PLATFORM% (no %CRUDOP% script)
+::)
+
+exit /b 0
