@@ -5,6 +5,8 @@
 
 @echo off
 
+echo [CALLING] %~nx0
+
 ::------------------------------------------------------
 :: Define C3DClasses SDK metadata
 ::------------------------------------------------------
@@ -21,6 +23,7 @@ set "C3DCLASSES_CLASSPATH=%C3DCLASSES_JAR%;."
 
 echo [INFO] C3DCLASSES_NAME: %C3DCLASSES_NAME%
 echo [INFO] C3DCLASSES_VERSION: %C3DCLASSES_VERSION%
+echo [INFO] C3DCLASSES: %C3DCLASSES%
 echo [INFO] Java project: %C3DCLASSES_JAVA%
 echo [INFO] JAR file: %C3DCLASSES_JAR%
 echo [INFO] Source path: %C3DCLASSES_SRCPATH%
@@ -40,3 +43,5 @@ if exist "%C3DCLASSES_JAR%" (
 ) else (
     echo [INFO] JAR file does NOT exist.
 )
+
+echo [ENDING] %~nx0

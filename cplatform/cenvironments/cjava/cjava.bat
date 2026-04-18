@@ -1,31 +1,38 @@
 ::------------------------------------------------------------------------------------------
-:: name: cjava.destroy.bat
-:: desc: Removes the Java environment from C3DClasses SDK
+:: name: cjava.bat
+:: desc: Runs a Java program or class file
+:: usage: cjava ClassName [args...]
 ::------------------------------------------------------------------------------------------
 
 @echo off
+setlocal
 
 echo [CALLING] %~nx0
+
+set "CJAVAHOME=%CD%"
 
 ::------------------------------------------------------
 :: Validate required variables
 ::------------------------------------------------------
-if "%CMETADATA%"=="" (
-    echo [ERROR] CMETADATA environment variable is not set.
+if "%C3DCLASSES_JAVA%"=="" (
+    echo [ERROR] C3DCLASSES_JAVA environment variable is not set.
+    endlocal
+    exit /b 1
+)
+
+if "%C3DCLASSES_JAR%"=="" (
+    echo [ERROR] C3DCLASSES_JAR environment variable is not set.
+    endlocal
     exit /b 1
 )
 
 ::------------------------------------------------------
-:: Remove Java environment directory
+:: Run Java with the C3DClasses classpath
 ::------------------------------------------------------
-set "C3DCLASSES_JAVA=%CMETADATA%\c3dclasses_java"
+cd /d "%C3DCLASSES_JAVA%\target"
+call java -cp "%C3DCLASSES_JAR%;%CJAVAHOME%" %*
 
-if exist "%C3DCLASSES_JAVA%" (
-    echo [ACTION] Removing: %C3DCLASSES_JAVA%
-    rmdir /s /q "%C3DCLASSES_JAVA%"
-    echo [OK] Java environment removed.
-) else (
-    echo [INFO] Java environment directory does not exist.
-)
+cd /d "%CJAVAHOME%"
 
 echo [ENDING] %~nx0
+endlocal

@@ -1,2 +1,0 @@
-
-pushd \\wsl.localhost\Ubuntu

@@ -9,6 +9,8 @@
 @echo off
 setlocal enabledelayedexpansion
 
+echo [CALLING] %~nx0
+
 set "MODTYPE=%~1"
 set "MODFILE=%~2"
 set "ITEMKIND=%~3"
@@ -28,3 +30,5 @@ if exist "!HANDLER!" (
 )
 
 :: Add custom handling logic here as needed
+
+echo [ENDING] %~nx0
