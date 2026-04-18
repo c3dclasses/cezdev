@@ -18,6 +18,13 @@ set "PLATFORMNAME=%~5"
 :: Extract filename from path
 for %%F in ("%MODFILE%") do set "FILENAME=%%~nxF"
 
+echo [CALLING] %~nx0
+echo [INFO] Modification Type: %MODTYPE%
+echo [INFO] File Path: %MODFILE%
+echo [INFO] Item Kind: %ITEMKIND%
+echo [INFO] Platform: %PLATFORM%
+echo [INFO] Platform Name: %PLATFORMNAME%
+
 :: Log the modification
 echo [CPROJECTS] %MODTYPE% %ITEMKIND%: %FILENAME% in %PLATFORMNAME%
 
@@ -28,3 +35,5 @@ if exist "!HANDLER!" (
 )
 
 :: Add custom handling logic here as needed
+
+echo [ENDING] %~nx0

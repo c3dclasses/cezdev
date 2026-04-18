@@ -27,6 +27,11 @@ if "%PLATFORM_NAME%"=="" (
     exit /b 1
 )
 
+echo [CALLING] %~nx0
+echo [INFO] CRUD Operation: %CRUDOP%
+echo [INFO] Platform Directory: %PLATFORM_DIR%
+echo [INFO] Platform Name: %PLATFORM_NAME%
+
 :: Handle CRUD operations
 if /i "%CRUDOP%"=="create" (
     echo Creating version for %PLATFORM_NAME%
@@ -69,4 +74,5 @@ if /i "%CRUDOP%"=="delete" (
     )
 )
 
+echo [ENDING] %~nx0
 exit /b 0

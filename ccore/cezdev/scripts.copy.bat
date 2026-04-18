@@ -19,9 +19,19 @@ if "%DST%"=="" (
     exit /b 1
 )
 
-echo [INFO] Copying scripts to %DST%...
+if not exist "%SRC%" (
+    echo [ERROR] Source directory does not exist: %SRC%
+    exit /b 1
+)
+
+echo [CALLING] %~nx0
+echo [INFO] Source directory: %SRC%
+echo [INFO] Destination directory: %DST%
+echo [INFO] File type filter: *.bat
+
 call files.copy.bat bat "%SRC%" "%DST%"
 
 echo [INFO] Adding to PATH: %DST%
-call append-dir-to-path.bat "%DST%"
-call append-dir-to-path.bat "%CEZDEV%"
+call path.append.bat "%DST%"
+
+echo [ENDING] %~nx0

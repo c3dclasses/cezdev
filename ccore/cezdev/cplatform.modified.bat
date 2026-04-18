@@ -39,6 +39,13 @@ if "%PLATFORMNAME%"=="" (
     exit /b 1
 )
 
+echo [CALLING] %~nx0
+echo [INFO] Modification Type: %MODTYPE%
+echo [INFO] File Path: %MODFILE%
+echo [INFO] Item Kind: %ITEMKIND%
+echo [INFO] Platform: %PLATFORM%
+echo [INFO] Platform Name: %PLATFORMNAME%
+
 echo Modification detected: %MODTYPE% %ITEMKIND% %MODFILE% for %PLATFORM% %PLATFORMNAME%
 
 :: Route to appropriate handler based on platform
@@ -63,3 +70,5 @@ if /i "%PLATFORM%"=="cprojects" (
 )
 
 echo [INFO] File modified in unknown platform: %PLATFORM%/%PLATFORMNAME% - %FILENAME%
+
+echo [ENDING] %~nx0

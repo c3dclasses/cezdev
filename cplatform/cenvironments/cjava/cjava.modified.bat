@@ -8,6 +8,8 @@
 @echo off
 setlocal enabledelayedexpansion
 
+echo [CALLING] %~nx0
+
 ::------------------------------------------------------
 :: Define C3DClasses SDK metadata
 ::------------------------------------------------------
@@ -90,10 +92,12 @@ for /r "%C3DCLASSES%" %%F in (*.java) do (
 :done
 if "%MODIFIED%"=="1" (
     echo [OK] Java source modified. File: %MODIFIED_FILE%
+    echo [ENDING] %~nx0
     endlocal
     exit /b 0
 ) else (
     echo [INFO] Java source has NOT been modified after last build.
+    echo [ENDING] %~nx0
     endlocal
     exit /b 1
 )

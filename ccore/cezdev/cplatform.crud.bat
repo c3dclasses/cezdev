@@ -26,20 +26,16 @@ if "%PLATFORM_DIR%"=="" (
 :: Run all platforms if no platform specified
 :: --------------------------------------------------
 if "%PLATFORM%"=="" (
-    echo.
-    echo ::---------------------------------------------------------------------------------------
-    echo ::  %~nx0: Starting CRUD Utility
-    echo ::---------------------------------------------------------------------------------------
+    echo [CALLING] %~nx0
     echo [INFO] Operation: %CRUDOP%
     echo [INFO] Platform directory: %PLATFORM_DIR%
+    
+    :: Then run each individual platform
     for /d %%P in ("%PLATFORM_DIR%\*") do (
-        echo Creating: %%~nP
+        echo [CREATING] %%~nP
         call "%~f0" "%CRUDOP%" "%PLATFORM_DIR%" "%%~nP"
     )
-    echo ::---------------------------------------------------------------------------------------
-    echo ::  %~nx0: Ending CRUD Utility
-    echo ::---------------------------------------------------------------------------------------
-    echo.
+    echo [ENDING] %~nx0
     exit /b 0
 )
 
@@ -51,21 +47,39 @@ for %%D in ("%PLATFORM_DIR%") do set "PLATFORM_DIR_NAME=%%~nxD"
 
 REM For create operations
 if /i "%CRUDOP%"=="create" (
-    REM Nothing special for create without versioning
+    set "DIR_SCRIPT=%PLATFORM_DIR%\%PLATFORM_DIR_NAME%.%CRUDOP%.bat"
+    if exist "%PLATFORM_DIR%\%PLATFORM_DIR_NAME%.%CRUDOP%.bat" (
+        echo [ACTION] Calling %PLATFORM_DIR_NAME%.%CRUDOP%.bat...
+        call "%PLATFORM_DIR%\%PLATFORM_DIR_NAME%.%CRUDOP%.bat"
+    )
 )
 
 REM For delete operations
 if /i "%CRUDOP%"=="delete" (
-    REM Nothing special for delete without versioning
+    set "DIR_SCRIPT=%PLATFORM_DIR%\%PLATFORM_DIR_NAME%.%CRUDOP%.bat"
+    if exist "%PLATFORM_DIR%\%PLATFORM_DIR_NAME%.%CRUDOP%.bat" (
+        echo [ACTION] Calling %PLATFORM_DIR_NAME%.%CRUDOP%.bat...
+        call "%PLATFORM_DIR%\%PLATFORM_DIR_NAME%.%CRUDOP%.bat"
+    )
 )
 
 REM For update operations
 if /i "%CRUDOP%"=="update" (
-    REM Nothing special for update without versioning
+    set "DIR_SCRIPT=%PLATFORM_DIR%\%PLATFORM_DIR_NAME%.%CRUDOP%.bat"
+    if exist "%PLATFORM_DIR%\%PLATFORM_DIR_NAME%.%CRUDOP%.bat" (
+        echo [ACTION] Calling %PLATFORM_DIR_NAME%.%CRUDOP%.bat...
+        call "%PLATFORM_DIR%\%PLATFORM_DIR_NAME%.%CRUDOP%.bat"
+    )
 )
 
 REM For read operations, display platform information
 if /i "%CRUDOP%"=="read" (
+    set "DIR_SCRIPT=%PLATFORM_DIR%\%PLATFORM_DIR_NAME%.%CRUDOP%.bat"
+    if exist "%PLATFORM_DIR%\%PLATFORM_DIR_NAME%.%CRUDOP%.bat" (
+        echo [ACTION] Calling %PLATFORM_DIR_NAME%.%CRUDOP%.bat...
+        call "%PLATFORM_DIR%\%PLATFORM_DIR_NAME%.%CRUDOP%.bat"
+    )
+    
     set "PLATFORMPATH=%PLATFORM_DIR%\%PLATFORM%" 
     REM Read description from description.txt if exists
     set "DESCFILE=%PLATFORM_DIR%\%PLATFORM%\description.txt"

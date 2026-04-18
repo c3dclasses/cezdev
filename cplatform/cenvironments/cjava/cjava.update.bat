@@ -1,31 +1,49 @@
 ::-------------------------------------------------------------------------------------------------
 :: name: cjava.update.bat
 :: desc: updates the java files in c3dclasses project to a maven project
-:: usage: cjava.update.bat c3dclasses c3dclasses_java
+:: usage: cjava.update.bat
 ::-------------------------------------------------------------------------------------------------
 
 @echo off
 
+echo [CALLING] %~nx0
+
+::------------------------------------------------------
+:: Validate required environment variables
+::------------------------------------------------------
+if "%C3DCLASSES%"=="" (
+    echo [ERROR] C3DCLASSES environment variable is not set.
+    exit /b 1
+)
+
+if "%C3DCLASSES_JAVA%"=="" (
+    set "C3DCLASSES_JAVA=%CMETADATA%\c3dclasses_java"
+)
+
+:: Save current directory
+set "CJAVAUPDATEHOME=%CD%"
+
 :: set the src and dst directories to write from and to
-set src=%C3DCLASSES%
-set dst=%C3DCLASSES_JAVA%
+set "src=%C3DCLASSES%"
+set "dst=%C3DCLASSES_JAVA%"
+
+echo [INFO] Source (C3DCLASSES): %src%
+echo [INFO] Destination (C3DCLASSES_JAVA): %dst%
 
 :: Ensure destination directory exists
 if not exist "%dst%" mkdir "%dst%"
 
 :: move the pom file, java src, test files to the destination
-call cp-file-types-from-src-to-dst-ex "%src%" "%dst%\src\main\java" ".java" "UnitTest.java,unittest.java" "CUnitTest.java,CMockUnitTest.java"
-call cp-file-types-from-src-to-dst-ex "%src%" "%dst%\src\test\java" "UnitTest.java,unittest.java"
+echo [COPYING] Java source files...
+call directory.copy.bat "%src%" "%dst%\src\main\java" ".java" "UnitTest.java,unittest.java" "CUnitTest.java,CMockUnitTest.java"
+echo [COPYING] Java test files...
+call directory.copy.bat "%src%" "%dst%\src\test\java" ".java" "" "UnitTest.java,unittest.java"
 
-:: Copy test resource files (.dat, .json, .csv) to test resources directory
-::call cp-file-types-from-src-to-dst-ex "%src%" "%dst%\src\test\resources" ".dat"
-::call cp-file-types-from-src-to-dst-ex "%src%" "%dst%\src\test\resources" ".json"
-::call cp-file-types-from-src-to-dst-ex "%src%" "%dst%\src\test\resources" ".csv"
-
-:: Copy pom.xml - use CENVIRONMENTS path
-set "POM_SRC=%CENVIRONMENTS%\cjava\bin\pom.xml"
-echo [ACTION] Copying pom.xml from: %POM_SRC%
-echo [ACTION] Copying pom.xml to: %dst%\pom.xml
+:: Copy pom.xml - use script directory path
+set "SCRIPT_DIR=%~dp0"
+set "POM_SRC=%SCRIPT_DIR%pom.xml"
+echo [COPYING] pom.xml from: %POM_SRC%
+echo [COPYING] pom.xml to: %dst%\pom.xml
 copy /Y "%POM_SRC%" "%dst%\pom.xml"
 
 :: Verify pom.xml was copied
@@ -35,7 +53,7 @@ if not exist "%dst%\pom.xml" (
 )
 
 :: Generate filenames.json BEFORE running Maven tests (required by __.dir_path())
-call list-files %CMETADATA%\c3dclassessdk.filenames.json %src%
+call path.list.bat "%CMETADATA%\c3dclassessdk.filenames.json" "%src%"
 
 :: move into the folder and run maven install
 cd /d "%dst%"
@@ -43,5 +61,10 @@ call mvn clean install test -e -Drelease.artifactId=%C3DCLASSES_NAME% -Drelease.
 
 :: list all the files in the c3dclasses folder, and c3dclasses_java folder
 :: list all the filenames in c3dclasses in a json file
-call list-files %CMETADATA%\c3dclasses_java.filenames.json %dst% 
-call list-files %CMETADATA%\c3dclasses.filenames.json %src%
+call path.list.bat "%CMETADATA%\c3dclasses_java.filenames.json" "%dst%"
+call path.list.bat "%CMETADATA%\c3dclasses.filenames.json" "%src%"
+
+:: Restore original directory
+cd /d "%CJAVAUPDATEHOME%"
+
+echo [ENDING] %~nx0

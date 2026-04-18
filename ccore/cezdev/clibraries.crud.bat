@@ -6,4 +6,6 @@
 :: example: clibraries.crud create node
 ::------------------------------------------------------------------------------------------
 @echo off
+echo [CALLING] %~nx0
 call "%CEZDEV%\cplatform.crud.bat" %~1 "%CLIBRARIES%" "%~2"
+echo [ENDING] %~nx0
