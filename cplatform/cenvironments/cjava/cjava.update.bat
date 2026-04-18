@@ -6,7 +6,18 @@
 
 @echo off
 
+echo [PARAM1] %~1
+echo [PARAM2] %~2
+
 echo [CALLING] %~nx0
+
+:: Save current directory
+set "CJAVAUPDATEHOME=%CD%"
+
+:: Set environment variables from parameters
+set "C3DCLASSES_JAVA_ENV=%~2"
+set "C3DCLASSES_JAVA_ENV_PATH=%~1\%~2"
+
 
 ::------------------------------------------------------
 :: Validate required environment variables
@@ -19,9 +30,6 @@ if "%C3DCLASSES%"=="" (
 if "%C3DCLASSES_JAVA%"=="" (
     set "C3DCLASSES_JAVA=%CMETADATA%\c3dclasses_java"
 )
-
-:: Save current directory
-set "CJAVAUPDATEHOME=%CD%"
 
 :: set the src and dst directories to write from and to
 set "src=%C3DCLASSES%"
@@ -40,8 +48,7 @@ echo [COPYING] Java test files...
 call directory.copy.bat "%src%" "%dst%\src\test\java" ".java" "" "UnitTest.java,unittest.java"
 
 :: Copy pom.xml - use script directory path
-set "SCRIPT_DIR=%~dp0"
-set "POM_SRC=%SCRIPT_DIR%pom.xml"
+set "POM_SRC=%C3DCLASSES_JAVA_ENV_PATH%\pom.xml"
 echo [COPYING] pom.xml from: %POM_SRC%
 echo [COPYING] pom.xml to: %dst%\pom.xml
 copy /Y "%POM_SRC%" "%dst%\pom.xml"
