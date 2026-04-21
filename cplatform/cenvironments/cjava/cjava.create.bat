@@ -9,11 +9,13 @@
 set "CJAVACREATEHOME=%CD%"
 echo [CALLING] %~nx0
 
+
 if "%C3DCLASSES_NAME%"=="" set "C3DCLASSES_NAME=c3dclassessdk"
 if "%C3DCLASSES_VERSION%"=="" set "C3DCLASSES_VERSION=1.0"
-set "C3DCLASSES_JAVA_ENV=%~2"
-set "C3DCLASSES_JAVA_ENV_PATH=%~1\%~2"
+set "C3DCLASSES_JAVA_ENV=cjava"
+set "C3DCLASSES_JAVA_ENV_PATH=%CENVIRONMENTS%\cjava"
 set "C3DCLASSES_JAVA=%CMETADATA%\c3dclasses_java"
+set "CJAVA_MODIFIED_BAT=%C3DCLASSES_JAVA_ENV_PATH%\cjava.modified.bat"
 set "C3DCLASSES_JAR=%C3DCLASSES_JAVA%\target\%C3DCLASSES_NAME%-%C3DCLASSES_VERSION%-jar-with-dependencies.jar"
 set "C3DCLASSES_SRCPATH=%C3DCLASSES_JAVA%\src"
 set "C3DCLASSES_CLASSPATH=%C3DCLASSES_JAR%;."
@@ -27,13 +29,12 @@ echo [INFO] Java environment path: %C3DCLASSES_JAVA_ENV_PATH%
 echo [INFO] Java environment name: %C3DCLASSES_JAVA_ENV%
 
 echo [CREATING] Java environment...
-call scripts.copy.bat "%C3DCLASSES_JAVA_ENV_PATH%" "%CMETADATA%\cenvironment\%C3DCLASSES_JAVA_ENV%"
-set "PATH=%PATH%;%CMETADATA%\cenvironment\%C3DCLASSES_JAVA_ENV%"
+call scripts.copy.bat "%C3DCLASSES_JAVA_ENV_PATH%" "%CMETADATA%\cenvironments\%C3DCLASSES_JAVA_ENV%"
+set "PATH=%PATH%;%CMETADATA%\cenvironments\%C3DCLASSES_JAVA_ENV%"
 
 :: set the src and dst directories to write from and to
 set "src=%C3DCLASSES%"
 set "dst=%C3DCLASSES_JAVA%"
-
 if not exist "%dst%" mkdir "%dst%"
 
 echo [COPYING] Java source files...
@@ -50,11 +51,16 @@ if not exist "%dst%\pom.xml" (
     exit /b 1
 )
 
+echo [STEP] Generating c3dclassessdk filenames JSON...
 call path.list.bat "%CMETADATA%\c3dclassessdk.filenames.json" "%src%"
 cd /d "%dst%"
+echo [STEP] Running Maven build...
 call mvn clean install test -e -Drelease.artifactId=%C3DCLASSES_NAME% -Drelease.version=%C3DCLASSES_VERSION% -Drelease.path=%CEZDEV_HOME%
+echo [STEP] Generating c3dclasses_java filenames JSON...
 call path.list.bat "%CMETADATA%\c3dclasses_java.filenames.json" "%dst%"
+echo [STEP] Generating c3dclasses filenames JSON...
 call path.list.bat "%CMETADATA%\c3dclasses.filenames.json" "%src%"
 
+:end
 echo [ENDING] %~nx0
 cd /d "%CJAVACREATEHOME%"

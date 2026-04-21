@@ -50,7 +50,7 @@ set "SCRIPT=%PLATFORM_DIR%\%PLATFORM%\%PLATFORM%.%CRUDOP%.bat"
 ::if /i "%CRUDOP%"=="create" (
 ::    set "DIR_SCRIPT=%PLATFORM_DIR%\%PLATFORM_DIR_NAME%.%CRUDOP%.bat"
 ::    if exist "%PLATFORM_DIR%\%PLATFORM_DIR_NAME%.%CRUDOP%.bat" (
-::        echo [ACTION] Calling %PLATFORM_DIR_NAME%.%CRUDOP%.bat...
+::        echo [CALLING] %PLATFORM_DIR_NAME%.%CRUDOP%.bat...
 ::        call "%PLATFORM_DIR%\%PLATFORM_DIR_NAME%.%CRUDOP%.bat" "%PLATFORM_DIR%" "%PLATFORM%"
 ::    )
 ::)
@@ -59,7 +59,7 @@ set "SCRIPT=%PLATFORM_DIR%\%PLATFORM%\%PLATFORM%.%CRUDOP%.bat"
 ::if /i "%CRUDOP%"=="delete" (
 ::    set "DIR_SCRIPT=%PLATFORM_DIR%\%PLATFORM_DIR_NAME%.%CRUDOP%.bat"
 ::    if exist "%PLATFORM_DIR%\%PLATFORM_DIR_NAME%.%CRUDOP%.bat" (
-::        echo [ACTION] Calling %PLATFORM_DIR_NAME%.%CRUDOP%.bat...
+::        echo [CALLING] %PLATFORM_DIR_NAME%.%CRUDOP%.bat...
 ::        call "%PLATFORM_DIR%\%PLATFORM_DIR_NAME%.%CRUDOP%.bat" "%PLATFORM_DIR%" "%PLATFORM%"
 ::    )
 ::)
@@ -68,7 +68,7 @@ set "SCRIPT=%PLATFORM_DIR%\%PLATFORM%\%PLATFORM%.%CRUDOP%.bat"
 ::if /i "%CRUDOP%"=="update" (
 ::    set "DIR_SCRIPT=%PLATFORM_DIR%\%PLATFORM_DIR_NAME%.%CRUDOP%.bat"
 ::    if exist "%PLATFORM_DIR%\%PLATFORM_DIR_NAME%.%CRUDOP%.bat" (
-::        echo [ACTION] Calling %PLATFORM_DIR_NAME%.%CRUDOP%.bat...
+::        echo [CALLING] %PLATFORM_DIR_NAME%.%CRUDOP%.bat...
 ::        call "%PLATFORM_DIR%\%PLATFORM_DIR_NAME%.%CRUDOP%.bat" "%PLATFORM_DIR%" "%PLATFORM%"
 ::    )
 ::)
@@ -77,7 +77,7 @@ set "SCRIPT=%PLATFORM_DIR%\%PLATFORM%\%PLATFORM%.%CRUDOP%.bat"
 ::if /i "%CRUDOP%"=="read" (
 ::    set "DIR_SCRIPT=%PLATFORM_DIR%\%PLATFORM_DIR_NAME%.%CRUDOP%.bat"
 ::    if exist "%PLATFORM_DIR%\%PLATFORM_DIR_NAME%.%CRUDOP%.bat" (
-::        echo [ACTION] Calling %PLATFORM_DIR_NAME%.%CRUDOP%.bat...
+::        echo [CALLING] %PLATFORM_DIR_NAME%.%CRUDOP%.bat...
 ::        call "%PLATFORM_DIR%\%PLATFORM_DIR_NAME%.%CRUDOP%.bat" "%PLATFORM_DIR%" "%PLATFORM%"
 ::    )
 ::    

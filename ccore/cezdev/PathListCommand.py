@@ -7,20 +7,31 @@ class PathListCommand:
     @staticmethod
     def main(args):
         if len(args) < 2:
-            print("usage: PathListCommand <required:filetowriteto> <required:srcdir1> [srcdir2 ...]")
-            print("example 1: PathListCommand C:\\cezdev\\meta\\c3dclassessdk-src.json C:\\c3dclassessdk\\src")
+            print("[ERROR] usage: PathListCommand <required:filetowriteto> <required:srcdir1> [srcdir2 ...]")
+            print("[INFO] example 1: PathListCommand C:\\cezdev\\meta\\c3dclassessdk-src.json C:\\c3dclassessdk\\src")
             return
+
+        print("[CALLING] PathListCommand")
 
         file_to_write_to = args[0]
         bappend = False  # Modify if append behavior needed
+
+        print(f"[INFO] File to write to: {file_to_write_to}")
+        print(f"[INFO] Source directories: {args[1:]}")
+        print("[STEP] Building file-to-folder mapping...")
 
         file_to_folder = {}
         for src_dir in args[1:]:
             src_path = os.path.abspath(src_dir)
             file_to_folder.update(PathListCommand.to_dict_file_to_folder(src_path))
 
+        print(f"[INFO] Total files mapped: {len(file_to_folder)}")
+        print("[STEP] Writing JSON mapping to file...")
+
         # Write JSON mapping to file
         PathListCommand.set_file_contents(file_to_write_to, json.dumps(file_to_folder, indent=2), bappend)
+
+        print("[ENDING] PathListCommand")
 
     @staticmethod
     def to_dict_file_to_folder(srcfolder):

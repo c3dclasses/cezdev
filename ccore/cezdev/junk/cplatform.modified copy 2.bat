@@ -48,12 +48,6 @@ echo [INFO] Platform Name: %PLATFORMNAME%
 
 echo Modification detected: %MODTYPE% %ITEMKIND% %MODFILE% for %PLATFORM% %PLATFORMNAME%
 
-:: Route to appropriate handler based on platform
-if /i "%PLATFORM%"=="_clibraries" (
-    call "%CEZDEV%\_clibraries.modified.bat" "%MODTYPE%" "%MODFILE%" "%ITEMKIND%" "%PLATFORM%" "%PLATFORMNAME%"
-    goto :EOF
-)
-
 if /i "%PLATFORM%"=="clibraries" (
     call "%CEZDEV%\clibraries.modified.bat" "%MODTYPE%" "%MODFILE%" "%ITEMKIND%" "%PLATFORM%" "%PLATFORMNAME%"
     goto :EOF

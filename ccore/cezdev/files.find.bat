@@ -1,0 +1,3 @@
+set "CRUDOP=%~1"
+set "SRCPATH=%~2"
+set "FILE_SEARCH_PATTERN="$~3"

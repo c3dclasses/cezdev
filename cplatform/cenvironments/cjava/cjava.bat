@@ -6,14 +6,9 @@
 
 @echo off
 setlocal
-
 echo [CALLING] %~nx0
-
 set "CJAVAHOME=%CD%"
 
-::------------------------------------------------------
-:: Validate required variables
-::------------------------------------------------------
 if "%C3DCLASSES_JAVA%"=="" (
     echo [ERROR] C3DCLASSES_JAVA environment variable is not set.
     endlocal
@@ -26,13 +21,9 @@ if "%C3DCLASSES_JAR%"=="" (
     exit /b 1
 )
 
-::------------------------------------------------------
-:: Run Java with the C3DClasses classpath
-::------------------------------------------------------
 cd /d "%C3DCLASSES_JAVA%\target"
 call java -cp "%C3DCLASSES_JAR%;%CJAVAHOME%" %*
 
 cd /d "%CJAVAHOME%"
-
 echo [ENDING] %~nx0
 endlocal

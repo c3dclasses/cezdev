@@ -19,16 +19,15 @@ call "%~dp0ccore\cezdev\cezdev.create.bat" "%~dp0"
 ::------------------------------------------------------
 :: Create initial metadata files if they don't exist
 ::------------------------------------------------------
-call clibraries.crud.bat create
-call cenvironments.crud.bat create
-::call cprojects.crud.bat create
+call scripts.call %CLIBRARIES% *.create.bat
+call scripts.call %CENVIRONMENTS% *.create.bat
+call scripts.call %CPROJECTS% *.create.bat
 
 ::------------------------------------------------------
 :: Optional: Start file monitoring (uncomment to enable)
 ::------------------------------------------------------
-::set "MONITOR_CALLBACKS=%CEZDEV%\cenvironments.modified.bat"
-::set "MONITOR_CALLBACKS=%MONITOR_CALLBACKS%,%CEZDEV%\cprojects.modified.bat"
-::call file.monitor.bat "%CCORE%,%CPLATFORM%" "%MONITOR_CALLBACKS%"
+set "MONITOR_CALLBACK=%CJAVA_MODIFIED_BAT%"
+call file.monitor.bat "%CCORE%,%CPLATFORM%" "%MONITOR_CALLBACK%"
 
 ::------------------------------------------------------
 :: Return to CEZDEV home

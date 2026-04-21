@@ -21,7 +21,7 @@ if "%CMETADATA%"=="" (
 set "C3DCLASSES_JAVA=%CMETADATA%\c3dclasses_java"
 
 if exist "%C3DCLASSES_JAVA%" (
-    echo [ACTION] Removing: %C3DCLASSES_JAVA%
+    echo [REMOVING] %C3DCLASSES_JAVA%
     rmdir /s /q "%C3DCLASSES_JAVA%"
     echo [OK] Java environment removed.
 ) else (
