@@ -12,7 +12,7 @@ javac -classpath "%C3DCLASSES_CLASSPATH%" %*
 goto DONE
 
 :NOPARAM
-call "%~dp0cjava.update.bat"
+call cjava.update.bat
 goto DONE
 
 :DONE

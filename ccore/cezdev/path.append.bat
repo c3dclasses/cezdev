@@ -31,7 +31,7 @@ if not exist "%ADTP_DIR%" (
 echo %PATH% | find /I "%ADTP_DIR%" >nul
 if errorlevel 1 (
     set "PATH=%PATH%;%ADTP_DIR%"
-    echo [INFO] Added "%ADTP_DIR%" to PATH for this session.
+    echo [ADDING] "%ADTP_DIR%" to PATH for this session.
 ) else (
     echo [INFO] "%ADTP_DIR%" is already in PATH.
 )

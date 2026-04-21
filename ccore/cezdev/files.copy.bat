@@ -36,7 +36,7 @@ echo [INFO] File type filter: %FILE_TYPE%
 :: Ensure destination directory exists
 ::------------------------------------------------------
 if not exist "%DST_FOLDER%" (
-    echo [ACTION] Creating destination directory...
+    echo [CREATING] destination directory...
     mkdir "%DST_FOLDER%"
     echo [OK] Directory created.
 ) else (
